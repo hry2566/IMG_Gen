@@ -15,7 +15,7 @@ public partial class MainForm : Form
         //
         // FileTreeView
         //
-        this.FileTreeView = new cls_treeview();
+        this.FileTreeView = new cls_treeview(this.PicBox1);
         this.FileTreeView.ItemHeight = 22;
         this.FileTreeView.LineColor = System.Drawing.Color.Black;
         this.FileTreeView.Text = "TreeView2";
