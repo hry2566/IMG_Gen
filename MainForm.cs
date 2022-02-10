@@ -23,7 +23,7 @@ public partial class MainForm : Form
         this.FileTreeView.Name = "FileTreeView";
         this.FileTreeView.Size = new System.Drawing.Size(207, 662);
         this.FileTreeView.TabIndex = 23;
-        this.SplitContainer0.Panel1.Controls.Add(this.FileTreeView);
+        this.FilePage.Controls.Add(this.FileTreeView);
     }
 
     private void Controls_EventHandler()
