@@ -272,17 +272,17 @@ partial class MainForm
         this.LabelGrpBox.Controls.Add(this.LabelWidthLbl);
 
         //
-        // LabelWifdthTxtBox
+        // LabelWidthTxtBox
         //
-        this.LabelWifdthTxtBox = new System.Windows.Forms.TextBox();
-        this.LabelWifdthTxtBox.Text =  "TextBox3";
-        this.LabelWifdthTxtBox.SelectionStart = 6;
-        this.LabelWifdthTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
-        this.LabelWifdthTxtBox.Location = new System.Drawing.Point(72,128);
-        this.LabelWifdthTxtBox.Name =  "LabelWifdthTxtBox";
-        this.LabelWifdthTxtBox.Size = new System.Drawing.Size(165,27);
-        this.LabelWifdthTxtBox.TabIndex = 17;
-        this.LabelGrpBox.Controls.Add(this.LabelWifdthTxtBox);
+        this.LabelWidthTxtBox = new System.Windows.Forms.TextBox();
+        this.LabelWidthTxtBox.Text =  "TextBox3";
+        this.LabelWidthTxtBox.SelectionStart = 8;
+        this.LabelWidthTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
+        this.LabelWidthTxtBox.Location = new System.Drawing.Point(72,128);
+        this.LabelWidthTxtBox.Name =  "LabelWidthTxtBox";
+        this.LabelWidthTxtBox.Size = new System.Drawing.Size(165,27);
+        this.LabelWidthTxtBox.TabIndex = 17;
+        this.LabelGrpBox.Controls.Add(this.LabelWidthTxtBox);
 
         //
         // LabelEntBtn
@@ -558,7 +558,7 @@ partial class MainForm
     private TextBox LabelColorTxtBox;
     private Button LabelColorBtn;
     private Label LabelWidthLbl;
-    private TextBox LabelWifdthTxtBox;
+    private TextBox LabelWidthTxtBox;
     private Button LabelEntBtn;
     private Button LabelModBtn;
     private Button LabelDelBtn;
