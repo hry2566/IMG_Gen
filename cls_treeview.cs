@@ -17,7 +17,17 @@ public partial class cls_treeview : TreeView
         // Console.WriteLine(e.Node.Parent.Text);
         if (e.Node!.Text.IndexOf(".") > -1)
         {
-            string filepath = folderPath + e.Node.Parent.Text + "\\" + e.Node.Text;
+            string filepath;
+
+            if (e.Node.Parent != null)
+            {
+                filepath = folderPath + e.Node.Parent.Text + "\\" + e.Node.Text;
+            }
+            else
+            {
+                filepath = folderPath + e.Node.Text;
+            }
+
             Image img = new Bitmap(filepath);
 
             // picBox1.ImageLocation = filepath;
@@ -42,11 +52,25 @@ public partial class cls_treeview : TreeView
     {
         string[] fPath = System.IO.Directory.GetDirectories(path, "*", System.IO.SearchOption.TopDirectoryOnly);
 
-        for (int i = 0; i < fPath.Length; i++)
+        if (fPath.Length == 0)
         {
-            Array.Resize(ref treeNode, treeNode.Length + 1);
-            treeNode[treeNode.Length - 1] = new cls_treenode(path, fPath[i]);
+            System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(path);
+            System.IO.FileInfo[] files = di.GetFiles("*.*", System.IO.SearchOption.AllDirectories);
+            foreach (System.IO.FileInfo f in files)
+            {
+                Array.Resize(ref treeNode, treeNode.Length + 1);
+                treeNode[treeNode.Length - 1] = new cls_treenode(path, f.FullName);
+            }
         }
+        else
+        {
+            for (int i = 0; i < fPath.Length; i++)
+            {
+                Array.Resize(ref treeNode, treeNode.Length + 1);
+                treeNode[treeNode.Length - 1] = new cls_treenode(path, fPath[i]);
+            }
+        }
+
         this.Nodes.AddRange(treeNode);
         this.ExpandAll();
     }
