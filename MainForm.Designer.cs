@@ -60,7 +60,6 @@ partial class MainForm
         this.RootPathTxtBox.Text =  "TextBox0";
         this.RootPathTxtBox.BackColor = System.Drawing.SystemColors.ButtonHighlight;
         this.RootPathTxtBox.ReadOnly =  true;
-        this.RootPathTxtBox.SelectionStart = 8;
         this.RootPathTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.RootPathTxtBox.Location = new System.Drawing.Point(152,20);
         this.RootPathTxtBox.Name =  "RootPathTxtBox";
@@ -211,7 +210,6 @@ partial class MainForm
         //
         this.LabelNameTxtBox = new System.Windows.Forms.TextBox();
         this.LabelNameTxtBox.Text =  "TextBox1";
-        this.LabelNameTxtBox.SelectionStart = 8;
         this.LabelNameTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.LabelNameTxtBox.Location = new System.Drawing.Point(72,64);
         this.LabelNameTxtBox.Name =  "LabelNameTxtBox";
@@ -237,7 +235,6 @@ partial class MainForm
         //
         this.LabelColorTxtBox = new System.Windows.Forms.TextBox();
         this.LabelColorTxtBox.Text =  "TextBox2";
-        this.LabelColorTxtBox.SelectionStart = 8;
         this.LabelColorTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.LabelColorTxtBox.Location = new System.Drawing.Point(72,96);
         this.LabelColorTxtBox.Name =  "LabelColorTxtBox";
@@ -276,7 +273,6 @@ partial class MainForm
         //
         this.LabelWidthTxtBox = new System.Windows.Forms.TextBox();
         this.LabelWidthTxtBox.Text =  "TextBox3";
-        this.LabelWidthTxtBox.SelectionStart = 8;
         this.LabelWidthTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.LabelWidthTxtBox.Location = new System.Drawing.Point(72,128);
         this.LabelWidthTxtBox.Name =  "LabelWidthTxtBox";
@@ -441,7 +437,6 @@ partial class MainForm
         this.MaskNameTxtBox = new System.Windows.Forms.TextBox();
         this.MaskNameTxtBox.Text =  "TextBox4";
         this.MaskNameTxtBox.Modified =  true;
-        this.MaskNameTxtBox.SelectionStart = 8;
         this.MaskNameTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.MaskNameTxtBox.Location = new System.Drawing.Point(72,64);
         this.MaskNameTxtBox.Name =  "MaskNameTxtBox";
@@ -454,7 +449,6 @@ partial class MainForm
         //
         this.MaskColorTxtBox = new System.Windows.Forms.TextBox();
         this.MaskColorTxtBox.Text =  "TextBox5";
-        this.MaskColorTxtBox.SelectionStart = 2;
         this.MaskColorTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.MaskColorTxtBox.Location = new System.Drawing.Point(72,96);
         this.MaskColorTxtBox.Name =  "MaskColorTxtBox";
@@ -467,7 +461,6 @@ partial class MainForm
         //
         this.MaskWidthTxtBox = new System.Windows.Forms.TextBox();
         this.MaskWidthTxtBox.Text =  "TextBox6";
-        this.MaskWidthTxtBox.SelectionStart = 8;
         this.MaskWidthTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.MaskWidthTxtBox.Location = new System.Drawing.Point(72,128);
         this.MaskWidthTxtBox.Name =  "MaskWidthTxtBox";
