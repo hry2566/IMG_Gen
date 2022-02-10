@@ -33,10 +33,11 @@ partial class MainForm
         //
         this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+        this.BackColor = System.Drawing.Color.Silver;
         this.Location = new System.Drawing.Point(521,352);
-        this.ClientSize = new System.Drawing.Size(1100,628);
+        this.ClientSize = new System.Drawing.Size(1102,652);
         this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-        this.Text =  "IMG_Gen2";
+        this.Text =  "IMG_Gen";
         this.Name =  "Form1";
 
         //
@@ -73,58 +74,463 @@ partial class MainForm
         this.SplitContainer0.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
         this.SplitContainer0.Text =  "SplitContainer0";
         this.SplitContainer0.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
-        this.SplitContainer0.BackColor = System.Drawing.Color.WhiteSmoke;
+        this.SplitContainer0.BackColor = System.Drawing.Color.Silver;
         this.SplitContainer0.Location = new System.Drawing.Point(16,64);
         this.SplitContainer0.Name =  "SplitContainer0";
-        this.SplitContainer0.Size = new System.Drawing.Size(1074,548);
+        this.SplitContainer0.Size = new System.Drawing.Size(1074,570);
         this.SplitContainer0.TabIndex = 2;
-        this.SplitContainer0.SplitterDistance = 202;
+        this.SplitContainer0.SplitterDistance = 263;
         this.Controls.Add(this.SplitContainer0);
 
         //
-        // TabControl0
+        // ViewTab
         //
-        this.TabControl0 = new System.Windows.Forms.TabControl();
-        this.TabControl0.ItemSize = new System.Drawing.Size(72,25);
-        this.TabControl0.Text =  "TabControl0";
-        this.TabControl0.Dock = System.Windows.Forms.DockStyle.Fill;
-        this.TabControl0.Name =  "TabControl0";
-        this.TabControl0.Size = new System.Drawing.Size(866,546);
-        this.TabControl0.TabIndex = 4;
-        this.SplitContainer0.Panel2.Controls.Add(this.TabControl0);
+        this.ViewTab = new System.Windows.Forms.TabControl();
+        this.ViewTab.ItemSize = new System.Drawing.Size(72,25);
+        this.ViewTab.Text =  "TabControl0";
+        this.ViewTab.Dock = System.Windows.Forms.DockStyle.Fill;
+        this.ViewTab.Name =  "ViewTab";
+        this.ViewTab.Size = new System.Drawing.Size(805,568);
+        this.ViewTab.TabIndex = 4;
+        this.SplitContainer0.Panel2.Controls.Add(this.ViewTab);
 
         //
-        // TabPage0
+        // PosPage
         //
-        this.TabPage0 = new System.Windows.Forms.TabPage();
-        this.TabPage0.Location = new System.Drawing.Point(4,29);
-        this.TabPage0.TabIndex = 5;
-        this.TabPage0.Text =  "座標編集";
-        this.TabPage0.Name =  "TabPage0";
-        this.TabPage0.Size = new System.Drawing.Size(858,513);
-        this.TabControl0.Controls.Add(this.TabPage0);
+        this.PosPage = new System.Windows.Forms.TabPage();
+        this.PosPage.Location = new System.Drawing.Point(4,29);
+        this.PosPage.TabIndex = 5;
+        this.PosPage.Text =  "座標";
+        this.PosPage.Name =  "PosPage";
+        this.PosPage.Size = new System.Drawing.Size(818,535);
+        this.PosPage.BackColor = System.Drawing.Color.Gray;
+        this.PosPage.AutoScroll =  true;
+        this.ViewTab.Controls.Add(this.PosPage);
 
         //
-        // TabPage1
+        // ImgPage
         //
-        this.TabPage1 = new System.Windows.Forms.TabPage();
-        this.TabPage1.Location = new System.Drawing.Point(4,29);
-        this.TabPage1.TabIndex = 6;
-        this.TabPage1.Text =  "画像処理";
-        this.TabPage1.Name =  "TabPage1";
-        this.TabPage1.Size = new System.Drawing.Size(858,513);
-        this.TabControl0.Controls.Add(this.TabPage1);
+        this.ImgPage = new System.Windows.Forms.TabPage();
+        this.ImgPage.Location = new System.Drawing.Point(4,29);
+        this.ImgPage.TabIndex = 6;
+        this.ImgPage.Text =  "画像処理";
+        this.ImgPage.Name =  "ImgPage";
+        this.ImgPage.Size = new System.Drawing.Size(818,535);
+        this.ImgPage.BackColor = System.Drawing.Color.Gray;
+        this.ViewTab.Controls.Add(this.ImgPage);
 
         //
-        // TabPage2
+        // SplitPage
         //
-        this.TabPage2 = new System.Windows.Forms.TabPage();
-        this.TabPage2.Location = new System.Drawing.Point(4,29);
-        this.TabPage2.TabIndex = 7;
-        this.TabPage2.Text =  "画像分割";
-        this.TabPage2.Name =  "TabPage2";
-        this.TabPage2.Size = new System.Drawing.Size(858,513);
-        this.TabControl0.Controls.Add(this.TabPage2);
+        this.SplitPage = new System.Windows.Forms.TabPage();
+        this.SplitPage.Location = new System.Drawing.Point(4,29);
+        this.SplitPage.TabIndex = 7;
+        this.SplitPage.Text =  "分割";
+        this.SplitPage.Name =  "SplitPage";
+        this.SplitPage.Size = new System.Drawing.Size(797,535);
+        this.SplitPage.BackColor = System.Drawing.Color.Gray;
+        this.ViewTab.Controls.Add(this.SplitPage);
+
+        //
+        // MenuTab
+        //
+        this.MenuTab = new System.Windows.Forms.TabControl();
+        this.MenuTab.ItemSize = new System.Drawing.Size(60,25);
+        this.MenuTab.Text =  "TabControl1";
+        this.MenuTab.Dock = System.Windows.Forms.DockStyle.Fill;
+        this.MenuTab.Name =  "MenuTab";
+        this.MenuTab.Size = new System.Drawing.Size(261,568);
+        this.MenuTab.TabIndex = 7;
+        this.SplitContainer0.Panel1.Controls.Add(this.MenuTab);
+
+        //
+        // FilePage
+        //
+        this.FilePage = new System.Windows.Forms.TabPage();
+        this.FilePage.Location = new System.Drawing.Point(4,29);
+        this.FilePage.TabIndex = 8;
+        this.FilePage.Text =  "ファイル";
+        this.FilePage.Name =  "FilePage";
+        this.FilePage.Size = new System.Drawing.Size(232,535);
+        this.FilePage.BackColor = System.Drawing.SystemColors.ActiveCaption;
+        this.MenuTab.Controls.Add(this.FilePage);
+
+        //
+        // LabelPage
+        //
+        this.LabelPage = new System.Windows.Forms.TabPage();
+        this.LabelPage.Location = new System.Drawing.Point(4,29);
+        this.LabelPage.TabIndex = 9;
+        this.LabelPage.Text =  "ラベル";
+        this.LabelPage.Name =  "LabelPage";
+        this.LabelPage.Size = new System.Drawing.Size(232,535);
+        this.LabelPage.BackColor = System.Drawing.SystemColors.ActiveCaption;
+        this.MenuTab.Controls.Add(this.LabelPage);
+
+        //
+        // MaskPage
+        //
+        this.MaskPage = new System.Windows.Forms.TabPage();
+        this.MaskPage.Location = new System.Drawing.Point(4,29);
+        this.MaskPage.TabIndex = 10;
+        this.MaskPage.Text =  "マスク";
+        this.MaskPage.Name =  "MaskPage";
+        this.MaskPage.Size = new System.Drawing.Size(232,535);
+        this.MaskPage.BackColor = System.Drawing.SystemColors.ActiveCaption;
+        this.MenuTab.Controls.Add(this.MaskPage);
+
+        //
+        // LabelGrpBox
+        //
+        this.LabelGrpBox = new System.Windows.Forms.GroupBox();
+        this.LabelGrpBox.Text =  "ラベル設定";
+        this.LabelGrpBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
+        this.LabelGrpBox.BackColor = System.Drawing.SystemColors.ActiveCaption;
+        this.LabelGrpBox.Location = new System.Drawing.Point(0,360);
+        this.LabelGrpBox.Name =  "LabelGrpBox";
+        this.LabelGrpBox.Size = new System.Drawing.Size(224,168);
+        this.LabelGrpBox.TabIndex = 23;
+        this.LabelPage.Controls.Add(this.LabelGrpBox);
+
+        //
+        // LabelNameLbl
+        //
+        this.LabelNameLbl = new System.Windows.Forms.Label();
+        this.LabelNameLbl.AutoSize =  true;
+        this.LabelNameLbl.Text =  "ラベル名";
+        this.LabelNameLbl.BackColor = System.Drawing.SystemColors.ActiveCaption;
+        this.LabelNameLbl.Location = new System.Drawing.Point(8,64);
+        this.LabelNameLbl.Name =  "LabelNameLbl";
+        this.LabelNameLbl.Size = new System.Drawing.Size(58,20);
+        this.LabelNameLbl.TabIndex = 11;
+        this.LabelGrpBox.Controls.Add(this.LabelNameLbl);
+
+        //
+        // LabelNameTxtBox
+        //
+        this.LabelNameTxtBox = new System.Windows.Forms.TextBox();
+        this.LabelNameTxtBox.Text =  "TextBox1";
+        this.LabelNameTxtBox.SelectionStart = 8;
+        this.LabelNameTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
+        this.LabelNameTxtBox.Location = new System.Drawing.Point(72,64);
+        this.LabelNameTxtBox.Name =  "LabelNameTxtBox";
+        this.LabelNameTxtBox.Size = new System.Drawing.Size(144,27);
+        this.LabelNameTxtBox.TabIndex = 12;
+        this.LabelGrpBox.Controls.Add(this.LabelNameTxtBox);
+
+        //
+        // LabelColorLbl
+        //
+        this.LabelColorLbl = new System.Windows.Forms.Label();
+        this.LabelColorLbl.AutoSize =  true;
+        this.LabelColorLbl.Text =  "線色";
+        this.LabelColorLbl.BackColor = System.Drawing.SystemColors.ActiveCaption;
+        this.LabelColorLbl.Location = new System.Drawing.Point(8,96);
+        this.LabelColorLbl.Name =  "LabelColorLbl";
+        this.LabelColorLbl.Size = new System.Drawing.Size(39,20);
+        this.LabelColorLbl.TabIndex = 13;
+        this.LabelGrpBox.Controls.Add(this.LabelColorLbl);
+
+        //
+        // LabelColorTxtBox
+        //
+        this.LabelColorTxtBox = new System.Windows.Forms.TextBox();
+        this.LabelColorTxtBox.Text =  "TextBox2";
+        this.LabelColorTxtBox.SelectionStart = 8;
+        this.LabelColorTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
+        this.LabelColorTxtBox.Location = new System.Drawing.Point(72,96);
+        this.LabelColorTxtBox.Name =  "LabelColorTxtBox";
+        this.LabelColorTxtBox.TabIndex = 14;
+        this.LabelGrpBox.Controls.Add(this.LabelColorTxtBox);
+
+        //
+        // LabelColorBtn
+        //
+        this.LabelColorBtn = new System.Windows.Forms.Button();
+        this.LabelColorBtn.BackColor = System.Drawing.SystemColors.ActiveCaption;
+        this.LabelColorBtn.Text =  "色";
+        this.LabelColorBtn.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
+        this.LabelColorBtn.Location = new System.Drawing.Point(176,96);
+        this.LabelColorBtn.Name =  "LabelColorBtn";
+        this.LabelColorBtn.Size = new System.Drawing.Size(40,32);
+        this.LabelColorBtn.TabIndex = 15;
+        this.LabelGrpBox.Controls.Add(this.LabelColorBtn);
+
+        //
+        // LabelWidthLbl
+        //
+        this.LabelWidthLbl = new System.Windows.Forms.Label();
+        this.LabelWidthLbl.AutoSize =  true;
+        this.LabelWidthLbl.Text =  "線幅";
+        this.LabelWidthLbl.BackColor = System.Drawing.SystemColors.ActiveCaption;
+        this.LabelWidthLbl.Location = new System.Drawing.Point(8,128);
+        this.LabelWidthLbl.Name =  "LabelWidthLbl";
+        this.LabelWidthLbl.Size = new System.Drawing.Size(39,20);
+        this.LabelWidthLbl.TabIndex = 16;
+        this.LabelGrpBox.Controls.Add(this.LabelWidthLbl);
+
+        //
+        // LabelWifdthTxtBox
+        //
+        this.LabelWifdthTxtBox = new System.Windows.Forms.TextBox();
+        this.LabelWifdthTxtBox.Text =  "TextBox3";
+        this.LabelWifdthTxtBox.SelectionStart = 6;
+        this.LabelWifdthTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
+        this.LabelWifdthTxtBox.Location = new System.Drawing.Point(72,128);
+        this.LabelWifdthTxtBox.Name =  "LabelWifdthTxtBox";
+        this.LabelWifdthTxtBox.Size = new System.Drawing.Size(144,27);
+        this.LabelWifdthTxtBox.TabIndex = 17;
+        this.LabelGrpBox.Controls.Add(this.LabelWifdthTxtBox);
+
+        //
+        // LabelEntBtn
+        //
+        this.LabelEntBtn = new System.Windows.Forms.Button();
+        this.LabelEntBtn.BackColor = System.Drawing.SystemColors.ActiveCaption;
+        this.LabelEntBtn.Text =  "登録";
+        this.LabelEntBtn.Location = new System.Drawing.Point(8,24);
+        this.LabelEntBtn.Name =  "LabelEntBtn";
+        this.LabelEntBtn.Size = new System.Drawing.Size(64,32);
+        this.LabelEntBtn.TabIndex = 18;
+        this.LabelGrpBox.Controls.Add(this.LabelEntBtn);
+
+        //
+        // LabelModBtn
+        //
+        this.LabelModBtn = new System.Windows.Forms.Button();
+        this.LabelModBtn.BackColor = System.Drawing.SystemColors.ActiveCaption;
+        this.LabelModBtn.Text =  "修正";
+        this.LabelModBtn.Location = new System.Drawing.Point(80,24);
+        this.LabelModBtn.Name =  "LabelModBtn";
+        this.LabelModBtn.Size = new System.Drawing.Size(64,32);
+        this.LabelModBtn.TabIndex = 19;
+        this.LabelGrpBox.Controls.Add(this.LabelModBtn);
+
+        //
+        // LabelDelBtn
+        //
+        this.LabelDelBtn = new System.Windows.Forms.Button();
+        this.LabelDelBtn.BackColor = System.Drawing.SystemColors.ActiveCaption;
+        this.LabelDelBtn.Text =  "削除";
+        this.LabelDelBtn.Location = new System.Drawing.Point(152,24);
+        this.LabelDelBtn.Name =  "LabelDelBtn";
+        this.LabelDelBtn.Size = new System.Drawing.Size(64,32);
+        this.LabelDelBtn.TabIndex = 20;
+        this.LabelGrpBox.Controls.Add(this.LabelDelBtn);
+
+        //
+        // LabelLstBox
+        //
+        this.LabelLstBox = new System.Windows.Forms.ListBox();
+        this.LabelLstBox.ItemHeight = 20;
+        this.LabelLstBox.Text =  "ListBox0";
+        this.LabelLstBox.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
+        this.LabelLstBox.Location = new System.Drawing.Point(8,8);
+        this.LabelLstBox.Name =  "LabelLstBox";
+        this.LabelLstBox.Size = new System.Drawing.Size(216,344);
+        this.LabelLstBox.TabIndex = 21;
+        this.LabelPage.Controls.Add(this.LabelLstBox);
+
+        //
+        // PicBox1
+        //
+        this.PicBox1 = new System.Windows.Forms.PictureBox();
+        this.PicBox1.TabIndex = 22;
+        this.PicBox1.Text =  "PictureBox0";
+        this.PicBox1.BackColor = System.Drawing.Color.White;
+        this.PicBox1.Location = new System.Drawing.Point(16,16);
+        this.PicBox1.Name =  "PicBox1";
+        this.PicBox1.Size = new System.Drawing.Size(320,240);
+        this.PosPage.Controls.Add(this.PicBox1);
+
+        //
+        // MaskGrpBox
+        //
+        this.MaskGrpBox = new System.Windows.Forms.GroupBox();
+        this.MaskGrpBox.Text =  "マスク設定";
+        this.MaskGrpBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
+        this.MaskGrpBox.BackColor = System.Drawing.SystemColors.ActiveCaption;
+        this.MaskGrpBox.Location = new System.Drawing.Point(0,360);
+        this.MaskGrpBox.Name =  "MaskGrpBox";
+        this.MaskGrpBox.Size = new System.Drawing.Size(224,168);
+        this.MaskGrpBox.TabIndex = 24;
+        this.MaskPage.Controls.Add(this.MaskGrpBox);
+
+        //
+        // MaskEntBtn
+        //
+        this.MaskEntBtn = new System.Windows.Forms.Button();
+        this.MaskEntBtn.BackColor = System.Drawing.SystemColors.ActiveCaption;
+        this.MaskEntBtn.Text =  "登録";
+        this.MaskEntBtn.Location = new System.Drawing.Point(8,24);
+        this.MaskEntBtn.Name =  "MaskEntBtn";
+        this.MaskEntBtn.Size = new System.Drawing.Size(64,32);
+        this.MaskEntBtn.TabIndex = 25;
+        this.MaskGrpBox.Controls.Add(this.MaskEntBtn);
+
+        //
+        // MaskModBtn
+        //
+        this.MaskModBtn = new System.Windows.Forms.Button();
+        this.MaskModBtn.BackColor = System.Drawing.SystemColors.ActiveCaption;
+        this.MaskModBtn.Text =  "修正";
+        this.MaskModBtn.Location = new System.Drawing.Point(80,24);
+        this.MaskModBtn.Name =  "MaskModBtn";
+        this.MaskModBtn.Size = new System.Drawing.Size(64,32);
+        this.MaskModBtn.TabIndex = 26;
+        this.MaskGrpBox.Controls.Add(this.MaskModBtn);
+
+        //
+        // MaskDelBtn
+        //
+        this.MaskDelBtn = new System.Windows.Forms.Button();
+        this.MaskDelBtn.BackColor = System.Drawing.SystemColors.ActiveCaption;
+        this.MaskDelBtn.Text =  "削除";
+        this.MaskDelBtn.Location = new System.Drawing.Point(152,24);
+        this.MaskDelBtn.Name =  "MaskDelBtn";
+        this.MaskDelBtn.Size = new System.Drawing.Size(64,32);
+        this.MaskDelBtn.TabIndex = 27;
+        this.MaskGrpBox.Controls.Add(this.MaskDelBtn);
+
+        //
+        // MaskNameLbl
+        //
+        this.MaskNameLbl = new System.Windows.Forms.Label();
+        this.MaskNameLbl.AutoSize =  true;
+        this.MaskNameLbl.Text =  "マスク名";
+        this.MaskNameLbl.BackColor = System.Drawing.SystemColors.ActiveCaption;
+        this.MaskNameLbl.Location = new System.Drawing.Point(8,64);
+        this.MaskNameLbl.Name =  "MaskNameLbl";
+        this.MaskNameLbl.Size = new System.Drawing.Size(57,20);
+        this.MaskNameLbl.TabIndex = 28;
+        this.MaskGrpBox.Controls.Add(this.MaskNameLbl);
+
+        //
+        // MaskColorLbl
+        //
+        this.MaskColorLbl = new System.Windows.Forms.Label();
+        this.MaskColorLbl.AutoSize =  true;
+        this.MaskColorLbl.Text =  "線色";
+        this.MaskColorLbl.BackColor = System.Drawing.SystemColors.ActiveCaption;
+        this.MaskColorLbl.Location = new System.Drawing.Point(8,96);
+        this.MaskColorLbl.Name =  "MaskColorLbl";
+        this.MaskColorLbl.Size = new System.Drawing.Size(39,20);
+        this.MaskColorLbl.TabIndex = 29;
+        this.MaskGrpBox.Controls.Add(this.MaskColorLbl);
+
+        //
+        // MaskWidthLbl
+        //
+        this.MaskWidthLbl = new System.Windows.Forms.Label();
+        this.MaskWidthLbl.AutoSize =  true;
+        this.MaskWidthLbl.Text =  "線幅";
+        this.MaskWidthLbl.BackColor = System.Drawing.SystemColors.ActiveCaption;
+        this.MaskWidthLbl.Location = new System.Drawing.Point(8,128);
+        this.MaskWidthLbl.Name =  "MaskWidthLbl";
+        this.MaskWidthLbl.Size = new System.Drawing.Size(39,20);
+        this.MaskWidthLbl.TabIndex = 30;
+        this.MaskGrpBox.Controls.Add(this.MaskWidthLbl);
+
+        //
+        // MaskNameTxtBox
+        //
+        this.MaskNameTxtBox = new System.Windows.Forms.TextBox();
+        this.MaskNameTxtBox.Text =  "TextBox4";
+        this.MaskNameTxtBox.Modified =  true;
+        this.MaskNameTxtBox.SelectionStart = 8;
+        this.MaskNameTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
+        this.MaskNameTxtBox.Location = new System.Drawing.Point(72,64);
+        this.MaskNameTxtBox.Name =  "MaskNameTxtBox";
+        this.MaskNameTxtBox.Size = new System.Drawing.Size(144,27);
+        this.MaskNameTxtBox.TabIndex = 31;
+        this.MaskGrpBox.Controls.Add(this.MaskNameTxtBox);
+
+        //
+        // MaskColorTxtBox
+        //
+        this.MaskColorTxtBox = new System.Windows.Forms.TextBox();
+        this.MaskColorTxtBox.Text =  "TextBox5";
+        this.MaskColorTxtBox.SelectionStart = 2;
+        this.MaskColorTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
+        this.MaskColorTxtBox.Location = new System.Drawing.Point(72,96);
+        this.MaskColorTxtBox.Name =  "MaskColorTxtBox";
+        this.MaskColorTxtBox.TabIndex = 32;
+        this.MaskGrpBox.Controls.Add(this.MaskColorTxtBox);
+
+        //
+        // MaskWidthTxtBox
+        //
+        this.MaskWidthTxtBox = new System.Windows.Forms.TextBox();
+        this.MaskWidthTxtBox.Text =  "TextBox6";
+        this.MaskWidthTxtBox.SelectionStart = 8;
+        this.MaskWidthTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
+        this.MaskWidthTxtBox.Location = new System.Drawing.Point(72,128);
+        this.MaskWidthTxtBox.Name =  "MaskWidthTxtBox";
+        this.MaskWidthTxtBox.Size = new System.Drawing.Size(144,27);
+        this.MaskWidthTxtBox.TabIndex = 33;
+        this.MaskGrpBox.Controls.Add(this.MaskWidthTxtBox);
+
+        //
+        // MaskColorBtn
+        //
+        this.MaskColorBtn = new System.Windows.Forms.Button();
+        this.MaskColorBtn.BackColor = System.Drawing.SystemColors.ActiveCaption;
+        this.MaskColorBtn.Text =  "色";
+        this.MaskColorBtn.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
+        this.MaskColorBtn.Location = new System.Drawing.Point(176,96);
+        this.MaskColorBtn.Name =  "MaskColorBtn";
+        this.MaskColorBtn.Size = new System.Drawing.Size(40,32);
+        this.MaskColorBtn.TabIndex = 34;
+        this.MaskGrpBox.Controls.Add(this.MaskColorBtn);
+
+        //
+        // MaskLstBox
+        //
+        this.MaskLstBox = new System.Windows.Forms.ListBox();
+        this.MaskLstBox.ItemHeight = 20;
+        this.MaskLstBox.Text =  "ListBox";
+        this.MaskLstBox.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
+        this.MaskLstBox.Location = new System.Drawing.Point(8,8);
+        this.MaskLstBox.Name =  "MaskLstBox";
+        this.MaskLstBox.Size = new System.Drawing.Size(216,344);
+        this.MaskLstBox.TabIndex = 35;
+        this.MaskPage.Controls.Add(this.MaskLstBox);
+
+        //
+        // PicBox2
+        //
+        this.PicBox2 = new System.Windows.Forms.PictureBox();
+        this.PicBox2.TabIndex = 36;
+        this.PicBox2.Text =  "PictureBox1";
+        this.PicBox2.BackColor = System.Drawing.Color.White;
+        this.PicBox2.Location = new System.Drawing.Point(16,16);
+        this.PicBox2.Name =  "PicBox2";
+        this.PicBox2.Size = new System.Drawing.Size(320,240);
+        this.ImgPage.Controls.Add(this.PicBox2);
+
+        //
+        // PicBox3
+        //
+        this.PicBox3 = new System.Windows.Forms.PictureBox();
+        this.PicBox3.TabIndex = 37;
+        this.PicBox3.Text =  "PictureBox2";
+        this.PicBox3.BackColor = System.Drawing.Color.White;
+        this.PicBox3.Location = new System.Drawing.Point(16,16);
+        this.PicBox3.Name =  "PicBox3";
+        this.PicBox3.Size = new System.Drawing.Size(320,240);
+        this.SplitPage.Controls.Add(this.PicBox3);
+
+        //
+        // SplitOptPage
+        //
+        this.SplitOptPage = new System.Windows.Forms.TabPage();
+        this.SplitOptPage.Location = new System.Drawing.Point(4,29);
+        this.SplitOptPage.TabIndex = 38;
+        this.SplitOptPage.Text =  "分割";
+        this.SplitOptPage.Name =  "SplitOptPage";
+        this.SplitOptPage.Size = new System.Drawing.Size(253,535);
+        this.SplitOptPage.BackColor = System.Drawing.SystemColors.ActiveCaption;
+        this.MenuTab.Controls.Add(this.SplitOptPage);
 
     }
 
@@ -132,8 +538,40 @@ partial class MainForm
     private Button RootSelectBtn;
     private TextBox RootPathTxtBox;
     private SplitContainer SplitContainer0;
-    private TabControl TabControl0;
-    private TabPage TabPage0;
-    private TabPage TabPage1;
-    private TabPage TabPage2;
+    private TabControl ViewTab;
+    private TabPage PosPage;
+    private TabPage ImgPage;
+    private TabPage SplitPage;
+    private TabControl MenuTab;
+    private TabPage FilePage;
+    private TabPage LabelPage;
+    private TabPage MaskPage;
+    private GroupBox LabelGrpBox;
+    private Label LabelNameLbl;
+    private TextBox LabelNameTxtBox;
+    private Label LabelColorLbl;
+    private TextBox LabelColorTxtBox;
+    private Button LabelColorBtn;
+    private Label LabelWidthLbl;
+    private TextBox LabelWifdthTxtBox;
+    private Button LabelEntBtn;
+    private Button LabelModBtn;
+    private Button LabelDelBtn;
+    private ListBox LabelLstBox;
+    private PictureBox PicBox1;
+    private GroupBox MaskGrpBox;
+    private Button MaskEntBtn;
+    private Button MaskModBtn;
+    private Button MaskDelBtn;
+    private Label MaskNameLbl;
+    private Label MaskColorLbl;
+    private Label MaskWidthLbl;
+    private TextBox MaskNameTxtBox;
+    private TextBox MaskColorTxtBox;
+    private TextBox MaskWidthTxtBox;
+    private Button MaskColorBtn;
+    private ListBox MaskLstBox;
+    private PictureBox PicBox2;
+    private PictureBox PicBox3;
+    private TabPage SplitOptPage;
 }
