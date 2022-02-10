@@ -33,11 +33,10 @@ partial class MainForm
         //
         this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        this.Location = new System.Drawing.Point(498,316);
-        this.Size = new System.Drawing.Size(1182,795);
+        this.Location = new System.Drawing.Point(521,352);
+        this.ClientSize = new System.Drawing.Size(1100,628);
         this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
         this.Text =  "IMG_Gen2";
-        this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
         this.Name =  "Form1";
 
         //
@@ -63,7 +62,7 @@ partial class MainForm
         this.RootPathTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.RootPathTxtBox.Location = new System.Drawing.Point(152,20);
         this.RootPathTxtBox.Name =  "RootPathTxtBox";
-        this.RootPathTxtBox.Size = new System.Drawing.Size(984,27);
+        this.RootPathTxtBox.Size = new System.Drawing.Size(928,27);
         this.RootPathTxtBox.TabIndex = 1;
         this.Controls.Add(this.RootPathTxtBox);
 
@@ -71,14 +70,15 @@ partial class MainForm
         // SplitContainer0
         //
         this.SplitContainer0 = new System.Windows.Forms.SplitContainer();
+        this.SplitContainer0.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
         this.SplitContainer0.Text =  "SplitContainer0";
         this.SplitContainer0.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.SplitContainer0.BackColor = System.Drawing.Color.WhiteSmoke;
-        this.SplitContainer0.Location = new System.Drawing.Point(8,72);
+        this.SplitContainer0.Location = new System.Drawing.Point(16,64);
         this.SplitContainer0.Name =  "SplitContainer0";
-        this.SplitContainer0.Size = new System.Drawing.Size(1136,664);
+        this.SplitContainer0.Size = new System.Drawing.Size(1074,548);
         this.SplitContainer0.TabIndex = 2;
-        this.SplitContainer0.SplitterDistance = 209;
+        this.SplitContainer0.SplitterDistance = 202;
         this.Controls.Add(this.SplitContainer0);
 
         //
@@ -89,7 +89,7 @@ partial class MainForm
         this.TabControl0.Text =  "TabControl0";
         this.TabControl0.Dock = System.Windows.Forms.DockStyle.Fill;
         this.TabControl0.Name =  "TabControl0";
-        this.TabControl0.Size = new System.Drawing.Size(921,662);
+        this.TabControl0.Size = new System.Drawing.Size(866,546);
         this.TabControl0.TabIndex = 4;
         this.SplitContainer0.Panel2.Controls.Add(this.TabControl0);
 
@@ -101,7 +101,7 @@ partial class MainForm
         this.TabPage0.TabIndex = 5;
         this.TabPage0.Text =  "座標編集";
         this.TabPage0.Name =  "TabPage0";
-        this.TabPage0.Size = new System.Drawing.Size(913,629);
+        this.TabPage0.Size = new System.Drawing.Size(858,513);
         this.TabControl0.Controls.Add(this.TabPage0);
 
         //
@@ -112,7 +112,7 @@ partial class MainForm
         this.TabPage1.TabIndex = 6;
         this.TabPage1.Text =  "画像処理";
         this.TabPage1.Name =  "TabPage1";
-        this.TabPage1.Size = new System.Drawing.Size(913,629);
+        this.TabPage1.Size = new System.Drawing.Size(858,513);
         this.TabControl0.Controls.Add(this.TabPage1);
 
         //
@@ -123,7 +123,7 @@ partial class MainForm
         this.TabPage2.TabIndex = 7;
         this.TabPage2.Text =  "画像分割";
         this.TabPage2.Name =  "TabPage2";
-        this.TabPage2.Size = new System.Drawing.Size(913,629);
+        this.TabPage2.Size = new System.Drawing.Size(858,513);
         this.TabControl0.Controls.Add(this.TabPage2);
 
     }
