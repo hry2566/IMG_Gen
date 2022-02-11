@@ -60,11 +60,11 @@ partial class MainForm
         this.RootPathTxtBox.Text =  "TextBox0";
         this.RootPathTxtBox.BackColor = System.Drawing.SystemColors.ButtonHighlight;
         this.RootPathTxtBox.ReadOnly =  true;
-        this.RootPathTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.RootPathTxtBox.Location = new System.Drawing.Point(152,20);
         this.RootPathTxtBox.Name =  "RootPathTxtBox";
         this.RootPathTxtBox.Size = new System.Drawing.Size(628,27);
         this.RootPathTxtBox.TabIndex = 1;
+        this.RootPathTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.Controls.Add(this.RootPathTxtBox);
 
         //
@@ -73,13 +73,13 @@ partial class MainForm
         this.SplitContainer0 = new System.Windows.Forms.SplitContainer();
         this.SplitContainer0.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
         this.SplitContainer0.Text =  "SplitContainer0";
-        this.SplitContainer0.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.SplitContainer0.BackColor = System.Drawing.Color.Silver;
         this.SplitContainer0.Location = new System.Drawing.Point(16,64);
         this.SplitContainer0.Name =  "SplitContainer0";
         this.SplitContainer0.Size = new System.Drawing.Size(774,544);
         this.SplitContainer0.TabIndex = 2;
         this.SplitContainer0.SplitterDistance = 263;
+        this.SplitContainer0.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.Controls.Add(this.SplitContainer0);
 
         //
@@ -184,12 +184,12 @@ partial class MainForm
         //
         this.LabelGrpBox = new System.Windows.Forms.GroupBox();
         this.LabelGrpBox.Text =  "ラベル設定";
-        this.LabelGrpBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.LabelGrpBox.BackColor = System.Drawing.SystemColors.ActiveCaption;
         this.LabelGrpBox.Location = new System.Drawing.Point(0,334);
         this.LabelGrpBox.Name =  "LabelGrpBox";
         this.LabelGrpBox.Size = new System.Drawing.Size(245,168);
         this.LabelGrpBox.TabIndex = 23;
+        this.LabelGrpBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.LabelPage.Controls.Add(this.LabelGrpBox);
 
         //
@@ -210,11 +210,11 @@ partial class MainForm
         //
         this.LabelNameTxtBox = new System.Windows.Forms.TextBox();
         this.LabelNameTxtBox.Text =  "TextBox1";
-        this.LabelNameTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.LabelNameTxtBox.Location = new System.Drawing.Point(72,64);
         this.LabelNameTxtBox.Name =  "LabelNameTxtBox";
         this.LabelNameTxtBox.Size = new System.Drawing.Size(165,27);
         this.LabelNameTxtBox.TabIndex = 12;
+        this.LabelNameTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.LabelGrpBox.Controls.Add(this.LabelNameTxtBox);
 
         //
@@ -235,11 +235,11 @@ partial class MainForm
         //
         this.LabelColorTxtBox = new System.Windows.Forms.TextBox();
         this.LabelColorTxtBox.Text =  "TextBox2";
-        this.LabelColorTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.LabelColorTxtBox.Location = new System.Drawing.Point(72,96);
         this.LabelColorTxtBox.Name =  "LabelColorTxtBox";
         this.LabelColorTxtBox.Size = new System.Drawing.Size(121,27);
         this.LabelColorTxtBox.TabIndex = 14;
+        this.LabelColorTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.LabelGrpBox.Controls.Add(this.LabelColorTxtBox);
 
         //
@@ -248,11 +248,11 @@ partial class MainForm
         this.LabelColorBtn = new System.Windows.Forms.Button();
         this.LabelColorBtn.BackColor = System.Drawing.SystemColors.ActiveCaption;
         this.LabelColorBtn.Text =  "色";
-        this.LabelColorBtn.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
-        this.LabelColorBtn.Location = new System.Drawing.Point(0,96);
+        this.LabelColorBtn.Location = new System.Drawing.Point(200,96);
         this.LabelColorBtn.Name =  "LabelColorBtn";
         this.LabelColorBtn.Size = new System.Drawing.Size(40,32);
         this.LabelColorBtn.TabIndex = 15;
+        this.LabelColorBtn.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
         this.LabelGrpBox.Controls.Add(this.LabelColorBtn);
 
         //
@@ -273,11 +273,11 @@ partial class MainForm
         //
         this.LabelWidthTxtBox = new System.Windows.Forms.TextBox();
         this.LabelWidthTxtBox.Text =  "TextBox3";
-        this.LabelWidthTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.LabelWidthTxtBox.Location = new System.Drawing.Point(72,128);
         this.LabelWidthTxtBox.Name =  "LabelWidthTxtBox";
         this.LabelWidthTxtBox.Size = new System.Drawing.Size(165,27);
         this.LabelWidthTxtBox.TabIndex = 17;
+        this.LabelWidthTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.LabelGrpBox.Controls.Add(this.LabelWidthTxtBox);
 
         //
@@ -322,11 +322,11 @@ partial class MainForm
         this.LabelLstBox = new System.Windows.Forms.ListBox();
         this.LabelLstBox.ItemHeight = 20;
         this.LabelLstBox.Text =  "ListBox0";
-        this.LabelLstBox.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.LabelLstBox.Location = new System.Drawing.Point(8,8);
         this.LabelLstBox.Name =  "LabelLstBox";
         this.LabelLstBox.Size = new System.Drawing.Size(237,304);
         this.LabelLstBox.TabIndex = 21;
+        this.LabelLstBox.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.LabelPage.Controls.Add(this.LabelLstBox);
 
         //
@@ -348,12 +348,12 @@ partial class MainForm
         //
         this.MaskGrpBox = new System.Windows.Forms.GroupBox();
         this.MaskGrpBox.Text =  "マスク設定";
-        this.MaskGrpBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.MaskGrpBox.BackColor = System.Drawing.SystemColors.ActiveCaption;
         this.MaskGrpBox.Location = new System.Drawing.Point(0,334);
         this.MaskGrpBox.Name =  "MaskGrpBox";
         this.MaskGrpBox.Size = new System.Drawing.Size(245,168);
         this.MaskGrpBox.TabIndex = 24;
+        this.MaskGrpBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.MaskPage.Controls.Add(this.MaskGrpBox);
 
         //
@@ -437,11 +437,11 @@ partial class MainForm
         this.MaskNameTxtBox = new System.Windows.Forms.TextBox();
         this.MaskNameTxtBox.Text =  "TextBox4";
         this.MaskNameTxtBox.Modified =  true;
-        this.MaskNameTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.MaskNameTxtBox.Location = new System.Drawing.Point(72,64);
         this.MaskNameTxtBox.Name =  "MaskNameTxtBox";
         this.MaskNameTxtBox.Size = new System.Drawing.Size(165,27);
         this.MaskNameTxtBox.TabIndex = 31;
+        this.MaskNameTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.MaskGrpBox.Controls.Add(this.MaskNameTxtBox);
 
         //
@@ -449,11 +449,11 @@ partial class MainForm
         //
         this.MaskColorTxtBox = new System.Windows.Forms.TextBox();
         this.MaskColorTxtBox.Text =  "TextBox5";
-        this.MaskColorTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.MaskColorTxtBox.Location = new System.Drawing.Point(72,96);
         this.MaskColorTxtBox.Name =  "MaskColorTxtBox";
         this.MaskColorTxtBox.Size = new System.Drawing.Size(121,27);
         this.MaskColorTxtBox.TabIndex = 32;
+        this.MaskColorTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.MaskGrpBox.Controls.Add(this.MaskColorTxtBox);
 
         //
@@ -461,25 +461,12 @@ partial class MainForm
         //
         this.MaskWidthTxtBox = new System.Windows.Forms.TextBox();
         this.MaskWidthTxtBox.Text =  "TextBox6";
-        this.MaskWidthTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.MaskWidthTxtBox.Location = new System.Drawing.Point(72,128);
         this.MaskWidthTxtBox.Name =  "MaskWidthTxtBox";
         this.MaskWidthTxtBox.Size = new System.Drawing.Size(165,27);
         this.MaskWidthTxtBox.TabIndex = 33;
+        this.MaskWidthTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.MaskGrpBox.Controls.Add(this.MaskWidthTxtBox);
-
-        //
-        // MaskColorBtn
-        //
-        this.MaskColorBtn = new System.Windows.Forms.Button();
-        this.MaskColorBtn.BackColor = System.Drawing.SystemColors.ActiveCaption;
-        this.MaskColorBtn.Text =  "色";
-        this.MaskColorBtn.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
-        this.MaskColorBtn.Location = new System.Drawing.Point(0,96);
-        this.MaskColorBtn.Name =  "MaskColorBtn";
-        this.MaskColorBtn.Size = new System.Drawing.Size(40,32);
-        this.MaskColorBtn.TabIndex = 34;
-        this.MaskGrpBox.Controls.Add(this.MaskColorBtn);
 
         //
         // MaskLstBox
@@ -487,11 +474,11 @@ partial class MainForm
         this.MaskLstBox = new System.Windows.Forms.ListBox();
         this.MaskLstBox.ItemHeight = 20;
         this.MaskLstBox.Text =  "ListBox";
-        this.MaskLstBox.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.MaskLstBox.Location = new System.Drawing.Point(8,8);
         this.MaskLstBox.Name =  "MaskLstBox";
         this.MaskLstBox.Size = new System.Drawing.Size(237,304);
         this.MaskLstBox.TabIndex = 35;
+        this.MaskLstBox.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.MaskPage.Controls.Add(this.MaskLstBox);
 
         //
@@ -530,6 +517,19 @@ partial class MainForm
         this.SplitOptPage.Size = new System.Drawing.Size(253,509);
         this.MenuTab.Controls.Add(this.SplitOptPage);
 
+        //
+        // MaskColorBtn
+        //
+        this.MaskColorBtn = new System.Windows.Forms.Button();
+        this.MaskColorBtn.BackColor = System.Drawing.SystemColors.ActiveCaption;
+        this.MaskColorBtn.Text =  "色";
+        this.MaskColorBtn.Location = new System.Drawing.Point(200,96);
+        this.MaskColorBtn.Name =  "MaskColorBtn";
+        this.MaskColorBtn.Size = new System.Drawing.Size(40,32);
+        this.MaskColorBtn.TabIndex = 39;
+        this.MaskColorBtn.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
+        this.MaskGrpBox.Controls.Add(this.MaskColorBtn);
+
     }
 
     #endregion
@@ -567,9 +567,9 @@ partial class MainForm
     private TextBox MaskNameTxtBox;
     private TextBox MaskColorTxtBox;
     private TextBox MaskWidthTxtBox;
-    private Button MaskColorBtn;
     private ListBox MaskLstBox;
     private PictureBox PicBox2;
     private PictureBox PicBox3;
     private TabPage SplitOptPage;
+    private Button MaskColorBtn;
 }
