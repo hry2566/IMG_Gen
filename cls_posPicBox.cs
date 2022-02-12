@@ -4,16 +4,20 @@ namespace IMG_Gen2;
 public partial class cls_posPicBox : PictureBox
 {
     private TabPage? PosPage;
+    private ToolStripStatusLabel? sLabel;
     private Bitmap? bmp;                                // 表示するBitmap
     private Graphics? g;                                // 描画用Graphicsオブジェクト
     private System.Drawing.Drawing2D.Matrix? mat;       // アフィン変換行列
+    private float baseScale;                                // 表示倍率
     private float scale;                                // 表示倍率
+    private Point pos;                                  // マウス座標
     private bool MouseDownFlg = false;                  // マウスダウンフラグ
-    private Point OldPoint;                             // マウス座標
+    private Point OldPoint;                             // マウス座標記憶
 
-    public cls_posPicBox(TabPage PosPage)
+    public cls_posPicBox(TabPage PosPage, ToolStripStatusLabel sLabel)
     {
         this.PosPage = PosPage;
+        this.sLabel = sLabel;
 
         Controls_EventHandler();
     }
@@ -44,6 +48,14 @@ public partial class cls_posPicBox : PictureBox
     }
     private void Control_MouseMove(object? sender, MouseEventArgs e)
     {
+        if (mat == null) { return; }
+
+        pos.X = (int)((float)(e.X) / scale) - (int)((float)(mat.Elements[4]) / scale);
+        pos.Y = (int)((float)(e.Y) / scale) - (int)((float)(mat.Elements[5]) / scale);
+
+
+        sLabel!.Text = "Scale = " + scale.ToString() + " Pos.X = " + pos.X.ToString() + " Pos.Y = " + pos.Y.ToString();
+
         if (MouseDownFlg == true)
         {
             mat!.Translate(e.X - OldPoint.X, e.Y - OldPoint.Y, System.Drawing.Drawing2D.MatrixOrder.Append);
@@ -55,7 +67,7 @@ public partial class cls_posPicBox : PictureBox
     }
     private void Control_MouseWheel(object? sender, MouseEventArgs e)
     {
-        float minScale = (float)this.Width / (float)bmp!.Width;
+        if (bmp == null) { return; }
 
         mat!.Translate(-e.X, -e.Y, System.Drawing.Drawing2D.MatrixOrder.Append);
 
@@ -68,13 +80,13 @@ public partial class cls_posPicBox : PictureBox
         }
         else
         {
-            if (mat.Elements[0] > minScale)
+            if (mat.Elements[0] > baseScale)
             {
                 mat.Scale(1.0f / 1.5f, 1.0f / 1.5f, System.Drawing.Drawing2D.MatrixOrder.Append);
             }
         }
 
-        if (mat.Elements[0] > minScale)
+        if (mat.Elements[0] > baseScale)
         {
             mat.Translate(e.X, e.Y, System.Drawing.Drawing2D.MatrixOrder.Append);
             DrawImage();
@@ -118,7 +130,8 @@ public partial class cls_posPicBox : PictureBox
         g.DrawImage(bmp, 0, 0);
         this.Refresh();
 
-        scale = GetScale();
+        scale = mat!.Elements[0];
+        sLabel!.Text = "Scale = " + scale.ToString() + " Pos.X = " + pos.X.ToString() + " Pos.Y = " + pos.Y.ToString();
     }
 
     internal void SetImage(string filePath)
@@ -131,32 +144,25 @@ public partial class cls_posPicBox : PictureBox
         mat = new System.Drawing.Drawing2D.Matrix();
 
         ImageReset();
-        // scale = GetScale();
-        // mat.Scale(scale, scale, System.Drawing.Drawing2D.MatrixOrder.Prepend);
-
-        // DrawImage();
     }
-
-    private float GetScale()
+    private void ImageReset()
     {
         float scaleX = (float)this.Width / (float)bmp!.Width;
         float scaleY = (float)this.Height / (float)bmp.Height;
 
         if (scaleX < scaleY)
         {
-            return scaleX;
+            this.baseScale = scaleX;
         }
         else
         {
-            return scaleY;
+            this.baseScale = scaleY;
         }
-    }
 
-    private void ImageReset()
-    {
+        scale = baseScale;
+
         mat!.Reset();
-        scale = GetScale();
-        mat.Scale(scale, scale, System.Drawing.Drawing2D.MatrixOrder.Prepend);
+        mat.Scale(baseScale, baseScale, System.Drawing.Drawing2D.MatrixOrder.Prepend);
         DrawImage();
     }
 }
