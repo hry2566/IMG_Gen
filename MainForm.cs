@@ -4,6 +4,8 @@ public partial class MainForm : Form
 {
     private cls_treeview? FileTreeView;
     private cls_posPicBox? PosPicBox;
+    private ToolStripStatusLabel? sLabel1;
+    private ToolStripStatusLabel? sLabel2;
     public MainForm()
     {
         InitializeComponent();
@@ -13,14 +15,24 @@ public partial class MainForm : Form
 
     private void InitializeUserComponent()
     {
+        //sLabel1
+        this.sLabel1 = new ToolStripStatusLabel();
+        this.sLabel1.Text = "sLabel1";
+        this.StatusStrip1.Items.Add(sLabel1);
+
+        //sLabel2
+        this.sLabel2 = new ToolStripStatusLabel();
+        this.sLabel2.Text = "sLabel2";
+        this.StatusStrip2.Items.Add(sLabel2);
+
         //
         // PicBox1
         //
-        this.PosPicBox = new cls_posPicBox(PosPage);
+        this.PosPicBox = new cls_posPicBox(PosPage, sLabel2!);
         this.PosPicBox.TabIndex = 22;
         this.PosPicBox.Text = "PictureBox0";
         this.PosPicBox.AutoSize = true;
-        this.PosPicBox.BackColor = System.Drawing.Color.White;
+        this.PosPicBox.BackColor = System.Drawing.Color.Silver;
         this.PosPicBox.Name = "PicBox1";
         this.PosPicBox.Dock = System.Windows.Forms.DockStyle.Fill;
         this.PosPage.Controls.Add(this.PosPicBox);
@@ -42,6 +54,7 @@ public partial class MainForm : Form
     private void Controls_EventHandler()
     {
         RootSelectBtn.Click += new EventHandler(RootSelectBtn_Click);
+
     }
 
     private void RootSelectBtn_Click(Object? sender, EventArgs? e)
