@@ -24,11 +24,14 @@ public partial class cls_posPicBox : PictureBox
 
     private void Controls_EventHandler()
     {
-        PosPage!.Resize += new EventHandler(Control_ReSize);
+        //this
         this.MouseWheel += new System.Windows.Forms.MouseEventHandler(Control_MouseWheel);
         this.MouseDown += new MouseEventHandler(Control_MouseDown);
         this.MouseUp += new MouseEventHandler(Control_MouseUp);
         this.MouseMove += new MouseEventHandler(Control_MouseMove);
+
+        //PosPage
+        PosPage!.Resize += new EventHandler(Control_ReSize);
     }
 
     private void Control_MouseDown(object? sender, MouseEventArgs e)
