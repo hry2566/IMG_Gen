@@ -38,6 +38,7 @@ partial class MainForm
         this.ClientSize = new System.Drawing.Size(804,628);
         this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
         this.Text =  "IMG_Gen";
+        this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
         this.Name =  "Form1";
 
         //
@@ -76,7 +77,7 @@ partial class MainForm
         this.SplitContainer0.BackColor = System.Drawing.Color.Silver;
         this.SplitContainer0.Location = new System.Drawing.Point(16,64);
         this.SplitContainer0.Name =  "SplitContainer0";
-        this.SplitContainer0.Size = new System.Drawing.Size(774,544);
+        this.SplitContainer0.Size = new System.Drawing.Size(774,536);
         this.SplitContainer0.TabIndex = 2;
         this.SplitContainer0.SplitterDistance = 263;
         this.SplitContainer0.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
@@ -90,7 +91,7 @@ partial class MainForm
         this.ViewTab.Text =  "TabControl0";
         this.ViewTab.Dock = System.Windows.Forms.DockStyle.Fill;
         this.ViewTab.Name =  "ViewTab";
-        this.ViewTab.Size = new System.Drawing.Size(505,542);
+        this.ViewTab.Size = new System.Drawing.Size(505,534);
         this.ViewTab.TabIndex = 4;
         this.SplitContainer0.Panel2.Controls.Add(this.ViewTab);
 
@@ -102,9 +103,8 @@ partial class MainForm
         this.PosPage.Location = new System.Drawing.Point(4,29);
         this.PosPage.TabIndex = 5;
         this.PosPage.Text =  "座標";
-        this.PosPage.AutoScroll =  true;
         this.PosPage.Name =  "PosPage";
-        this.PosPage.Size = new System.Drawing.Size(497,509);
+        this.PosPage.Size = new System.Drawing.Size(497,501);
         this.ViewTab.Controls.Add(this.PosPage);
 
         //
@@ -116,7 +116,7 @@ partial class MainForm
         this.ImgPage.TabIndex = 6;
         this.ImgPage.Text =  "画像処理";
         this.ImgPage.Name =  "ImgPage";
-        this.ImgPage.Size = new System.Drawing.Size(497,509);
+        this.ImgPage.Size = new System.Drawing.Size(497,501);
         this.ViewTab.Controls.Add(this.ImgPage);
 
         //
@@ -128,7 +128,7 @@ partial class MainForm
         this.SplitPage.TabIndex = 7;
         this.SplitPage.Text =  "分割";
         this.SplitPage.Name =  "SplitPage";
-        this.SplitPage.Size = new System.Drawing.Size(497,509);
+        this.SplitPage.Size = new System.Drawing.Size(497,501);
         this.ViewTab.Controls.Add(this.SplitPage);
 
         //
@@ -139,7 +139,7 @@ partial class MainForm
         this.MenuTab.Text =  "TabControl1";
         this.MenuTab.Dock = System.Windows.Forms.DockStyle.Fill;
         this.MenuTab.Name =  "MenuTab";
-        this.MenuTab.Size = new System.Drawing.Size(261,542);
+        this.MenuTab.Size = new System.Drawing.Size(261,534);
         this.MenuTab.TabIndex = 7;
         this.SplitContainer0.Panel1.Controls.Add(this.MenuTab);
 
@@ -152,7 +152,7 @@ partial class MainForm
         this.FilePage.TabIndex = 8;
         this.FilePage.Text =  "ファイル";
         this.FilePage.Name =  "FilePage";
-        this.FilePage.Size = new System.Drawing.Size(253,509);
+        this.FilePage.Size = new System.Drawing.Size(253,501);
         this.MenuTab.Controls.Add(this.FilePage);
 
         //
@@ -164,7 +164,7 @@ partial class MainForm
         this.LabelPage.TabIndex = 9;
         this.LabelPage.Text =  "ラベル";
         this.LabelPage.Name =  "LabelPage";
-        this.LabelPage.Size = new System.Drawing.Size(253,509);
+        this.LabelPage.Size = new System.Drawing.Size(253,501);
         this.MenuTab.Controls.Add(this.LabelPage);
 
         //
@@ -176,7 +176,7 @@ partial class MainForm
         this.MaskPage.TabIndex = 10;
         this.MaskPage.Text =  "マスク";
         this.MaskPage.Name =  "MaskPage";
-        this.MaskPage.Size = new System.Drawing.Size(253,509);
+        this.MaskPage.Size = new System.Drawing.Size(253,501);
         this.MenuTab.Controls.Add(this.MaskPage);
 
         //
@@ -328,20 +328,6 @@ partial class MainForm
         this.LabelLstBox.TabIndex = 21;
         this.LabelLstBox.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.LabelPage.Controls.Add(this.LabelLstBox);
-
-        //
-        // PicBox1
-        //
-        this.PicBox1 = new System.Windows.Forms.PictureBox();
-        this.PicBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-        this.PicBox1.TabIndex = 22;
-        this.PicBox1.Text =  "PictureBox0";
-        this.PicBox1.AutoSize =  true;
-        this.PicBox1.BackColor = System.Drawing.Color.White;
-        this.PicBox1.Location = new System.Drawing.Point(16,16);
-        this.PicBox1.Name =  "PicBox1";
-        this.PicBox1.Size = new System.Drawing.Size(320,240);
-        this.PosPage.Controls.Add(this.PicBox1);
 
         //
         // MaskGrpBox
@@ -514,7 +500,7 @@ partial class MainForm
         this.SplitOptPage.TabIndex = 38;
         this.SplitOptPage.Text =  "分割";
         this.SplitOptPage.Name =  "SplitOptPage";
-        this.SplitOptPage.Size = new System.Drawing.Size(253,509);
+        this.SplitOptPage.Size = new System.Drawing.Size(253,501);
         this.MenuTab.Controls.Add(this.SplitOptPage);
 
         //
@@ -529,6 +515,30 @@ partial class MainForm
         this.MaskColorBtn.TabIndex = 39;
         this.MaskColorBtn.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
         this.MaskGrpBox.Controls.Add(this.MaskColorBtn);
+
+        //
+        // StatusStrip1
+        //
+        this.StatusStrip1 = new System.Windows.Forms.StatusStrip();
+        this.StatusStrip1.BackColor = System.Drawing.Color.Silver;
+        this.StatusStrip1.Location = new System.Drawing.Point(0,606);
+        this.StatusStrip1.Name =  "StatusStrip1";
+        this.StatusStrip1.Size = new System.Drawing.Size(804,22);
+        this.StatusStrip1.TabIndex = 39;
+        this.StatusStrip1.Text =  "StatusStrip1";
+        this.Controls.Add(this.StatusStrip1);
+
+        //
+        // StatusStrip2
+        //
+        this.StatusStrip2 = new System.Windows.Forms.StatusStrip();
+        this.StatusStrip2.BackColor = System.Drawing.Color.Silver;
+        this.StatusStrip2.Location = new System.Drawing.Point(0,479);
+        this.StatusStrip2.Name =  "StatusStrip2";
+        this.StatusStrip2.Size = new System.Drawing.Size(497,22);
+        this.StatusStrip2.TabIndex = 40;
+        this.StatusStrip2.Text =  "StatusStrip2";
+        this.PosPage.Controls.Add(this.StatusStrip2);
 
     }
 
@@ -556,7 +566,6 @@ partial class MainForm
     private Button LabelModBtn;
     private Button LabelDelBtn;
     private ListBox LabelLstBox;
-    private PictureBox PicBox1;
     private GroupBox MaskGrpBox;
     private Button MaskEntBtn;
     private Button MaskModBtn;
@@ -572,4 +581,6 @@ partial class MainForm
     private PictureBox PicBox3;
     private TabPage SplitOptPage;
     private Button MaskColorBtn;
+    private StatusStrip StatusStrip1;
+    private StatusStrip StatusStrip2;
 }
