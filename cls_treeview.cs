@@ -2,39 +2,34 @@ namespace IMG_Gen2;
 
 public partial class cls_treeview : TreeView
 {
-    PictureBox picBox1;
+    private cls_posPicBox picBox1;
+    private TabPage PosPage;
     private string? folderPath;              // ルートフォルダパス
     private cls_treenode[] treeNode = new cls_treenode[0];
 
-    public cls_treeview(PictureBox picBox1)
+    public cls_treeview(cls_posPicBox picBox1, TabPage PosPage)
     {
         this.picBox1 = picBox1;
+        this.PosPage = PosPage;
         this.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(SelectChange);
     }
 
     private void SelectChange(Object? sender, TreeViewEventArgs e)
     {
-        // Console.WriteLine(e.Node.Parent.Text);
         if (e.Node!.Text.IndexOf(".") > -1)
         {
-            string filepath;
+            string filePath;
 
             if (e.Node.Parent != null)
             {
-                filepath = folderPath + e.Node.Parent.Text + "\\" + e.Node.Text;
+                filePath = folderPath + e.Node.Parent.Text + "\\" + e.Node.Text;
             }
             else
             {
-                filepath = folderPath + e.Node.Text;
+                filePath = folderPath + e.Node.Text;
             }
 
-            Image img = new Bitmap(filepath);
-
-            // picBox1.ImageLocation = filepath;
-            picBox1.Image = img;
-            // Console.WriteLine(filepath);
-
-
+            picBox1.SetImage(filePath);
         }
     }
 
