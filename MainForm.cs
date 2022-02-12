@@ -49,14 +49,62 @@ public partial class MainForm : Form
         this.FileTreeView.Size = new System.Drawing.Size(207, 662);
         this.FileTreeView.TabIndex = 23;
         this.FilePage.Controls.Add(this.FileTreeView);
+
+        //
+        // LabelLstView
+        //
+        this.LabelLstView.View = View.Details;
+        ColumnHeader[] column = new ColumnHeader[3];
+        for (int i = 0; i < column.Count(); i++)
+        {
+            column[i] = new();
+        }
+        column[0].Text = "ラベル";
+        column[1].Text = "線色";
+        column[2].Text = "線幅";
+        this.LabelLstView.Columns.AddRange(column);
     }
 
     private void Controls_EventHandler()
     {
+        //
+        // RootSelectBtn
+        //
         RootSelectBtn.Click += new EventHandler(RootSelectBtn_Click);
+
+        //
+        // LabelColorBtn
+        //
+        LabelColorBtn.Click += new EventHandler(LabelColorBtn_Click);
 
     }
 
+    private void LabelColorBtn_Click(Object? sender, EventArgs? e)
+    {
+        //ColorDialogクラスのインスタンスを作成
+        ColorDialog cd = new ColorDialog();
+
+        //はじめに選択されている色を設定
+        // cd.Color = TextBox1.BackColor;
+        //色の作成部分を表示可能にする
+        //デフォルトがTrueのため必要はない
+        cd.AllowFullOpen = true;
+        //純色だけに制限しない
+        //デフォルトがFalseのため必要はない
+        cd.SolidColorOnly = false;
+        //[作成した色]に指定した色（RGB値）を表示する
+        cd.CustomColors = new int[] {
+                                    0x33, 0x66, 0x99, 0xCC, 0x3300, 0x3333,
+                                    0x3366, 0x3399, 0x33CC, 0x6600, 0x6633,
+                                    0x6666, 0x6699, 0x66CC, 0x9900, 0x9933};
+
+        //ダイアログを表示する
+        if (cd.ShowDialog() == DialogResult.OK)
+        {
+            //選択された色の取得
+            LabelColorTxtBox.Text = cd.Color.ToString();
+        }
+    }
     private void RootSelectBtn_Click(Object? sender, EventArgs? e)
     {
         FileTreeView!.Node_Clear();
