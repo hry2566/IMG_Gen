@@ -34,8 +34,8 @@ partial class MainForm
         this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         this.BackColor = System.Drawing.Color.Silver;
-        this.Location = new System.Drawing.Point(669,352);
-        this.ClientSize = new System.Drawing.Size(804,628);
+        this.Location = new System.Drawing.Point(-9,-9);
+        this.ClientSize = new System.Drawing.Size(812,628);
         this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
         this.Text =  "IMG_Gen";
         this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -63,7 +63,7 @@ partial class MainForm
         this.RootPathTxtBox.ReadOnly =  true;
         this.RootPathTxtBox.Location = new System.Drawing.Point(152,20);
         this.RootPathTxtBox.Name =  "RootPathTxtBox";
-        this.RootPathTxtBox.Size = new System.Drawing.Size(628,27);
+        this.RootPathTxtBox.Size = new System.Drawing.Size(640,27);
         this.RootPathTxtBox.TabIndex = 1;
         this.RootPathTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.Controls.Add(this.RootPathTxtBox);
@@ -75,7 +75,7 @@ partial class MainForm
         this.SplitContainer0.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
         this.SplitContainer0.Text =  "SplitContainer0";
         this.SplitContainer0.BackColor = System.Drawing.Color.Silver;
-        this.SplitContainer0.Location = new System.Drawing.Point(16,64);
+        this.SplitContainer0.Location = new System.Drawing.Point(19,63);
         this.SplitContainer0.Name =  "SplitContainer0";
         this.SplitContainer0.Size = new System.Drawing.Size(774,536);
         this.SplitContainer0.TabIndex = 2;
@@ -317,19 +317,6 @@ partial class MainForm
         this.LabelGrpBox.Controls.Add(this.LabelDelBtn);
 
         //
-        // LabelLstBox
-        //
-        this.LabelLstBox = new System.Windows.Forms.ListBox();
-        this.LabelLstBox.ItemHeight = 20;
-        this.LabelLstBox.Text =  "ListBox0";
-        this.LabelLstBox.Location = new System.Drawing.Point(8,8);
-        this.LabelLstBox.Name =  "LabelLstBox";
-        this.LabelLstBox.Size = new System.Drawing.Size(237,304);
-        this.LabelLstBox.TabIndex = 21;
-        this.LabelLstBox.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
-        this.LabelPage.Controls.Add(this.LabelLstBox);
-
-        //
         // MaskGrpBox
         //
         this.MaskGrpBox = new System.Windows.Forms.GroupBox();
@@ -521,9 +508,9 @@ partial class MainForm
         //
         this.StatusStrip1 = new System.Windows.Forms.StatusStrip();
         this.StatusStrip1.BackColor = System.Drawing.Color.Silver;
-        this.StatusStrip1.Location = new System.Drawing.Point(0,606);
+        this.StatusStrip1.Location = new System.Drawing.Point(0,604);
         this.StatusStrip1.Name =  "StatusStrip1";
-        this.StatusStrip1.Size = new System.Drawing.Size(804,22);
+        this.StatusStrip1.Size = new System.Drawing.Size(810,22);
         this.StatusStrip1.TabIndex = 39;
         this.StatusStrip1.Text =  "StatusStrip1";
         this.Controls.Add(this.StatusStrip1);
@@ -539,6 +526,19 @@ partial class MainForm
         this.StatusStrip2.TabIndex = 40;
         this.StatusStrip2.Text =  "StatusStrip2";
         this.PosPage.Controls.Add(this.StatusStrip2);
+
+        //
+        // LabelLstView
+        //
+        this.LabelLstView = new System.Windows.Forms.ListView();
+        this.LabelLstView.MultiSelect =  false;
+        this.LabelLstView.Text =  "ListView0";
+        this.LabelLstView.Location = new System.Drawing.Point(8,8);
+        this.LabelLstView.Name =  "LabelLstView";
+        this.LabelLstView.Size = new System.Drawing.Size(240,320);
+        this.LabelLstView.TabIndex = 41;
+        this.LabelLstView.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
+        this.LabelPage.Controls.Add(this.LabelLstView);
 
     }
 
@@ -565,7 +565,6 @@ partial class MainForm
     private Button LabelEntBtn;
     private Button LabelModBtn;
     private Button LabelDelBtn;
-    private ListBox LabelLstBox;
     private GroupBox MaskGrpBox;
     private Button MaskEntBtn;
     private Button MaskModBtn;
@@ -583,4 +582,5 @@ partial class MainForm
     private Button MaskColorBtn;
     private StatusStrip StatusStrip1;
     private StatusStrip StatusStrip2;
+    private ListView LabelLstView;
 }
