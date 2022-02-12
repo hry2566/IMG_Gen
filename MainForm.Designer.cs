@@ -508,9 +508,9 @@ partial class MainForm
         //
         this.StatusStrip1 = new System.Windows.Forms.StatusStrip();
         this.StatusStrip1.BackColor = System.Drawing.Color.Silver;
-        this.StatusStrip1.Location = new System.Drawing.Point(0,604);
+        this.StatusStrip1.Location = new System.Drawing.Point(0,606);
         this.StatusStrip1.Name =  "StatusStrip1";
-        this.StatusStrip1.Size = new System.Drawing.Size(810,22);
+        this.StatusStrip1.Size = new System.Drawing.Size(812,22);
         this.StatusStrip1.TabIndex = 39;
         this.StatusStrip1.Text =  "StatusStrip1";
         this.Controls.Add(this.StatusStrip1);
@@ -533,6 +533,7 @@ partial class MainForm
         this.LabelLstView = new System.Windows.Forms.ListView();
         this.LabelLstView.MultiSelect =  false;
         this.LabelLstView.Text =  "ListView0";
+        this.LabelLstView.View = System.Windows.Forms.View.Details;
         this.LabelLstView.Location = new System.Drawing.Point(8,8);
         this.LabelLstView.Name =  "LabelLstView";
         this.LabelLstView.Size = new System.Drawing.Size(240,320);
