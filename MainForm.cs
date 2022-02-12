@@ -53,16 +53,28 @@ public partial class MainForm : Form
         //
         // LabelLstView
         //
-        this.LabelLstView.View = View.Details;
+        LabelLstView.FullRowSelect = true;
+
         ColumnHeader[] column = new ColumnHeader[3];
         for (int i = 0; i < column.Count(); i++)
         {
             column[i] = new();
         }
+        // column[0].Width = -2;
+        // column[1].Width = -2;
+        // column[2].Width = -2;
         column[0].Text = "ラベル";
         column[1].Text = "線色";
         column[2].Text = "線幅";
         this.LabelLstView.Columns.AddRange(column);
+
+        ListViewItem item;
+
+        item = LabelLstView.Items.Add("NG");
+        item.SubItems.Add("Color [Red]");
+        item.SubItems.Add("1");
+        item.UseItemStyleForSubItems = false;
+        item.SubItems[1].BackColor = Color.Red;
     }
 
     private void Controls_EventHandler()
@@ -77,8 +89,24 @@ public partial class MainForm : Form
         //
         LabelColorBtn.Click += new EventHandler(LabelColorBtn_Click);
 
+        //
+        // LabelEntBtn
+        //
+        LabelEntBtn.Click += new EventHandler(LabelEntBtn_Click);
+
     }
 
+    private void LabelEntBtn_Click(Object? sender, EventArgs? e)
+    {
+        ListViewItem item;
+        item = LabelLstView.Items.Add(LabelNameTxtBox.Text);
+        item.SubItems.Add(LabelColorTxtBox.Text);
+        item.SubItems.Add(LabelWidthTxtBox.Text);
+        item.UseItemStyleForSubItems = false;
+        item.SubItems[1].BackColor = Color.Blue;
+
+        LabelLstView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+    }
     private void LabelColorBtn_Click(Object? sender, EventArgs? e)
     {
         //ColorDialogクラスのインスタンスを作成
@@ -93,10 +121,10 @@ public partial class MainForm : Form
         //デフォルトがFalseのため必要はない
         cd.SolidColorOnly = false;
         //[作成した色]に指定した色（RGB値）を表示する
-        cd.CustomColors = new int[] {
-                                    0x33, 0x66, 0x99, 0xCC, 0x3300, 0x3333,
-                                    0x3366, 0x3399, 0x33CC, 0x6600, 0x6633,
-                                    0x6666, 0x6699, 0x66CC, 0x9900, 0x9933};
+        // cd.CustomColors = new int[] {
+        //                             0x33, 0x66, 0x99, 0xCC, 0x3300, 0x3333,
+        //                             0x3366, 0x3399, 0x33CC, 0x6600, 0x6633,
+        //                             0x6666, 0x6699, 0x66CC, 0x9900, 0x9933};
 
         //ダイアログを表示する
         if (cd.ShowDialog() == DialogResult.OK)
