@@ -12,6 +12,7 @@ public partial class cls_posPicBox : PictureBox
     private float scale;                                // 表示倍率
     private Point pos;                                  // マウス座標
     private bool MouseDownFlg = false;                  // マウスダウンフラグ
+    private bool labelFlag = false;
     private Point OldPoint;                             // マウス座標記憶
 
     public cls_posPicBox(TabPage PosPage, ToolStripStatusLabel sLabel)
@@ -36,36 +37,94 @@ public partial class cls_posPicBox : PictureBox
 
     private void Control_MouseDown(object? sender, MouseEventArgs e)
     {
+        if (mat == null) { return; }
+
+        OldPoint.X = e.X;
+        OldPoint.Y = e.Y;
+
+        if (Control.ModifierKeys == Keys.Control)
+        {
+            labelFlag = true;
+            return;
+        }
+
         if (e.Button == System.Windows.Forms.MouseButtons.Right)
         {
             ImageReset();
             return;
         }
-        OldPoint.X = e.X;
-        OldPoint.Y = e.Y;
+
         MouseDownFlg = true;
     }
     private void Control_MouseUp(object? sender, MouseEventArgs e)
     {
         MouseDownFlg = false;
+        labelFlag = false;
     }
     private void Control_MouseMove(object? sender, MouseEventArgs e)
     {
         if (mat == null) { return; }
 
-        pos.X = (int)((float)(e.X) / scale) - (int)((float)(mat.Elements[4]) / scale);
-        pos.Y = (int)((float)(e.Y) / scale) - (int)((float)(mat.Elements[5]) / scale);
-
-
+        // pos.X = (int)((float)(e.X) / scale) - (int)((float)(mat.Elements[4]) / scale);
+        pos.X = (int)((e.X - mat.Elements[4]) / scale);
+        pos.Y = (int)((e.Y - mat.Elements[5]) / scale);
         sLabel!.Text = "Scale = " + scale.ToString() + " Pos.X = " + pos.X.ToString() + " Pos.Y = " + pos.Y.ToString();
 
-        if (MouseDownFlg == true)
+        if (MouseDownFlg)
         {
             mat!.Translate(e.X - OldPoint.X, e.Y - OldPoint.Y, System.Drawing.Drawing2D.MatrixOrder.Append);
             DrawImage();
 
             OldPoint.X = e.X;
             OldPoint.Y = e.Y;
+        }
+        else if (labelFlag)
+        {
+            int movX;       // 画像移動量:X or 四角の幅
+            int movY;       // 画像移動量:Y or 四角の高さ
+
+            // 画像上のマウス座標取得し、画像移動量Ｘ＆Ｙ or 四角の高さ＆幅を算出
+            movX = e.X - OldPoint.X;
+            movY = e.Y - OldPoint.Y;
+
+            Pen p = new Pen(Color.Red, 3 / scale);
+
+            //長方形を描く
+            int x1;
+            int y1;
+            int w1;
+            int h1;
+
+            if (movX > 0)
+            {
+                x1 = (int)((OldPoint.X - mat.Elements[4]) / scale);
+                w1 = (int)((movX + OldPoint.X - mat.Elements[4]) / scale);
+            }
+            else
+            {
+                movX = OldPoint.X - e.X;
+                x1 = (int)((e.X - mat.Elements[4]) / scale);
+                w1 = (int)((movX + e.X - mat.Elements[4]) / scale);
+            }
+
+            if (movY > 0)
+            {
+                y1 = (int)((OldPoint.Y - mat.Elements[5]) / scale);
+                h1 = (int)((movY + OldPoint.Y - mat.Elements[5]) / scale);
+            }
+            else
+            {
+                movY *= -1;
+                y1 = (int)((e.Y - mat.Elements[5]) / scale);
+                h1 = (int)((movY + e.Y - mat.Elements[5]) / scale);
+            }
+
+            g!.DrawRectangle(p, x1, y1, w1 - x1, h1 - y1);
+
+            //リソースを解放する
+            p.Dispose();
+            this.Refresh();
+            g.DrawImage(bmp!, 0, 0);
         }
     }
     private void Control_MouseWheel(object? sender, MouseEventArgs e)
@@ -118,6 +177,7 @@ public partial class cls_posPicBox : PictureBox
         }
 
         g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+        // g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
         DrawImage();
     }
     private void DrawImage()
