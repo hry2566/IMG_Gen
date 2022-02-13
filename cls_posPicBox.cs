@@ -227,7 +227,6 @@ public partial class cls_posPicBox : PictureBox {
         if (!System.IO.File.Exists (rootPath + "pos\\" + GetFileName () + ".txt")) { return; }
 
         StreamReader sr = new (rootPath + "pos\\" + GetFileName () + ".txt");
-        
         while (!sr.EndOfStream) {
             Array.Resize (ref lblRect, lblRect.Count () + 1);
             string? line = sr.ReadLine ();
@@ -244,7 +243,7 @@ public partial class cls_posPicBox : PictureBox {
     }
     private void DrawLabel () {
         for (int i = 0; i < lblRect.Count (); i++) {
-            lblRect[i].DrawLabel (scale, mat);
+            lblRect[i].DrawLabel (scale, mat!);
         }
     }
 
