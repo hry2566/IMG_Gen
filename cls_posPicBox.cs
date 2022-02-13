@@ -274,20 +274,45 @@ public partial class cls_posPicBox : PictureBox
 
         g!.Clear(this.BackColor);
         g.DrawImage(bmp, 0, 0);
-        DrawRectangle();
+        DrawLabel();
         this.Refresh();
 
         scale = mat!.Elements[0];
         sLabel!.Text = "Scale = " + scale.ToString() + " Pos.X = " + pos.X.ToString() + " Pos.Y = " + pos.Y.ToString();
     }
 
-    private void DrawRectangle()
+    private void DrawLabel()
     {
+        if (!System.IO.File.Exists(rootPath + "pos\\" + GetFileName() + ".txt")) { return; }
+
         StreamReader sr = new(rootPath + "pos\\" + GetFileName() + ".txt");
-        string? line = sr.ReadLine();
+        while (!sr.EndOfStream)
+        {
+            DrawRectangle(sr.ReadLine()!);
+        }
+
         sr.Close();
-        Console.WriteLine(line);
     }
+
+    private void DrawRectangle(string line)
+    {
+        string[] split = line!.Split(",");
+        string labelName = split[0];
+        string strColor = split[1];
+        string strWidth = split[2];
+        int x1 = int.Parse(split[3]);
+        int y1 = int.Parse(split[4]);
+        int x2 = int.Parse(split[5]);
+        int y2 = int.Parse(split[6]);
+
+        Color color = String2Color(strColor);
+        int penWidth = int.Parse(strWidth);
+        Pen p = new Pen(color, penWidth / scale);
+
+        g!.DrawRectangle(p, x1, y1, x2 - x1, y2 - y1);
+    }
+
+
 
     internal void SetImage(string filePath, String rootPath)
     {
