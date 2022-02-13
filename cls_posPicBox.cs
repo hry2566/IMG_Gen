@@ -248,7 +248,9 @@ public partial class cls_posPicBox : PictureBox
 
         g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
         // g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+
         DrawImage();
+        ImageReset();
     }
     private void DrawImage()
     {
@@ -351,6 +353,8 @@ public partial class cls_posPicBox : PictureBox
     }
     private void ImageReset()
     {
+        if (bmp == null) { return; }
+
         float scaleX = (float)this.Width / (float)bmp!.Width;
         float scaleY = (float)this.Height / (float)bmp.Height;
 
@@ -367,6 +371,7 @@ public partial class cls_posPicBox : PictureBox
 
         mat!.Reset();
         mat.Scale(baseScale, baseScale, System.Drawing.Drawing2D.MatrixOrder.Prepend);
+        CreateLabel();
         DrawImage();
     }
     private Color String2Color(string strColor)
