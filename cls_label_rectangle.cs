@@ -46,7 +46,6 @@ namespace IMG_Gen2
         private Color String2Color(string strColor)
         {
             Color color;
-
             try
             {
                 color = ColorTranslator.FromHtml(strColor);
