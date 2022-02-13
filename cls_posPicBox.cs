@@ -5,9 +5,6 @@ namespace IMG_Gen2;
 
 public partial class cls_posPicBox : PictureBox
 {
-    private TabPage? PosPage;
-    private ToolStripStatusLabel? sLabel;
-    private ListView LabelLstView;
     private string? rootPath;
     private string? filePath;
     private Point startPos;
@@ -15,12 +12,13 @@ public partial class cls_posPicBox : PictureBox
     private Bitmap? bmp;                                // 表示するBitmap
     private Graphics? g;                                // 描画用Graphicsオブジェクト
     private System.Drawing.Drawing2D.Matrix? mat;       // アフィン変換行列
-    private float baseScale;                                // 表示倍率
+    private float baseScale;                            // 表示倍率
     private float scale;                                // 表示倍率
     private Point pos;                                  // マウス座標
     private bool MouseDownFlg = false;                  // マウスダウンフラグ
-    private bool labelFlag = false;
+    private bool labelFlag = false;                     // ラバーバンドフラグ
     private Point OldPoint;                             // マウス座標記憶
+    cls_label_rectangle[] lblRect = new cls_label_rectangle[0];
 
     public cls_posPicBox(TabPage PosPage, ToolStripStatusLabel sLabel, ListView LabelLstView)
     {
@@ -28,21 +26,9 @@ public partial class cls_posPicBox : PictureBox
         this.sLabel = sLabel;
         this.LabelLstView = LabelLstView;
 
+        InitializeUserComponent();
         Controls_EventHandler();
     }
-
-    private void Controls_EventHandler()
-    {
-        //this
-        this.MouseWheel += new System.Windows.Forms.MouseEventHandler(Control_MouseWheel);
-        this.MouseDown += new MouseEventHandler(Control_MouseDown);
-        this.MouseUp += new MouseEventHandler(Control_MouseUp);
-        this.MouseMove += new MouseEventHandler(Control_MouseMove);
-
-        //PosPage
-        PosPage!.Resize += new EventHandler(Control_ReSize);
-    }
-
     private void Control_MouseDown(object? sender, MouseEventArgs e)
     {
         if (mat == null) { return; }
@@ -79,10 +65,10 @@ public partial class cls_posPicBox : PictureBox
             endPos.X = e.X;
             endPos.Y = e.Y;
             AddPosFile();
+            CreateLabel();
             DrawImage();
         }
     }
-
     private void AddPosFile()
     {
         CheckPosFolder(rootPath!, "pos");
@@ -119,7 +105,6 @@ public partial class cls_posPicBox : PictureBox
         sw.WriteLine(labelName + "," + strColor + "," + strWidth + "," + x1 + "," + y1 + "," + x2 + "," + y2);
         sw.Close();
     }
-
     private string GetFileName()
     {
         string[] split = new string[0];
@@ -134,7 +119,6 @@ public partial class cls_posPicBox : PictureBox
         }
         return split[split.Count() - 1];
     }
-
     private void CheckPosFolder(string rootPath, string param)
     {
         if (!System.IO.File.Exists(rootPath + param))
@@ -142,7 +126,6 @@ public partial class cls_posPicBox : PictureBox
             Directory.CreateDirectory(rootPath + param);
         }
     }
-
     private void Control_MouseMove(object? sender, MouseEventArgs e)
     {
         if (mat == null) { return; }
@@ -164,7 +147,6 @@ public partial class cls_posPicBox : PictureBox
             DrawRubberBand(e);
         }
     }
-
     private void DrawRubberBand(MouseEventArgs e)
     {
         int movX;       // 画像移動量:X or 四角の幅
@@ -186,13 +168,13 @@ public partial class cls_posPicBox : PictureBox
 
         if (movX > 0)
         {
-            x1 = (int)((OldPoint.X - mat.Elements[4]) / scale);
+            x1 = (int)((OldPoint.X - mat!.Elements[4]) / scale);
             w1 = (int)((movX + OldPoint.X - mat.Elements[4]) / scale);
         }
         else
         {
             movX = OldPoint.X - e.X;
-            x1 = (int)((e.X - mat.Elements[4]) / scale);
+            x1 = (int)((e.X - mat!.Elements[4]) / scale);
             w1 = (int)((movX + e.X - mat.Elements[4]) / scale);
         }
 
@@ -279,45 +261,79 @@ public partial class cls_posPicBox : PictureBox
 
         g!.Clear(this.BackColor);
         g.DrawImage(bmp, 0, 0);
+        scale = mat!.Elements[0];
         DrawLabel();
         this.Refresh();
 
-        scale = mat!.Elements[0];
         sLabel!.Text = "Scale = " + scale.ToString() + " Pos.X = " + pos.X.ToString() + " Pos.Y = " + pos.Y.ToString();
     }
-
-    private void DrawLabel()
+    private void CreateLabel()
     {
         if (!System.IO.File.Exists(rootPath + "pos\\" + GetFileName() + ".txt")) { return; }
 
         StreamReader sr = new(rootPath + "pos\\" + GetFileName() + ".txt");
+        lblRect_AllDelete();
+        Array.Resize(ref lblRect, 0);
         while (!sr.EndOfStream)
         {
-            DrawRectangle(sr.ReadLine()!);
+            Array.Resize(ref lblRect, lblRect.Count() + 1);
+            string? line = sr.ReadLine();
+            string[] split = line!.Split(",");
+
+            lblRect[lblRect.Count() - 1] = new cls_label_rectangle(this, g!, split[0], split[1], split[2], int.Parse(split[3]), int.Parse(split[4]), int.Parse(split[5]), int.Parse(split[6]));
+            // DrawRectangle(sr.ReadLine()!);
         }
         sr.Close();
     }
 
-    private void DrawRectangle(string line)
+    private void lblRect_AllDelete()
     {
-        string[] split = line!.Split(",");
-        string labelName = split[0];
-        string strColor = split[1];
-        string strWidth = split[2];
-        int x1 = int.Parse(split[3]);
-        int y1 = int.Parse(split[4]);
-        int x2 = int.Parse(split[5]);
-        int y2 = int.Parse(split[6]);
-
-        Color color = String2Color(strColor);
-        int penWidth = int.Parse(strWidth);
-        Pen p = new Pen(color, penWidth / scale);
-
-        g!.DrawRectangle(p, x1, y1, x2 - x1, y2 - y1);
+        for (int i = 0; i < lblRect.Count(); i++)
+        {
+            lblRect[i].Delete();
+        }
     }
+    private void DrawLabel()
+    {
+        for (int i = 0; i < lblRect.Count(); i++)
+        {
+            lblRect[i].DrawLabel(scale, mat);
+        }
+    }
+    // private void DrawLabel()
+    // {
+    //     if (!System.IO.File.Exists(rootPath + "pos\\" + GetFileName() + ".txt")) { return; }
 
+    //     StreamReader sr = new(rootPath + "pos\\" + GetFileName() + ".txt");
+    //     while (!sr.EndOfStream)
+    //     {
+    //         DrawRectangle(sr.ReadLine()!);
+    //     }
+    //     sr.Close();
+    // }
+    // private void DrawRectangle(string line)
+    // {
+    //     string[] split = line!.Split(",");
+    //     string labelName = split[0];
+    //     string strColor = split[1];
+    //     string strWidth = split[2];
+    //     int x1 = int.Parse(split[3]);
+    //     int y1 = int.Parse(split[4]);
+    //     int x2 = int.Parse(split[5]);
+    //     int y2 = int.Parse(split[6]);
 
+    //     Color color = String2Color(strColor);
+    //     int penWidth = int.Parse(strWidth);
+    //     Pen p = new Pen(color, penWidth / scale);
 
+    //     g!.DrawRectangle(p, x1, y1, x2 - x1, y2 - y1);
+
+    //     Button btn = new();
+    //     btn.Location = new Point((int)(x1 * scale), (int)(y1 * scale));
+    //     btn.Size = new Size((int)((x2 - x1) * scale) / 5, (int)((y2 - y1) * scale) / 5);
+    //     this.Controls.Add(btn);
+
+    // }
     internal void SetImage(string filePath, String rootPath)
     {
         this.filePath = filePath;
@@ -330,6 +346,7 @@ public partial class cls_posPicBox : PictureBox
         bmp = new Bitmap(filePath);
         mat = new System.Drawing.Drawing2D.Matrix();
 
+        CreateLabel();
         ImageReset();
     }
     private void ImageReset()
@@ -352,7 +369,6 @@ public partial class cls_posPicBox : PictureBox
         mat.Scale(baseScale, baseScale, System.Drawing.Drawing2D.MatrixOrder.Prepend);
         DrawImage();
     }
-
     private Color String2Color(string strColor)
     {
         Color color;
