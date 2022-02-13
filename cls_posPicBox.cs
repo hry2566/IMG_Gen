@@ -283,11 +283,9 @@ public partial class cls_posPicBox : PictureBox
             string[] split = line!.Split(",");
 
             lblRect[lblRect.Count() - 1] = new cls_label_rectangle(this, g!, split[0], split[1], split[2], int.Parse(split[3]), int.Parse(split[4]), int.Parse(split[5]), int.Parse(split[6]));
-            // DrawRectangle(sr.ReadLine()!);
         }
         sr.Close();
     }
-
     private void lblRect_AllDelete()
     {
         for (int i = 0; i < lblRect.Count(); i++)
@@ -302,40 +300,7 @@ public partial class cls_posPicBox : PictureBox
             lblRect[i].DrawLabel(scale, mat);
         }
     }
-    // private void DrawLabel()
-    // {
-    //     if (!System.IO.File.Exists(rootPath + "pos\\" + GetFileName() + ".txt")) { return; }
 
-    //     StreamReader sr = new(rootPath + "pos\\" + GetFileName() + ".txt");
-    //     while (!sr.EndOfStream)
-    //     {
-    //         DrawRectangle(sr.ReadLine()!);
-    //     }
-    //     sr.Close();
-    // }
-    // private void DrawRectangle(string line)
-    // {
-    //     string[] split = line!.Split(",");
-    //     string labelName = split[0];
-    //     string strColor = split[1];
-    //     string strWidth = split[2];
-    //     int x1 = int.Parse(split[3]);
-    //     int y1 = int.Parse(split[4]);
-    //     int x2 = int.Parse(split[5]);
-    //     int y2 = int.Parse(split[6]);
-
-    //     Color color = String2Color(strColor);
-    //     int penWidth = int.Parse(strWidth);
-    //     Pen p = new Pen(color, penWidth / scale);
-
-    //     g!.DrawRectangle(p, x1, y1, x2 - x1, y2 - y1);
-
-    //     Button btn = new();
-    //     btn.Location = new Point((int)(x1 * scale), (int)(y1 * scale));
-    //     btn.Size = new Size((int)((x2 - x1) * scale) / 5, (int)((y2 - y1) * scale) / 5);
-    //     this.Controls.Add(btn);
-
-    // }
     internal void SetImage(string filePath, String rootPath)
     {
         this.filePath = filePath;
