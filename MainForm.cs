@@ -28,7 +28,7 @@ public partial class MainForm : Form
         this.StatusStrip2.Items.Add(sLabel2);
 
         // PicBox1
-        this.PosPicBox = new cls_posPicBox(PosPage, sLabel2!);
+        this.PosPicBox = new cls_posPicBox(PosPage, sLabel2!, LabelLstView);
         this.PosPicBox.TabIndex = 22;
         this.PosPicBox.Text = "PictureBox0";
         this.PosPicBox.AutoSize = true;
