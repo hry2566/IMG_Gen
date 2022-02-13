@@ -31,18 +31,12 @@ namespace IMG_Gen2
             btn.Size = new Size((int)((size.Width / 5) * scale), (int)((size.Height / 5) * scale));
             btn.Visible = true;
 
-            for (int i = 0; i < mat.Elements.Count(); i++)
-            {
-                Console.WriteLine(i.ToString() + " " + mat.Elements[i].ToString());
-            }
-
             Pen p = new Pen(color, penWidth / scale);
             try
             {
                 g!.DrawRectangle(p, pos.X, pos.Y, size.Width, size.Height);
             }
             catch { }
-
         }
 
         public void Delete()
