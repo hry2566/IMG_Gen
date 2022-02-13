@@ -4,7 +4,7 @@ public partial class cls_treeview : TreeView
 {
     private cls_posPicBox picBox1;
     private TabPage PosPage;
-    private string? folderPath;              // ルートフォルダパス
+    private string? rootPath;              // ルートフォルダパス
     private cls_treenode[] treeNode = new cls_treenode[0];
 
     public cls_treeview(cls_posPicBox picBox1, TabPage PosPage)
@@ -22,14 +22,14 @@ public partial class cls_treeview : TreeView
 
             if (e.Node.Parent != null)
             {
-                filePath = folderPath + e.Node.Parent.Text + "\\" + e.Node.Text;
+                filePath = rootPath + e.Node.Parent.Text + "\\" + e.Node.Text;
             }
             else
             {
-                filePath = folderPath + e.Node.Text;
+                filePath = rootPath + e.Node.Text;
             }
 
-            picBox1.SetImage(filePath);
+            picBox1.SetImage(filePath, rootPath!);
         }
     }
 
@@ -37,10 +37,10 @@ public partial class cls_treeview : TreeView
     {
         set
         {
-            this.folderPath = value;
+            this.rootPath = value;
             SetView(value);
         }
-        get { return this.folderPath!; }
+        get { return this.rootPath!; }
     }
 
     private void SetView(string path)
