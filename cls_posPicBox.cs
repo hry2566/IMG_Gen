@@ -18,7 +18,8 @@ public partial class cls_posPicBox : PictureBox
     private bool MouseDownFlg = false; // マウスダウンフラグ
     private bool labelFlag = false; // ラバーバンドフラグ
     private Point OldPoint; // マウス座標記憶
-    cls_label_rectangle[] lblRect = new cls_label_rectangle[0];
+    // cls_label_rectangle[] lblRect = new cls_label_rectangle[0];
+    List<cls_label_rectangle> lblRect = new();
 
     public cls_posPicBox(TabPage PosPage, ToolStripStatusLabel sLabel, ListView LabelLstView)
     {
@@ -272,18 +273,26 @@ public partial class cls_posPicBox : PictureBox
     private void CreateLabel()
     {
         lblRect_AllDelete();
-        Array.Resize(ref lblRect, 0);
+        
+        // for (int i = 0; i < lblRect.Count;i++)
+        // {
+        //     lblRect.Remove(lblRect[i]);
+        // }
+            // Array.Resize(ref lblRect, 0);
 
-        if (!System.IO.File.Exists(rootPath + "pos\\" + GetFileName() + ".txt")) { return; }
+            if (!System.IO.File.Exists(rootPath + "pos\\" + GetFileName() + ".txt")) { return; }
 
         StreamReader sr = new(rootPath + "pos\\" + GetFileName() + ".txt");
         while (!sr.EndOfStream)
         {
-            Array.Resize(ref lblRect, lblRect.Count() + 1);
+            // Array.Resize(ref lblRect, lblRect.Count() + 1);
             string? line = sr.ReadLine();
             string[] split = line!.Split(",");
 
-            lblRect[lblRect.Count() - 1] = new cls_label_rectangle(this, g!, split[0], split[1], split[2], int.Parse(split[3]), int.Parse(split[4]), int.Parse(split[5]), int.Parse(split[6]));
+            cls_label_rectangle ctrl = new(this, g!, split[0], split[1], split[2], int.Parse(split[3]), int.Parse(split[4]), int.Parse(split[5]), int.Parse(split[6]));
+            lblRect.Add(ctrl);
+
+            // lblRect[lblRect.Count() - 1] = new cls_label_rectangle(this, g!, split[0], split[1], split[2], int.Parse(split[3]), int.Parse(split[4]), int.Parse(split[5]), int.Parse(split[6]));
         }
         sr.Close();
     }
@@ -310,6 +319,7 @@ public partial class cls_posPicBox : PictureBox
         {
             lblRect[i].Delete();
         }
+        lblRect = new();
     }
     private void DrawLabel()
     {
@@ -379,5 +389,28 @@ public partial class cls_posPicBox : PictureBox
         {
             lblRect[i].SetSelect(false);
         }
+    }
+    internal void Control_KeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.Control && e.KeyCode == Keys.Delete)
+        {
+            for (int i = 0; i < lblRect.Count;i++)
+            {
+                if(lblRect[i].selectFlag)
+                {
+                    lblRect[i].Delete();
+                    lblRect.Remove(lblRect[i]);
+                    break;
+                }
+            }
+            SaveLabel();
+            DrawImage();
+        }
+        else if(e.KeyCode == Keys.Escape)
+        {
+            AllUnSelect();
+        }
+
+        
     }
 }
