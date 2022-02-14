@@ -205,7 +205,7 @@ public partial class cls_posPicBox : PictureBox {
         DrawImage ();
         ImageReset ();
     }
-    private void DrawImage () {
+    internal void DrawImage () {
         if (bmp == null) return;
 
         if (mat != null) {
