@@ -14,6 +14,7 @@ partial class cls_posPicBox : PictureBox
         this.MouseDown += new MouseEventHandler(Control_MouseDown);
         this.MouseUp += new MouseEventHandler(Control_MouseUp);
         this.MouseMove += new MouseEventHandler(Control_MouseMove);
+        this.KeyDown += new System.Windows.Forms.KeyEventHandler(Control_KeyDown);
 
         //PosPage
         PosPage!.Resize += new EventHandler(Control_ReSize);
