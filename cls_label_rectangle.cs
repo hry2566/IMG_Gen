@@ -5,11 +5,11 @@ namespace IMG_Gen2
         cls_posPicBox posPicBox;
         private Button btn = new();
         private Graphics? g;
-        private string? labelName;
-        private Color color;
-        private int penWidth;
-        private Point pos;
-        private Size size;
+        internal string? labelName;
+        internal string strColor;
+        internal int penWidth;
+        internal Point pos;
+        internal Size size;
         private cls_selectbox selectBox;
         private bool selectFlag = false;
         private System.Drawing.Drawing2D.Matrix? mat;
@@ -22,7 +22,7 @@ namespace IMG_Gen2
             this.posPicBox = posPicBox;
             this.g = g;
             this.labelName = labelName;
-            this.color = String2Color(strColor);
+            this.strColor = strColor;
             this.penWidth = int.Parse(strWidth);
             pos.X = x1;
             pos.Y = y1;
@@ -31,51 +31,48 @@ namespace IMG_Gen2
 
             btn.Visible = false;
             posPicBox.Controls.Add(btn);
-            selectBox = new(posPicBox,pos,size);
+            selectBox = new(posPicBox, pos, size);
 
             btn.Click += new EventHandler(Btn_Click);
             btn.MouseDown += new MouseEventHandler(Btn_MouseDown);
             btn.MouseMove += new MouseEventHandler(Btn_MouseMove);
+            btn.MouseUp += new MouseEventHandler(Btn_MouseUp);
+        }
+        private void Btn_MouseUp(object? sender, MouseEventArgs e)
+        {
+            if (changeFlag)
+            {
+                posPicBox.SaveLabel();
+                changeFlag = false;
+            }
         }
         private void Btn_MouseDown(object? sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left && selectFlag)
             {
-                memPos.X = e.X ;
-                memPos.Y =e.Y ;
+                memPos.X = e.X;
+                memPos.Y = e.Y;
             }
         }
         private void Btn_MouseMove(object? sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left && selectFlag)
             {
-                Point btnPos = new(e.X , e.Y);
-                Point newPos = new(btnPos.X - memPos.X + btn.Location.X, btnPos.Y - memPos.Y + btn.Location.Y);
-
-                btn.Location = newPos;
-                Pen p = new Pen(color, penWidth / mat!.Elements[0]);
-                try
-                {
-                    posPicBox.DrawImage();
-                    g!.DrawRectangle(p, (btnPos.X - memPos.X + btn.Location.X - mat.Elements[4])/mat.Elements[0], (btnPos.Y - memPos.Y + btn.Location.Y - mat.Elements[5])/mat.Elements[0], size.Width, size.Height);
-                    posPicBox.Refresh();
-                }
-                catch { }
-
-                selectFlag = true;
-                changeFlag = false;
-            }
-            else
-            {
                 changeFlag = true;
+                pos.X = (int)((e.X - memPos.X + btn.Location.X - mat!.Elements[4]) / mat.Elements[0]);
+                pos.Y = (int)((e.Y - memPos.Y + btn.Location.Y - mat.Elements[5]) / mat.Elements[0]);
+                posPicBox.DrawImage();
             }
         }
         private void Btn_Click(Object? sender, EventArgs e)
         {
-            if(selectFlag){
+            if (selectFlag && !changeFlag)
+            {
                 selectFlag = false;
                 selectBox.SetShow(false);
-            }else{
+            }
+            else
+            {
                 posPicBox.AllUnSelect();
                 selectFlag = true;
                 selectBox.SetShow(true);
@@ -96,9 +93,9 @@ namespace IMG_Gen2
             btn.Size = new Size((int)((size.Width / 5) * scale), (int)((size.Height / 5) * scale));
             btn.Visible = true;
 
-            selectBox.SetPos(pos,mat,size);
+            selectBox.SetPos(pos, mat, size);
 
-            Pen p = new Pen(color, penWidth / scale);
+            Pen p = new Pen(String2Color(strColor), penWidth / scale);
             try
             {
                 g!.DrawRectangle(p, pos.X, pos.Y, size.Width, size.Height);
