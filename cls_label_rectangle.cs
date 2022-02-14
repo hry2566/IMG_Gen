@@ -11,7 +11,7 @@ namespace IMG_Gen2
         internal Point pos;
         internal Size size;
         private cls_selectbox selectBox;
-        private bool selectFlag = false;
+        internal bool selectFlag = false;
         private System.Drawing.Drawing2D.Matrix? mat;
         private Point memPos;
         private bool changeFlag = false;
