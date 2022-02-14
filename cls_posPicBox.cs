@@ -290,4 +290,12 @@ public partial class cls_posPicBox : PictureBox {
         }
         return color;
     }
+
+    internal void AllUnSelect()
+    {
+        for (int i = 0; i < lblRect.Count();i++)
+        {
+            lblRect[i].SetSelect(false);
+        }
+    }
 }
