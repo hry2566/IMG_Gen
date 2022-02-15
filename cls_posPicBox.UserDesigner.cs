@@ -24,5 +24,6 @@ partial class cls_posPicBox : PictureBox
     private TabPage? PosPage;
     private ToolStripStatusLabel? sLabel;
     private ListView LabelLstView;
+    private ListView MaskLstView;
 
 }
