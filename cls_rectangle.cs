@@ -1,4 +1,3 @@
-using System.Windows.Forms;
 
 namespace IMG_Gen2
 {
@@ -87,7 +86,7 @@ namespace IMG_Gen2
             selectBox.SetShow(selectFlag);
         }
 
-        public void DrawRectangle(float scale, System.Drawing.Drawing2D.Matrix mat)
+        public void DrawRectangle(System.Drawing.Drawing2D.Matrix mat)
         {
             this.mat = mat;
             btn.Location = new Point((int)((pos.X * mat.Elements[0]) + mat.Elements[4]), (int)((pos.Y * mat.Elements[0]) + mat.Elements[5]));
