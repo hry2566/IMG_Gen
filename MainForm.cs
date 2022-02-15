@@ -27,8 +27,37 @@ public partial class MainForm : Form
             item.SubItems[1].BackColor = String2Color(values[1]);
         }
         sr.Close();
-    }
 
+        sr = new StreamReader("./mask.ini");
+        item = new();
+
+        while (!sr.EndOfStream)
+        {
+            string? line = sr.ReadLine();
+            string[] values = line!.Split(',');
+
+            item = new();
+            item = MaskLstView.Items.Add(values[0]);
+            item.SubItems.Add(values[1]);
+            item.SubItems.Add(values[2]);
+            item.UseItemStyleForSubItems = false;
+            item.SubItems[1].BackColor = String2Color(values[1]);
+        }
+        sr.Close();
+    }
+    private void MaskModBtn_Click(Object? sender, EventArgs? e)
+    {
+        if (MaskLstView.SelectedItems.Count == 0) { return; }
+
+        MaskLstView.SelectedItems[0].SubItems[0].Text = MaskNameTxtBox.Text;
+        MaskLstView.SelectedItems[0].SubItems[1].Text = MaskColorTxtBox.Text;
+        MaskLstView.SelectedItems[0].SubItems[2].Text = MaskWidthTxtBox.Text;
+        MaskLstView.SelectedItems[0].UseItemStyleForSubItems = false;
+        MaskLstView.SelectedItems[0].SubItems[1].BackColor = String2Color(MaskColorTxtBox.Text);
+
+        MaskLstView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+        SavaMaskIni();
+    }
     private void LabelModBtn_Click(Object? sender, EventArgs? e)
     {
         if (LabelLstView.SelectedItems.Count == 0) { return; }
@@ -51,7 +80,15 @@ public partial class MainForm : Form
         LabelColorTxtBox.Text = LabelLstView.SelectedItems[0].SubItems[1].Text;
         LabelWidthTxtBox.Text = LabelLstView.SelectedItems[0].SubItems[2].Text;
     }
+    private void MaskDelBtn_Click(Object? sender, EventArgs? e)
+    {
+        if (MaskLstView.SelectedItems.Count == 0) { return; }
 
+        MaskLstView.Items[MaskLstView.SelectedItems[0].Index].Remove();
+
+        MaskLstView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+        SavaMaskIni();
+    }
     private void LabelDelBtn_Click(Object? sender, EventArgs? e)
     {
         if (LabelLstView.SelectedItems.Count == 0) { return; }
@@ -89,7 +126,7 @@ public partial class MainForm : Form
         item.SubItems[1].BackColor = String2Color(MaskColorTxtBox.Text);
 
         MaskLstView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-        // SavaLabelIni();
+        SavaMaskIni();
     }
 
 
@@ -105,6 +142,30 @@ public partial class MainForm : Form
         }
         sw.Flush();
         sw.Close();
+    }
+    private void SavaMaskIni()
+    {
+        StreamWriter sw = new StreamWriter("./mask.ini");
+
+        for (int i = 0; i < MaskLstView.Items.Count; i++)
+        {
+            sw.WriteLine(MaskLstView.Items[i].SubItems[0].Text + "," +
+                         MaskLstView.Items[i].SubItems[1].Text + "," +
+                         MaskLstView.Items[i].SubItems[2].Text);
+        }
+        sw.Flush();
+        sw.Close();
+    }
+    private void MaskColorBtn_Click(Object? sender, EventArgs? e)
+    {
+        ColorDialog cd = new ColorDialog();
+        cd.AllowFullOpen = true;
+        cd.SolidColorOnly = false;
+
+        if (cd.ShowDialog() == DialogResult.OK)
+        {
+            MaskColorTxtBox.Text = cd.Color.Name;
+        }
     }
     private void LabelColorBtn_Click(Object? sender, EventArgs? e)
     {
