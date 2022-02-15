@@ -118,7 +118,7 @@ public partial class cls_posPicBox : PictureBox
 
         string filename;
         StreamWriter sw;
-        CheckPosFolder(rootPath!, folderName);
+        CheckFolder(rootPath!, folderName);
 
         switch (folderName)
         {
@@ -149,11 +149,20 @@ public partial class cls_posPicBox : PictureBox
         }
         return split[split.Count() - 1];
     }
-    private void CheckPosFolder(string rootPath, string param)
+    private void CheckFolder(string rootPath, string param)
     {
         if (!System.IO.File.Exists(rootPath + param))
         {
             Directory.CreateDirectory(rootPath + param);
+        }
+    }
+    private bool CheckFile(string filePath)
+    {
+        if (System.IO.File.Exists(filePath))
+        {
+            return true;
+        }else{
+            return false;
         }
     }
     private void Control_MouseMove(object? sender, MouseEventArgs e)
@@ -337,7 +346,7 @@ public partial class cls_posPicBox : PictureBox
                 filePath = rootPath + folderPath + "\\mask.txt";
                 break;
         }
-
+        if (!CheckFile(filePath)) { return; }
         StreamWriter sw = new(filePath, false);
         for (int i = 0; i < rectangle.Count(); i++)
         {
