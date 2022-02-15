@@ -35,8 +35,8 @@ partial class MainForm
         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         this.BackColor = System.Drawing.Color.Silver;
         this.KeyPreview =  true;
-        this.Location = new System.Drawing.Point(-9,-9);
-        this.ClientSize = new System.Drawing.Size(812,628);
+        this.Location = new System.Drawing.Point(-8,-8);
+        this.ClientSize = new System.Drawing.Size(812,620);
         this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
         this.Text =  "IMG_Gen";
         this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -64,7 +64,7 @@ partial class MainForm
         this.RootPathTxtBox.ReadOnly =  true;
         this.RootPathTxtBox.Location = new System.Drawing.Point(152,20);
         this.RootPathTxtBox.Name =  "RootPathTxtBox";
-        this.RootPathTxtBox.Size = new System.Drawing.Size(640,23);
+        this.RootPathTxtBox.Size = new System.Drawing.Size(638,23);
         this.RootPathTxtBox.TabIndex = 1;
         this.RootPathTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.Controls.Add(this.RootPathTxtBox);
@@ -78,7 +78,7 @@ partial class MainForm
         this.SplitContainer0.BackColor = System.Drawing.Color.Silver;
         this.SplitContainer0.Location = new System.Drawing.Point(19,63);
         this.SplitContainer0.Name =  "SplitContainer0";
-        this.SplitContainer0.Size = new System.Drawing.Size(774,536);
+        this.SplitContainer0.Size = new System.Drawing.Size(772,526);
         this.SplitContainer0.TabIndex = 2;
         this.SplitContainer0.SplitterDistance = 263;
         this.SplitContainer0.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
@@ -92,7 +92,7 @@ partial class MainForm
         this.ViewTab.Text =  "TabControl0";
         this.ViewTab.Dock = System.Windows.Forms.DockStyle.Fill;
         this.ViewTab.Name =  "ViewTab";
-        this.ViewTab.Size = new System.Drawing.Size(505,534);
+        this.ViewTab.Size = new System.Drawing.Size(503,524);
         this.ViewTab.TabIndex = 4;
         this.SplitContainer0.Panel2.Controls.Add(this.ViewTab);
 
@@ -105,7 +105,7 @@ partial class MainForm
         this.PosPage.TabIndex = 5;
         this.PosPage.Text =  "座標";
         this.PosPage.Name =  "PosPage";
-        this.PosPage.Size = new System.Drawing.Size(497,501);
+        this.PosPage.Size = new System.Drawing.Size(495,491);
         this.ViewTab.Controls.Add(this.PosPage);
 
         //
@@ -140,7 +140,7 @@ partial class MainForm
         this.MenuTab.Text =  "TabControl1";
         this.MenuTab.Dock = System.Windows.Forms.DockStyle.Fill;
         this.MenuTab.Name =  "MenuTab";
-        this.MenuTab.Size = new System.Drawing.Size(261,534);
+        this.MenuTab.Size = new System.Drawing.Size(261,524);
         this.MenuTab.TabIndex = 7;
         this.SplitContainer0.Panel1.Controls.Add(this.MenuTab);
 
@@ -177,7 +177,7 @@ partial class MainForm
         this.MaskPage.TabIndex = 10;
         this.MaskPage.Text =  "マスク";
         this.MaskPage.Name =  "MaskPage";
-        this.MaskPage.Size = new System.Drawing.Size(253,501);
+        this.MaskPage.Size = new System.Drawing.Size(253,491);
         this.MenuTab.Controls.Add(this.MaskPage);
 
         //
@@ -210,6 +210,7 @@ partial class MainForm
         // LabelNameTxtBox
         //
         this.LabelNameTxtBox = new System.Windows.Forms.TextBox();
+        this.LabelNameTxtBox.Text =  "TextBox1";
         this.LabelNameTxtBox.Location = new System.Drawing.Point(72,64);
         this.LabelNameTxtBox.Name =  "LabelNameTxtBox";
         this.LabelNameTxtBox.Size = new System.Drawing.Size(165,23);
@@ -324,7 +325,7 @@ partial class MainForm
         this.MaskGrpBox = new System.Windows.Forms.GroupBox();
         this.MaskGrpBox.Text =  "マスク設定";
         this.MaskGrpBox.BackColor = System.Drawing.SystemColors.ActiveCaption;
-        this.MaskGrpBox.Location = new System.Drawing.Point(0,334);
+        this.MaskGrpBox.Location = new System.Drawing.Point(0,324);
         this.MaskGrpBox.Name =  "MaskGrpBox";
         this.MaskGrpBox.Size = new System.Drawing.Size(245,168);
         this.MaskGrpBox.TabIndex = 24;
@@ -410,6 +411,7 @@ partial class MainForm
         // MaskNameTxtBox
         //
         this.MaskNameTxtBox = new System.Windows.Forms.TextBox();
+        this.MaskNameTxtBox.Text =  "TextBox4";
         this.MaskNameTxtBox.Modified =  true;
         this.MaskNameTxtBox.Location = new System.Drawing.Point(72,64);
         this.MaskNameTxtBox.Name =  "MaskNameTxtBox";
@@ -441,19 +443,6 @@ partial class MainForm
         this.MaskWidthTxtBox.TabIndex = 33;
         this.MaskWidthTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.MaskGrpBox.Controls.Add(this.MaskWidthTxtBox);
-
-        //
-        // MaskLstBox
-        //
-        this.MaskLstBox = new System.Windows.Forms.ListBox();
-        this.MaskLstBox.ItemHeight = 20;
-        this.MaskLstBox.Text =  "ListBox";
-        this.MaskLstBox.Location = new System.Drawing.Point(8,8);
-        this.MaskLstBox.Name =  "MaskLstBox";
-        this.MaskLstBox.Size = new System.Drawing.Size(237,304);
-        this.MaskLstBox.TabIndex = 35;
-        this.MaskLstBox.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
-        this.MaskPage.Controls.Add(this.MaskLstBox);
 
         //
         // PicBox2
@@ -509,9 +498,9 @@ partial class MainForm
         //
         this.StatusStrip1 = new System.Windows.Forms.StatusStrip();
         this.StatusStrip1.BackColor = System.Drawing.Color.Silver;
-        this.StatusStrip1.Location = new System.Drawing.Point(0,606);
+        this.StatusStrip1.Location = new System.Drawing.Point(0,596);
         this.StatusStrip1.Name =  "StatusStrip1";
-        this.StatusStrip1.Size = new System.Drawing.Size(812,22);
+        this.StatusStrip1.Size = new System.Drawing.Size(810,22);
         this.StatusStrip1.TabIndex = 39;
         this.StatusStrip1.Text =  "StatusStrip1";
         this.Controls.Add(this.StatusStrip1);
@@ -521,9 +510,9 @@ partial class MainForm
         //
         this.StatusStrip2 = new System.Windows.Forms.StatusStrip();
         this.StatusStrip2.BackColor = System.Drawing.Color.Silver;
-        this.StatusStrip2.Location = new System.Drawing.Point(0,479);
+        this.StatusStrip2.Location = new System.Drawing.Point(0,469);
         this.StatusStrip2.Name =  "StatusStrip2";
-        this.StatusStrip2.Size = new System.Drawing.Size(497,22);
+        this.StatusStrip2.Size = new System.Drawing.Size(495,22);
         this.StatusStrip2.TabIndex = 40;
         this.StatusStrip2.Text =  "StatusStrip2";
         this.PosPage.Controls.Add(this.StatusStrip2);
@@ -542,6 +531,20 @@ partial class MainForm
         this.LabelLstView.TabIndex = 41;
         this.LabelLstView.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.LabelPage.Controls.Add(this.LabelLstView);
+
+        //
+        // MaskLstView
+        //
+        this.MaskLstView = new System.Windows.Forms.ListView();
+        this.MaskLstView.FullRowSelect =  true;
+        this.MaskLstView.Text =  "ListView1";
+        this.MaskLstView.View = System.Windows.Forms.View.Details;
+        this.MaskLstView.Location = new System.Drawing.Point(8,8);
+        this.MaskLstView.Name =  "MaskLstView";
+        this.MaskLstView.Size = new System.Drawing.Size(240,310);
+        this.MaskLstView.TabIndex = 40;
+        this.MaskLstView.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
+        this.MaskPage.Controls.Add(this.MaskLstView);
 
     }
 
@@ -578,7 +581,6 @@ partial class MainForm
     private TextBox MaskNameTxtBox;
     private TextBox MaskColorTxtBox;
     private TextBox MaskWidthTxtBox;
-    private ListBox MaskLstBox;
     private PictureBox PicBox2;
     private PictureBox PicBox3;
     private TabPage SplitOptPage;
@@ -586,4 +588,5 @@ partial class MainForm
     private StatusStrip StatusStrip1;
     private StatusStrip StatusStrip2;
     private ListView LabelLstView;
+    private ListView MaskLstView;
 }
