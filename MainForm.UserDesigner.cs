@@ -37,16 +37,28 @@ partial class MainForm
         this.FilePage.Controls.Add(this.FileTreeView);
 
         // LabelLstView
-        ColumnHeader[] column = new ColumnHeader[3];
-        for (int i = 0; i < column.Count(); i++)
+        ColumnHeader[] labelColumn = new ColumnHeader[3];
+        for (int i = 0; i < labelColumn.Count(); i++)
         {
-            column[i] = new();
+            labelColumn[i] = new();
         }
-        column[0].Text = "ラ　ベ　ル";
-        column[1].Text = "線　色";
-        column[2].Text = "線　幅";
-        this.LabelLstView.Columns.AddRange(column);
+        labelColumn[0].Text = "ラ　ベ　ル";
+        labelColumn[1].Text = "線　色";
+        labelColumn[2].Text = "線　幅";
+        this.LabelLstView.Columns.AddRange(labelColumn);
         LabelLstView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+
+        // MaskLstView
+        ColumnHeader[] maskColumn = new ColumnHeader[3];
+        for (int i = 0; i < maskColumn.Count(); i++)
+        {
+            maskColumn[i] = new();
+        }
+        maskColumn[0].Text = "ラ　ベ　ル";
+        maskColumn[1].Text = "線　色";
+        maskColumn[2].Text = "線　幅";
+        this.MaskLstView.Columns.AddRange(maskColumn);
+        MaskLstView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
     }
     private void Controls_EventHandler()
     {
@@ -70,6 +82,9 @@ partial class MainForm
 
         //LabelModBtn
         LabelModBtn.Click += new EventHandler(LabelModBtn_Click);
+
+        // MaskEntBtn
+        MaskEntBtn.Click += new EventHandler(MaskEntBtn_Click);
     }
 
     #endregion
