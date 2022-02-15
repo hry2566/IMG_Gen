@@ -143,6 +143,7 @@ namespace IMG_Gen2
             if (changeFlag)
             {
                 posPicBox.SaveLabel();
+                posPicBox.DrawImage();
                 changeFlag = false;
             }
         }
