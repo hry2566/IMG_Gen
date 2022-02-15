@@ -16,13 +16,11 @@ namespace IMG_Gen2
 
             Init();
         }
-
         private void Init()
         {
             for (int i = 0; i < 4; i++)
             {
                 this.selectbox[i] = new Panel();
-
                 if (i == 1 || i == 2)
                 {
                     this.selectbox[i].Cursor = Cursors.SizeNESW;
@@ -52,7 +50,6 @@ namespace IMG_Gen2
                 this.selectbox[i].Visible = flag;
             }
         }
-
         internal void SetPos(Point pos, System.Drawing.Drawing2D.Matrix mat, Size size)
         {
             //new Point((int)((pos.X * scale) + mat.Elements[4]), (int)((pos.Y * scale) + mat.Elements[5]))
@@ -72,7 +69,6 @@ namespace IMG_Gen2
                 (int)((pos.X * mat.Elements[0]) + mat.Elements[4] + size.Width * mat.Elements[0]),
                 (int)((pos.Y * mat.Elements[0]) + mat.Elements[5] + size.Height * mat.Elements[0]));
         }
-
         internal void Delete()
         {
             for (int i = 0; i < 4; i++)
