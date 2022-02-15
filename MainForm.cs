@@ -34,14 +34,14 @@ public partial class MainForm : Form
     }
     private void MaskModBtn_Click(Object? sender, EventArgs? e)
     {
-        TextBox[] textbox = new TextBox[3] { MaskNameTxtBox, MaskColorTxtBox, MaskWidthTxtBox };
-        ModBtn_Click(textbox, MaskLstView);
+        TextBox[] textBox = new TextBox[3] { MaskNameTxtBox, MaskColorTxtBox, MaskWidthTxtBox };
+        ModBtn_Click(textBox, MaskLstView);
         SaveIni("./mask.ini", MaskLstView);
     }
     private void LabelModBtn_Click(Object? sender, EventArgs? e)
     {
-        TextBox[] textbox = new TextBox[3] { LabelNameTxtBox, LabelColorTxtBox, LabelWidthTxtBox };
-        ModBtn_Click(textbox, LabelLstView);
+        TextBox[] textBox = new TextBox[3] { LabelNameTxtBox, LabelColorTxtBox, LabelWidthTxtBox };
+        ModBtn_Click(textBox, LabelLstView);
         SaveIni("./label.ini", LabelLstView);
     }
 
@@ -59,12 +59,23 @@ public partial class MainForm : Form
 
     private void lblLstView_SelectedIndexChanged(object? sender, EventArgs e)
     {
-        if (LabelLstView.SelectedItems.Count == 0) { return; }
-
-        LabelNameTxtBox.Text = LabelLstView.SelectedItems[0].SubItems[0].Text;
-        LabelColorTxtBox.Text = LabelLstView.SelectedItems[0].SubItems[1].Text;
-        LabelWidthTxtBox.Text = LabelLstView.SelectedItems[0].SubItems[2].Text;
+        TextBox[] textBox = new TextBox[3] { LabelNameTxtBox, LabelColorTxtBox, LabelWidthTxtBox };
+        SelectedIndexChanged(textBox, LabelLstView);
     }
+    private void MaskLstView_SelectedIndexChanged(object? sender, EventArgs e)
+    {
+        TextBox[] textBox = new TextBox[3] { MaskNameTxtBox, MaskColorTxtBox, MaskWidthTxtBox };
+        SelectedIndexChanged(textBox, MaskLstView);
+    }
+    private void SelectedIndexChanged(TextBox[] textBox, ListView listview)
+    {
+        if (listview.SelectedItems.Count == 0) { return; }
+
+        textBox[0].Text = listview.SelectedItems[0].SubItems[0].Text;
+        textBox[1].Text = listview.SelectedItems[0].SubItems[1].Text;
+        textBox[2].Text = listview.SelectedItems[0].SubItems[2].Text;
+    }
+
     private void MaskDelBtn_Click(Object? sender, EventArgs? e)
     {
         DelBtn_Click(MaskLstView);
@@ -85,15 +96,15 @@ public partial class MainForm : Form
 
     private void LabelEntBtn_Click(Object? sender, EventArgs? e)
     {
-        TextBox[] textbox = new TextBox[3] { LabelNameTxtBox, LabelColorTxtBox, LabelWidthTxtBox };
-        EntBtn_Click(textbox, LabelLstView);
+        TextBox[] textBox = new TextBox[3] { LabelNameTxtBox, LabelColorTxtBox, LabelWidthTxtBox };
+        EntBtn_Click(textBox, LabelLstView);
         SaveIni("./label.ini", LabelLstView);
     }
 
     private void MaskEntBtn_Click(Object? sender, EventArgs? e)
     { 
-        TextBox[] textbox = new TextBox[3] { MaskNameTxtBox, MaskColorTxtBox, MaskWidthTxtBox };
-        EntBtn_Click(textbox, MaskLstView);
+        TextBox[] textBox = new TextBox[3] { MaskNameTxtBox, MaskColorTxtBox, MaskWidthTxtBox };
+        EntBtn_Click(textBox, MaskLstView);
         SaveIni("./mask.ini", MaskLstView);
     }
 
@@ -123,32 +134,6 @@ public partial class MainForm : Form
         sw.Flush();
         sw.Close();
     }
-    // private void SavaLabelIni()
-    // {
-    //     StreamWriter sw = new StreamWriter("./label.ini");
-
-    //     for (int i = 0; i < LabelLstView.Items.Count; i++)
-    //     {
-    //         sw.WriteLine(LabelLstView.Items[i].SubItems[0].Text + "," +
-    //                      LabelLstView.Items[i].SubItems[1].Text + "," +
-    //                      LabelLstView.Items[i].SubItems[2].Text);
-    //     }
-    //     sw.Flush();
-    //     sw.Close();
-    // }
-    // private void SavaMaskIni()
-    // {
-    //     StreamWriter sw = new StreamWriter("./mask.ini");
-
-    //     for (int i = 0; i < MaskLstView.Items.Count; i++)
-    //     {
-    //         sw.WriteLine(MaskLstView.Items[i].SubItems[0].Text + "," +
-    //                      MaskLstView.Items[i].SubItems[1].Text + "," +
-    //                      MaskLstView.Items[i].SubItems[2].Text);
-    //     }
-    //     sw.Flush();
-    //     sw.Close();
-    // }
     private void MaskColorBtn_Click(Object? sender, EventArgs? e)
     {
         ColorDialog cd = new ColorDialog();
@@ -185,11 +170,9 @@ public partial class MainForm : Form
             RootPathTxtBox.Text = FileTreeView.Path;
         }
     }
-
     private Color String2Color(string strColor)
     {
         Color color;
-
         try
         {
             color = ColorTranslator.FromHtml(strColor);
