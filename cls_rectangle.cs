@@ -107,7 +107,14 @@ namespace IMG_Gen2
             Pen p = new Pen(String2Color(strColor), penWidth / mat.Elements[0]);
             try
             {
-                g!.DrawRectangle(p, pos.X, pos.Y, size.Width, size.Height);
+                if(labelName=="Mask")
+                {
+                    SolidBrush sBrush = new(Color.FromArgb(128, String2Color(strColor)));
+                    g!.FillRectangle(sBrush, pos.X, pos.Y, size.Width, size.Height);
+                    g!.DrawRectangle(p, pos.X, pos.Y, size.Width, size.Height);
+                }else{
+                    g!.DrawRectangle(p, pos.X, pos.Y, size.Width, size.Height);
+                }
             }
             catch { }
         }
