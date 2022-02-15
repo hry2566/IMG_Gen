@@ -11,33 +11,20 @@ public partial class MainForm : Form
     }
     private void Form_Load(object? sender, EventArgs e)
     {
-        StreamReader sr = new StreamReader("./label.ini");
-        ListViewItem item;
+        ReadIni("./label.ini", LabelLstView);
+        ReadIni("./mask.ini", MaskLstView);
+    }
 
+    private void ReadIni(string iniFileName, ListView listview)
+    {
+        StreamReader sr = new StreamReader(iniFileName);
         while (!sr.EndOfStream)
         {
             string? line = sr.ReadLine();
             string[] values = line!.Split(',');
+            ListViewItem item = new();
 
-            item = new();
-            item = LabelLstView.Items.Add(values[0]);
-            item.SubItems.Add(values[1]);
-            item.SubItems.Add(values[2]);
-            item.UseItemStyleForSubItems = false;
-            item.SubItems[1].BackColor = String2Color(values[1]);
-        }
-        sr.Close();
-
-        sr = new StreamReader("./mask.ini");
-        item = new();
-
-        while (!sr.EndOfStream)
-        {
-            string? line = sr.ReadLine();
-            string[] values = line!.Split(',');
-
-            item = new();
-            item = MaskLstView.Items.Add(values[0]);
+            item = listview.Items.Add(values[0]);
             item.SubItems.Add(values[1]);
             item.SubItems.Add(values[2]);
             item.UseItemStyleForSubItems = false;
@@ -47,29 +34,27 @@ public partial class MainForm : Form
     }
     private void MaskModBtn_Click(Object? sender, EventArgs? e)
     {
-        if (MaskLstView.SelectedItems.Count == 0) { return; }
-
-        MaskLstView.SelectedItems[0].SubItems[0].Text = MaskNameTxtBox.Text;
-        MaskLstView.SelectedItems[0].SubItems[1].Text = MaskColorTxtBox.Text;
-        MaskLstView.SelectedItems[0].SubItems[2].Text = MaskWidthTxtBox.Text;
-        MaskLstView.SelectedItems[0].UseItemStyleForSubItems = false;
-        MaskLstView.SelectedItems[0].SubItems[1].BackColor = String2Color(MaskColorTxtBox.Text);
-
-        MaskLstView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-        SavaMaskIni();
+        TextBox[] textbox = new TextBox[3] { MaskNameTxtBox, MaskColorTxtBox, MaskWidthTxtBox };
+        ModBtn_Click(textbox, MaskLstView);
+        SaveIni("./mask.ini", MaskLstView);
     }
     private void LabelModBtn_Click(Object? sender, EventArgs? e)
     {
-        if (LabelLstView.SelectedItems.Count == 0) { return; }
+        TextBox[] textbox = new TextBox[3] { LabelNameTxtBox, LabelColorTxtBox, LabelWidthTxtBox };
+        ModBtn_Click(textbox, LabelLstView);
+        SaveIni("./label.ini", LabelLstView);
+    }
 
-        LabelLstView.SelectedItems[0].SubItems[0].Text = LabelNameTxtBox.Text;
-        LabelLstView.SelectedItems[0].SubItems[1].Text = LabelColorTxtBox.Text;
-        LabelLstView.SelectedItems[0].SubItems[2].Text = LabelWidthTxtBox.Text;
-        LabelLstView.SelectedItems[0].UseItemStyleForSubItems = false;
-        LabelLstView.SelectedItems[0].SubItems[1].BackColor = String2Color(LabelColorTxtBox.Text);
+    private void ModBtn_Click(TextBox[] textBox, ListView listview)
+    {
+        if (listview.SelectedItems.Count == 0) { return; }
 
-        LabelLstView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-        SavaLabelIni();
+        listview.SelectedItems[0].SubItems[0].Text = textBox[0].Text;
+        listview.SelectedItems[0].SubItems[1].Text = textBox[1].Text;
+        listview.SelectedItems[0].SubItems[2].Text = textBox[2].Text;
+        listview.SelectedItems[0].UseItemStyleForSubItems = false;
+        listview.SelectedItems[0].SubItems[1].BackColor = String2Color(textBox[1].Text);
+        listview.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
     }
 
     private void lblLstView_SelectedIndexChanged(object? sender, EventArgs e)
@@ -82,80 +67,88 @@ public partial class MainForm : Form
     }
     private void MaskDelBtn_Click(Object? sender, EventArgs? e)
     {
-        if (MaskLstView.SelectedItems.Count == 0) { return; }
-
-        MaskLstView.Items[MaskLstView.SelectedItems[0].Index].Remove();
-
-        MaskLstView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-        SavaMaskIni();
+        DelBtn_Click(MaskLstView);
+        SaveIni("./mask.ini", MaskLstView);
     }
     private void LabelDelBtn_Click(Object? sender, EventArgs? e)
     {
-        if (LabelLstView.SelectedItems.Count == 0) { return; }
+        DelBtn_Click(LabelLstView);
+        SaveIni("./label.ini", LabelLstView);
+    }
+    private void DelBtn_Click(ListView listView)
+    {
+        if (listView.SelectedItems.Count == 0) { return; }
 
-        LabelLstView.Items[LabelLstView.SelectedItems[0].Index].Remove();
-
-        LabelLstView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-        SavaLabelIni();
+        listView.Items[listView.SelectedItems[0].Index].Remove();
+        listView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
     }
 
     private void LabelEntBtn_Click(Object? sender, EventArgs? e)
     {
-        if (LabelNameTxtBox.Text == "") { return; }
-
-        ListViewItem item;
-        item = LabelLstView.Items.Add(LabelNameTxtBox.Text);
-        item.SubItems.Add(LabelColorTxtBox.Text);
-        item.SubItems.Add(LabelWidthTxtBox.Text);
-        item.UseItemStyleForSubItems = false;
-        item.SubItems[1].BackColor = String2Color(LabelColorTxtBox.Text);
-
-        LabelLstView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-        SavaLabelIni();
+        TextBox[] textbox = new TextBox[3] { LabelNameTxtBox, LabelColorTxtBox, LabelWidthTxtBox };
+        EntBtn_Click(textbox, LabelLstView);
+        SaveIni("./label.ini", LabelLstView);
     }
 
     private void MaskEntBtn_Click(Object? sender, EventArgs? e)
     { 
-        if (MaskNameTxtBox.Text == "") { return; }
+        TextBox[] textbox = new TextBox[3] { MaskNameTxtBox, MaskColorTxtBox, MaskWidthTxtBox };
+        EntBtn_Click(textbox, MaskLstView);
+        SaveIni("./mask.ini", MaskLstView);
+    }
+
+    private void EntBtn_Click(TextBox[] textBox, ListView listview)
+    {
+        if (textBox[0].Text == "") { return; }
 
         ListViewItem item;
-        item = MaskLstView.Items.Add(MaskNameTxtBox.Text);
-        item.SubItems.Add(MaskColorTxtBox.Text);
-        item.SubItems.Add(MaskWidthTxtBox.Text);
+        item = listview.Items.Add(textBox[0].Text);
+        item.SubItems.Add(textBox[1].Text);
+        item.SubItems.Add(textBox[2].Text);
         item.UseItemStyleForSubItems = false;
-        item.SubItems[1].BackColor = String2Color(MaskColorTxtBox.Text);
-
-        MaskLstView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-        SavaMaskIni();
+        item.SubItems[1].BackColor = String2Color(textBox[1].Text);
+        listview.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
     }
 
-
-    private void SavaLabelIni()
+    private void SaveIni(string iniFileName, ListView listview)
     {
-        StreamWriter sw = new StreamWriter("./label.ini");
+        StreamWriter sw = new StreamWriter(iniFileName);
 
-        for (int i = 0; i < LabelLstView.Items.Count; i++)
+        for (int i = 0; i < listview.Items.Count; i++)
         {
-            sw.WriteLine(LabelLstView.Items[i].SubItems[0].Text + "," +
-                         LabelLstView.Items[i].SubItems[1].Text + "," +
-                         LabelLstView.Items[i].SubItems[2].Text);
+            sw.WriteLine(listview.Items[i].SubItems[0].Text + "," +
+                         listview.Items[i].SubItems[1].Text + "," +
+                         listview.Items[i].SubItems[2].Text);
         }
         sw.Flush();
         sw.Close();
     }
-    private void SavaMaskIni()
-    {
-        StreamWriter sw = new StreamWriter("./mask.ini");
+    // private void SavaLabelIni()
+    // {
+    //     StreamWriter sw = new StreamWriter("./label.ini");
 
-        for (int i = 0; i < MaskLstView.Items.Count; i++)
-        {
-            sw.WriteLine(MaskLstView.Items[i].SubItems[0].Text + "," +
-                         MaskLstView.Items[i].SubItems[1].Text + "," +
-                         MaskLstView.Items[i].SubItems[2].Text);
-        }
-        sw.Flush();
-        sw.Close();
-    }
+    //     for (int i = 0; i < LabelLstView.Items.Count; i++)
+    //     {
+    //         sw.WriteLine(LabelLstView.Items[i].SubItems[0].Text + "," +
+    //                      LabelLstView.Items[i].SubItems[1].Text + "," +
+    //                      LabelLstView.Items[i].SubItems[2].Text);
+    //     }
+    //     sw.Flush();
+    //     sw.Close();
+    // }
+    // private void SavaMaskIni()
+    // {
+    //     StreamWriter sw = new StreamWriter("./mask.ini");
+
+    //     for (int i = 0; i < MaskLstView.Items.Count; i++)
+    //     {
+    //         sw.WriteLine(MaskLstView.Items[i].SubItems[0].Text + "," +
+    //                      MaskLstView.Items[i].SubItems[1].Text + "," +
+    //                      MaskLstView.Items[i].SubItems[2].Text);
+    //     }
+    //     sw.Flush();
+    //     sw.Close();
+    // }
     private void MaskColorBtn_Click(Object? sender, EventArgs? e)
     {
         ColorDialog cd = new ColorDialog();
