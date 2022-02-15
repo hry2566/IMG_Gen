@@ -1,3 +1,5 @@
+using System.Windows.Forms;
+
 namespace IMG_Gen2
 {
     public class cls_rectangle
@@ -85,15 +87,25 @@ namespace IMG_Gen2
             selectBox.SetShow(selectFlag);
         }
 
-        public void DrawLabel(float scale, System.Drawing.Drawing2D.Matrix mat)
+        public void DrawRectangle(float scale, System.Drawing.Drawing2D.Matrix mat)
         {
             this.mat = mat;
-            btn.Location = new Point((int)((pos.X * scale) + mat.Elements[4]), (int)((pos.Y * scale) + mat.Elements[5]));
-            btn.Size = new Size((int)((size.Width / 5) * scale), (int)((size.Height / 5) * scale));
+            btn.Location = new Point((int)((pos.X * mat.Elements[0]) + mat.Elements[4]), (int)((pos.Y * mat.Elements[0]) + mat.Elements[5]));
+            btn.Size = new Size((int)(size.Width / 5 * mat.Elements[0]), (int)(size.Height / 5 * mat.Elements[0]));
             btn.Visible = true;
+            btn.BackColor = String2Color(strColor);
             selectBox.SetPos(pos, mat, size);
 
-            Pen p = new Pen(String2Color(strColor), penWidth / scale);
+            if ((int)((size.Width / 5) * mat.Elements[0]) < 5)
+            {
+                btn.Width = 50;
+            }
+            if ((int)((size.Height / 5) * mat.Elements[0]) < 5)
+            {
+                btn.Height = 50;
+            }
+
+            Pen p = new Pen(String2Color(strColor), penWidth / mat.Elements[0]);
             try
             {
                 g!.DrawRectangle(p, pos.X, pos.Y, size.Width, size.Height);
