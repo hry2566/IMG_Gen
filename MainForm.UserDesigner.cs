@@ -66,7 +66,11 @@ partial class MainForm
         this.Load += new EventHandler(Form_Load);
         this.KeyDown += new System.Windows.Forms.KeyEventHandler(PosPicBox!.Control_KeyDown);
 
+        // LabelLstView
         LabelLstView.SelectedIndexChanged += new EventHandler(lblLstView_SelectedIndexChanged);
+
+        //MaskLstView
+        MaskLstView.SelectedIndexChanged += new EventHandler(MaskLstView_SelectedIndexChanged);
 
         // RootSelectBtn
         RootSelectBtn.Click += new EventHandler(RootSelectBtn_Click);
