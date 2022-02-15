@@ -1,25 +1,22 @@
-using System.IO;
-using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
+
 namespace IMG_Gen2;
 
 public partial class cls_posPicBox : PictureBox
 {
-    private string? rootPath;
-    private string? filePath;
-    private Point startPos; // マウス座標記憶
-    private Point endPos;
-    private Bitmap? bmp; // 表示するBitmap
-    private Graphics? g; // 描画用Graphicsオブジェクト
-    private System.Drawing.Drawing2D.Matrix? mat; // アフィン変換行列
-    private float baseScale; // 表示倍率
-    private float scale; // 表示倍率
-    private Point pos; // マウス座標
-    private bool MouseDownFlg = false; // マウスダウンフラグ
-    private bool labelFlag = false; // ラベルフラグ
-    private bool maskFlag = false; // マスクフラグ
-    List<cls_rectangle> lblRect = new();
-    List<cls_rectangle> maskRect = new();
+    private string? rootPath;                           // ルートパス
+    private string? filePath;                           // 画像ファイルパス
+    private Point startPos;                             // Startマウス座標記憶
+    private Point endPos;                               // Endマウス座標記憶
+    private Point pos;                                  // 画像上のピクセル座標
+    private Bitmap? bmp;                                // 表示するBitmap
+    private Graphics? g;                                // 描画用Graphicsオブジェクト
+    private System.Drawing.Drawing2D.Matrix? mat;       // アフィン変換行列
+    private float baseScale;                            // 画面読み込み時の表示倍率
+    private bool scaleFlag = false;                     // スケールフラグ
+    private bool labelFlag = false;                     // ラベルフラグ
+    private bool maskFlag = false;                      // マスクフラグ
+    List<cls_rectangle> lblRect = new();                // ラベル
+    List<cls_rectangle> maskRect = new();               // マスク
 
     public cls_posPicBox(TabPage PosPage, ToolStripStatusLabel sLabel, ListView LabelLstView, ListView MaskLstView)
     {
@@ -61,13 +58,13 @@ public partial class cls_posPicBox : PictureBox
             }
             return;
         }
-        MouseDownFlg = true;
+        scaleFlag = true;
     }
     private void Control_MouseUp(object? sender, MouseEventArgs e)
     {
-        if (MouseDownFlg)
+        if (scaleFlag)
         {
-            MouseDownFlg = false;
+            scaleFlag = false;
         }
         else if (labelFlag)
         {
@@ -99,24 +96,24 @@ public partial class cls_posPicBox : PictureBox
         int x1, x2, y1, y2;
         if (startPos.X < endPos.X)
         {
-            x1 = (int)((startPos.X - mat!.Elements[4]) / scale);
-            x2 = (int)((endPos.X - mat!.Elements[4]) / scale);
+            x1 = (int)((startPos.X - mat!.Elements[4]) / mat!.Elements[0]);
+            x2 = (int)((endPos.X - mat!.Elements[4]) / mat!.Elements[0]);
         }
         else
         {
-            x2 = (int)((startPos.X - mat!.Elements[4]) / scale);
-            x1 = (int)((endPos.X - mat!.Elements[4]) / scale);
+            x2 = (int)((startPos.X - mat!.Elements[4]) / mat!.Elements[0]);
+            x1 = (int)((endPos.X - mat!.Elements[4]) / mat!.Elements[0]);
         }
 
         if (startPos.Y < endPos.Y)
         {
-            y1 = (int)((startPos.Y - mat!.Elements[5]) / scale);
-            y2 = (int)((endPos.Y - mat!.Elements[5]) / scale);
+            y1 = (int)((startPos.Y - mat!.Elements[5]) / mat!.Elements[0]);
+            y2 = (int)((endPos.Y - mat!.Elements[5]) / mat!.Elements[0]);
         }
         else
         {
-            y2 = (int)((startPos.Y - mat!.Elements[5]) / scale);
-            y1 = (int)((endPos.Y - mat!.Elements[5]) / scale);
+            y2 = (int)((startPos.Y - mat!.Elements[5]) / mat!.Elements[0]);
+            y1 = (int)((endPos.Y - mat!.Elements[5]) / mat!.Elements[0]);
         }
 
         string filename;
@@ -163,13 +160,13 @@ public partial class cls_posPicBox : PictureBox
     {
         if (mat == null) { return; }
 
-        pos.X = (int)((e.X - mat.Elements[4]) / scale);
-        pos.Y = (int)((e.Y - mat.Elements[5]) / scale);
-        sLabel!.Text = "Scale = " + scale.ToString() +
+        pos.X = (int)((e.X - mat.Elements[4]) / mat!.Elements[0]);
+        pos.Y = (int)((e.Y - mat.Elements[5]) / mat!.Elements[0]);
+        sLabel!.Text = "Scale = " + mat!.Elements[0].ToString() +
                        " Pos.X = " + pos.X.ToString() +
                        " Pos.Y = " + pos.Y.ToString();
 
-        if (MouseDownFlg)
+        if (scaleFlag)
         {
             mat!.Translate(e.X - startPos.X, e.Y - startPos.Y, System.Drawing.Drawing2D.MatrixOrder.Append);
             DrawImage();
@@ -192,31 +189,31 @@ public partial class cls_posPicBox : PictureBox
 
         Color color = String2Color(listView.SelectedItems[0].SubItems[1].Text);
         int penWidth = int.Parse(listView.SelectedItems[0].SubItems[2].Text);
-        Pen p = new Pen(color, penWidth / scale);
+        Pen p = new Pen(color, penWidth / mat!.Elements[0]);
 
         int x1, y1, w1, h1;
         if (movX > 0)
         {
-            x1 = (int)((startPos.X - mat!.Elements[4]) / scale);
-            w1 = (int)((movX + startPos.X - mat.Elements[4]) / scale);
+            x1 = (int)((startPos.X - mat!.Elements[4]) / mat!.Elements[0]);
+            w1 = (int)((movX + startPos.X - mat.Elements[4]) / mat!.Elements[0]);
         }
         else
         {
             movX = startPos.X - e.X;
-            x1 = (int)((e.X - mat!.Elements[4]) / scale);
-            w1 = (int)((movX + e.X - mat.Elements[4]) / scale);
+            x1 = (int)((e.X - mat!.Elements[4]) / mat!.Elements[0]);
+            w1 = (int)((movX + e.X - mat.Elements[4]) / mat!.Elements[0]);
         }
 
         if (movY > 0)
         {
-            y1 = (int)((startPos.Y - mat.Elements[5]) / scale);
-            h1 = (int)((movY + startPos.Y - mat.Elements[5]) / scale);
+            y1 = (int)((startPos.Y - mat.Elements[5]) / mat!.Elements[0]);
+            h1 = (int)((movY + startPos.Y - mat.Elements[5]) / mat!.Elements[0]);
         }
         else
         {
             movY *= -1;
-            y1 = (int)((e.Y - mat.Elements[5]) / scale);
-            h1 = (int)((movY + e.Y - mat.Elements[5]) / scale);
+            y1 = (int)((e.Y - mat.Elements[5]) / mat!.Elements[0]);
+            h1 = (int)((movY + e.Y - mat.Elements[5]) / mat!.Elements[0]);
         }
         g!.DrawRectangle(p, x1, y1, w1 - x1, h1 - y1);
 
@@ -290,11 +287,10 @@ public partial class cls_posPicBox : PictureBox
 
         g!.Clear(this.BackColor);
         g.DrawImage(bmp, 0, 0);
-        scale = mat!.Elements[0];
         DrawRect();
         this.Refresh();
 
-        sLabel!.Text = "Scale = " + scale.ToString() + " Pos.X = " + pos.X.ToString() + " Pos.Y = " + pos.Y.ToString();
+        sLabel!.Text = "Scale = " + mat!.Elements[0].ToString() + " Pos.X = " + pos.X.ToString() + " Pos.Y = " + pos.Y.ToString();
     }
     private List<cls_rectangle> CreateRectangle(string folderName)
     {
@@ -410,11 +406,11 @@ public partial class cls_posPicBox : PictureBox
     {
         for (int i = 0; i < lblRect.Count(); i++)
         {
-            lblRect[i].DrawRectangle(scale, mat!);
+            lblRect[i].DrawRectangle(mat!);
         }
         for (int i = 0; i < maskRect.Count(); i++)
         {
-            maskRect[i].DrawRectangle(scale, mat!);
+            maskRect[i].DrawRectangle(mat!);
         }
     }
 
@@ -446,7 +442,6 @@ public partial class cls_posPicBox : PictureBox
         {
             this.baseScale = scaleY;
         }
-        scale = baseScale;
         mat!.Reset();
         mat.Scale(baseScale, baseScale, System.Drawing.Drawing2D.MatrixOrder.Prepend);
         lblRect = CreateRectangle("pos");
