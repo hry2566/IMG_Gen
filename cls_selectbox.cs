@@ -6,8 +6,8 @@ namespace IMG_Gen2
         private Point pos;
         private Size size;
         Control posPicBox;
-        cls_label_rectangle lblRect;
-        public cls_selectbox(cls_label_rectangle lblRect, Control posPicBox, Point pos, Size size)
+        cls_rectangle lblRect;
+        public cls_selectbox(cls_rectangle lblRect, Control posPicBox, Point pos, Size size)
         {
             this.lblRect = lblRect;
             this.posPicBox = posPicBox;
