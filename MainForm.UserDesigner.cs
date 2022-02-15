@@ -85,6 +85,15 @@ partial class MainForm
 
         // MaskEntBtn
         MaskEntBtn.Click += new EventHandler(MaskEntBtn_Click);
+
+        //MaskColorBtn
+        MaskColorBtn.Click += new EventHandler(MaskColorBtn_Click);
+
+        // MaskModBtn
+        MaskModBtn.Click += new EventHandler(MaskModBtn_Click);
+
+        // MaskDelBtn
+        MaskDelBtn.Click += new EventHandler(MaskDelBtn_Click);
     }
 
     #endregion
