@@ -410,11 +410,11 @@ public partial class cls_posPicBox : PictureBox
     {
         for (int i = 0; i < lblRect.Count(); i++)
         {
-            lblRect[i].DrawLabel(scale, mat!);
+            lblRect[i].DrawRectangle(scale, mat!);
         }
         for (int i = 0; i < maskRect.Count(); i++)
         {
-            maskRect[i].DrawLabel(scale, mat!);
+            maskRect[i].DrawRectangle(scale, mat!);
         }
     }
 
