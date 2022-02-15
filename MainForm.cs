@@ -77,6 +77,22 @@ public partial class MainForm : Form
         SavaLabelIni();
     }
 
+    private void MaskEntBtn_Click(Object? sender, EventArgs? e)
+    { 
+        if (MaskNameTxtBox.Text == "") { return; }
+
+        ListViewItem item;
+        item = MaskLstView.Items.Add(MaskNameTxtBox.Text);
+        item.SubItems.Add(MaskColorTxtBox.Text);
+        item.SubItems.Add(MaskWidthTxtBox.Text);
+        item.UseItemStyleForSubItems = false;
+        item.SubItems[1].BackColor = String2Color(MaskColorTxtBox.Text);
+
+        MaskLstView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+        // SavaLabelIni();
+    }
+
+
     private void SavaLabelIni()
     {
         StreamWriter sw = new StreamWriter("./label.ini");
