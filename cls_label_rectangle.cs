@@ -15,10 +15,7 @@ namespace IMG_Gen2
         private System.Drawing.Drawing2D.Matrix? mat;
         private Point memPos;
         private bool changeFlag = false;
-        private Point memP1;
-        private Point memP2;
-
-
+        private Size memSize;
         public cls_label_rectangle(cls_posPicBox posPicBox, Graphics g, string labelName, string strColor, string strWidth, int x1, int y1, int x2, int y2)
         {
             this.posPicBox = posPicBox;
@@ -26,11 +23,11 @@ namespace IMG_Gen2
             this.labelName = labelName;
             this.strColor = strColor;
             this.penWidth = int.Parse(strWidth);
+
             pos.X = x1;
             pos.Y = y1;
             size.Width = x2 - x1;
             size.Height = y2 - y1;
-
             btn.Visible = false;
             posPicBox.Controls.Add(btn);
             selectBox = new(this, posPicBox, pos, size);
@@ -90,11 +87,9 @@ namespace IMG_Gen2
         public void DrawLabel(float scale, System.Drawing.Drawing2D.Matrix mat)
         {
             this.mat = mat;
-
             btn.Location = new Point((int)((pos.X * scale) + mat.Elements[4]), (int)((pos.Y * scale) + mat.Elements[5]));
             btn.Size = new Size((int)((size.Width / 5) * scale), (int)((size.Height / 5) * scale));
             btn.Visible = true;
-
             selectBox.SetPos(pos, mat, size);
 
             Pen p = new Pen(String2Color(strColor), penWidth / scale);
@@ -130,11 +125,8 @@ namespace IMG_Gen2
             {
                 memPos.X = e.X;
                 memPos.Y = e.Y;
-                memP1.X = pos.X;
-                memP1.Y = pos.Y;
-                memP2.X = pos.X + size.Width;
-                memP2.Y = pos.Y + size.Height;
-
+                memSize.Width = pos.X + size.Width;
+                memSize.Height = pos.Y + size.Height;
                 changeFlag = true;
             }
         }
@@ -161,17 +153,17 @@ namespace IMG_Gen2
                     case 0:
                         pos.X = (int)((newPos.X + 8 - mat!.Elements[4]) / mat.Elements[0]);
                         pos.Y = (int)((newPos.Y + 8 - mat!.Elements[5]) / mat.Elements[0]);
-                        size.Width = (int)(memP2.X - pos.X);
-                        size.Height = (int)(memP2.Y - pos.Y);
+                        size.Width = (int)(memSize.Width - pos.X);
+                        size.Height = (int)(memSize.Height - pos.Y);
                         break;
                     case 1:
                         pos.Y = (int)((newPos.Y + 8 - mat!.Elements[5]) / mat.Elements[0]);
                         size.Width = (int)((int)((newPos.X - mat!.Elements[4]) / mat.Elements[0]) - pos.X);
-                        size.Height = (int)(memP2.Y - pos.Y);
+                        size.Height = (int)(memSize.Height - pos.Y);
                         break;
                     case 2:
                         pos.X = (int)((newPos.X + 8 - mat!.Elements[4]) / mat.Elements[0]);
-                        size.Width = (int)(memP2.X - pos.X);
+                        size.Width = (int)(memSize.Width - pos.X);
                         size.Height = (int)((int)((newPos.Y - mat!.Elements[5]) / mat.Elements[0]) - pos.Y);
                         break;
                     case 3:
