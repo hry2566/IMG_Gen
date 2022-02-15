@@ -51,7 +51,6 @@ public partial class cls_posPicBox : PictureBox
             ImageReset();
             return;
         }
-
         MouseDownFlg = true;
     }
     private void Control_MouseUp(object? sender, MouseEventArgs e)
@@ -72,8 +71,6 @@ public partial class cls_posPicBox : PictureBox
     }
     private void AddPosFile()
     {
-        CheckPosFolder(rootPath!, "pos");
-
         string labelName = LabelLstView.SelectedItems[0].SubItems[0].Text;
         string strColor = LabelLstView.SelectedItems[0].SubItems[1].Text;
         string strWidth = LabelLstView.SelectedItems[0].SubItems[2].Text;
@@ -101,6 +98,7 @@ public partial class cls_posPicBox : PictureBox
             y1 = (int)((endPos.Y - mat!.Elements[5]) / scale);
         }
 
+        CheckPosFolder(rootPath!, "pos");
         string filename = rootPath + "pos/" + GetFileName() + ".txt";
         StreamWriter sw = new(filename, true);
         sw.WriteLine(labelName + "," + strColor + "," + strWidth + "," + x1 + "," + y1 + "," + x2 + "," + y2);
@@ -109,7 +107,6 @@ public partial class cls_posPicBox : PictureBox
     private string GetFileName()
     {
         string[] split = new string[0];
-
         if (filePath!.IndexOf("\\") > -1)
         {
             split = filePath.Split("\\");
@@ -133,13 +130,14 @@ public partial class cls_posPicBox : PictureBox
 
         pos.X = (int)((e.X - mat.Elements[4]) / scale);
         pos.Y = (int)((e.Y - mat.Elements[5]) / scale);
-        sLabel!.Text = "Scale = " + scale.ToString() + " Pos.X = " + pos.X.ToString() + " Pos.Y = " + pos.Y.ToString();
-
+        sLabel!.Text = "Scale = " + scale.ToString() + 
+                       " Pos.X = " + pos.X.ToString() + 
+                       " Pos.Y = " + pos.Y.ToString();
+        
         if (MouseDownFlg)
         {
             mat!.Translate(e.X - OldPoint.X, e.Y - OldPoint.Y, System.Drawing.Drawing2D.MatrixOrder.Append);
             DrawImage();
-
             OldPoint.X = e.X;
             OldPoint.Y = e.Y;
         }
@@ -162,10 +160,7 @@ public partial class cls_posPicBox : PictureBox
         Pen p = new Pen(color, penWidth / scale);
 
         //長方形を描く
-        int x1;
-        int y1;
-        int w1;
-        int h1;
+        int x1,y1,w1,h1;
 
         if (movX > 0)
         {
@@ -190,10 +185,8 @@ public partial class cls_posPicBox : PictureBox
             y1 = (int)((e.Y - mat.Elements[5]) / scale);
             h1 = (int)((movY + e.Y - mat.Elements[5]) / scale);
         }
-
         g!.DrawRectangle(p, x1, y1, w1 - x1, h1 - y1);
 
-        //リソースを解放する
         p.Dispose();
         this.Refresh();
         g.DrawImage(bmp!, 0, 0);
@@ -203,7 +196,6 @@ public partial class cls_posPicBox : PictureBox
         if (bmp == null) { return; }
 
         mat!.Translate(-e.X, -e.Y, System.Drawing.Drawing2D.MatrixOrder.Append);
-
         if (e.Delta > 0)
         {
             if (mat.Elements[0] < 100)
@@ -356,8 +348,6 @@ public partial class cls_posPicBox : PictureBox
         }
         bmp = new Bitmap(filePath);
         mat = new System.Drawing.Drawing2D.Matrix();
-
-        // CreateLabel ();
         ImageReset();
     }
     private void ImageReset()
@@ -375,9 +365,7 @@ public partial class cls_posPicBox : PictureBox
         {
             this.baseScale = scaleY;
         }
-
         scale = baseScale;
-
         mat!.Reset();
         mat.Scale(baseScale, baseScale, System.Drawing.Drawing2D.MatrixOrder.Prepend);
         CreateLabel();
@@ -386,7 +374,6 @@ public partial class cls_posPicBox : PictureBox
     private Color String2Color(string strColor)
     {
         Color color;
-
         try
         {
             color = ColorTranslator.FromHtml(strColor);
@@ -426,7 +413,5 @@ public partial class cls_posPicBox : PictureBox
         {
             AllUnSelect();
         }
-
-        
     }
 }
