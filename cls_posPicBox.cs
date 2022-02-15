@@ -18,7 +18,6 @@ public partial class cls_posPicBox : PictureBox
     private bool MouseDownFlg = false; // マウスダウンフラグ
     private bool labelFlag = false; // ラバーバンドフラグ
     private Point OldPoint; // マウス座標記憶
-    // cls_label_rectangle[] lblRect = new cls_label_rectangle[0];
     List<cls_label_rectangle> lblRect = new();
 
     public cls_posPicBox(TabPage PosPage, ToolStripStatusLabel sLabel, ListView LabelLstView)
@@ -42,6 +41,7 @@ public partial class cls_posPicBox : PictureBox
             if (LabelLstView.SelectedItems.Count > 0 && e.Button == System.Windows.Forms.MouseButtons.Left)
             {
                 labelFlag = true;
+                AllUnSelect();
                 startPos = OldPoint;
             }
             return;
@@ -273,26 +273,16 @@ public partial class cls_posPicBox : PictureBox
     private void CreateLabel()
     {
         lblRect_AllDelete();
-        
-        // for (int i = 0; i < lblRect.Count;i++)
-        // {
-        //     lblRect.Remove(lblRect[i]);
-        // }
-            // Array.Resize(ref lblRect, 0);
-
-            if (!System.IO.File.Exists(rootPath + "pos\\" + GetFileName() + ".txt")) { return; }
+        if (!System.IO.File.Exists(rootPath + "pos\\" + GetFileName() + ".txt")) { return; }
 
         StreamReader sr = new(rootPath + "pos\\" + GetFileName() + ".txt");
         while (!sr.EndOfStream)
         {
-            // Array.Resize(ref lblRect, lblRect.Count() + 1);
             string? line = sr.ReadLine();
             string[] split = line!.Split(",");
 
             cls_label_rectangle ctrl = new(this, g!, split[0], split[1], split[2], int.Parse(split[3]), int.Parse(split[4]), int.Parse(split[5]), int.Parse(split[6]));
             lblRect.Add(ctrl);
-
-            // lblRect[lblRect.Count() - 1] = new cls_label_rectangle(this, g!, split[0], split[1], split[2], int.Parse(split[3]), int.Parse(split[4]), int.Parse(split[5]), int.Parse(split[6]));
         }
         sr.Close();
     }
@@ -302,13 +292,39 @@ public partial class cls_posPicBox : PictureBox
         StreamWriter sw = new(rootPath + "pos\\" + GetFileName() + ".txt", false);
         for (int i = 0; i < lblRect.Count(); i++)
         {
+            int x1 = lblRect[i].pos.X;
+            int y1 = lblRect[i].pos.Y;
+            int x2 = lblRect[i].pos.X + lblRect[i].size.Width;
+            int y2 = lblRect[i].pos.Y + lblRect[i].size.Height;
+            int dummy = 0;
+            
+            if(x1>x2)
+            {
+                dummy = x1;
+                x1 = x2;
+                x2 = dummy;
+            }
+
+            if(y1>y2)
+            {
+                dummy = y1;
+                y1 = y2;
+                y2 = dummy;
+            }
+
+            lblRect[i].pos.X = x1;
+            lblRect[i].pos.Y = y1;
+            lblRect[i].size.Width = x2 - x1;
+            lblRect[i].size.Height = y2 - y1;
+
+
             string line = lblRect[i].labelName + "," +
                           lblRect[i].strColor + "," +
                           lblRect[i].penWidth.ToString() + "," +
-                          lblRect[i].pos.X.ToString() + "," +
-                          lblRect[i].pos.Y.ToString() + "," +
-                          (lblRect[i].pos.X + lblRect[i].size.Width).ToString() + "," +
-                          (lblRect[i].pos.Y + lblRect[i].size.Height).ToString();
+                          x1.ToString() + "," +
+                          y1.ToString() + "," +
+                          x2.ToString() + "," +
+                          y2.ToString();
             sw.WriteLine(line);
         }
         sw.Close();
