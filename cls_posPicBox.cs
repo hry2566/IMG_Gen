@@ -7,7 +7,7 @@ public partial class cls_posPicBox : PictureBox
 {
     private string? rootPath;
     private string? filePath;
-    private Point startPos;
+    private Point startPos; // マウス座標記憶
     private Point endPos;
     private Bitmap? bmp; // 表示するBitmap
     private Graphics? g; // 描画用Graphicsオブジェクト
@@ -16,15 +16,17 @@ public partial class cls_posPicBox : PictureBox
     private float scale; // 表示倍率
     private Point pos; // マウス座標
     private bool MouseDownFlg = false; // マウスダウンフラグ
-    private bool labelFlag = false; // ラバーバンドフラグ
-    private Point OldPoint; // マウス座標記憶
-    List<cls_label_rectangle> lblRect = new();
+    private bool labelFlag = false; // ラベルフラグ
+    private bool maskFlag = false; // マスクフラグ
+    List<cls_rectangle> lblRect = new();
+    List<cls_rectangle> maskRect = new();
 
-    public cls_posPicBox(TabPage PosPage, ToolStripStatusLabel sLabel, ListView LabelLstView)
+    public cls_posPicBox(TabPage PosPage, ToolStripStatusLabel sLabel, ListView LabelLstView, ListView MaskLstView)
     {
         this.PosPage = PosPage;
         this.sLabel = sLabel;
         this.LabelLstView = LabelLstView;
+        this.MaskLstView = MaskLstView;
 
         InitializeUserComponent();
         Controls_EventHandler();
@@ -33,8 +35,8 @@ public partial class cls_posPicBox : PictureBox
     {
         if (mat == null) { return; }
 
-        OldPoint.X = e.X;
-        OldPoint.Y = e.Y;
+        startPos.X = e.X;
+        startPos.Y = e.Y;
 
         if (Control.ModifierKeys == Keys.Control)
         {
@@ -42,13 +44,21 @@ public partial class cls_posPicBox : PictureBox
             {
                 labelFlag = true;
                 AllUnSelect();
-                startPos = OldPoint;
             }
             return;
         }
         else if (e.Button == System.Windows.Forms.MouseButtons.Right)
         {
             ImageReset();
+            return;
+        }
+        else if (Control.ModifierKeys == Keys.Alt)
+        {
+            if (MaskLstView.SelectedItems.Count > 0 && e.Button == System.Windows.Forms.MouseButtons.Left)
+            {
+                maskFlag = true;
+                AllUnSelect();
+            }
             return;
         }
         MouseDownFlg = true;
@@ -64,16 +74,27 @@ public partial class cls_posPicBox : PictureBox
             labelFlag = false;
             endPos.X = e.X;
             endPos.Y = e.Y;
-            AddPosFile();
-            CreateLabel();
+            AddPosFile(LabelLstView, "pos");
+            lblRect = CreateRectangle("pos");
+            lblRect[lblRect.Count - 1].SetSelect(true);
+            DrawImage();
+        }
+        else if (maskFlag)
+        {
+            maskFlag = false;
+            endPos.X = e.X;
+            endPos.Y = e.Y;
+            AddPosFile(MaskLstView, "mask");
+            maskRect = CreateRectangle("mask");
+            maskRect[maskRect.Count - 1].SetSelect(true);
             DrawImage();
         }
     }
-    private void AddPosFile()
+    private void AddPosFile(ListView listview, string folderName)
     {
-        string labelName = LabelLstView.SelectedItems[0].SubItems[0].Text;
-        string strColor = LabelLstView.SelectedItems[0].SubItems[1].Text;
-        string strWidth = LabelLstView.SelectedItems[0].SubItems[2].Text;
+        string labelName = listview.SelectedItems[0].SubItems[0].Text;
+        string strColor = listview.SelectedItems[0].SubItems[1].Text;
+        string strWidth = listview.SelectedItems[0].SubItems[2].Text;
 
         int x1, x2, y1, y2;
         if (startPos.X < endPos.X)
@@ -98,11 +119,25 @@ public partial class cls_posPicBox : PictureBox
             y1 = (int)((endPos.Y - mat!.Elements[5]) / scale);
         }
 
-        CheckPosFolder(rootPath!, "pos");
-        string filename = rootPath + "pos/" + GetFileName() + ".txt";
-        StreamWriter sw = new(filename, true);
-        sw.WriteLine(labelName + "," + strColor + "," + strWidth + "," + x1 + "," + y1 + "," + x2 + "," + y2);
-        sw.Close();
+        string filename;
+        StreamWriter sw;
+        CheckPosFolder(rootPath!, folderName);
+
+        switch (folderName)
+        {
+            case "pos":
+                filename = rootPath + folderName + "/" + GetFileName() + ".txt";
+                sw = new(filename, true);
+                sw.WriteLine(labelName + "," + strColor + "," + strWidth + "," + x1 + "," + y1 + "," + x2 + "," + y2);
+                sw.Close();
+                break;
+            case "mask":
+                filename = rootPath + folderName + "/mask.txt";
+                sw = new(filename, true);
+                sw.WriteLine(labelName + "," + strColor + "," + strWidth + "," + x1 + "," + y1 + "," + x2 + "," + y2);
+                sw.Close();
+                break;
+        }
     }
     private string GetFileName()
     {
@@ -130,54 +165,52 @@ public partial class cls_posPicBox : PictureBox
 
         pos.X = (int)((e.X - mat.Elements[4]) / scale);
         pos.Y = (int)((e.Y - mat.Elements[5]) / scale);
-        sLabel!.Text = "Scale = " + scale.ToString() + 
-                       " Pos.X = " + pos.X.ToString() + 
+        sLabel!.Text = "Scale = " + scale.ToString() +
+                       " Pos.X = " + pos.X.ToString() +
                        " Pos.Y = " + pos.Y.ToString();
-        
+
         if (MouseDownFlg)
         {
-            mat!.Translate(e.X - OldPoint.X, e.Y - OldPoint.Y, System.Drawing.Drawing2D.MatrixOrder.Append);
+            mat!.Translate(e.X - startPos.X, e.Y - startPos.Y, System.Drawing.Drawing2D.MatrixOrder.Append);
             DrawImage();
-            OldPoint.X = e.X;
-            OldPoint.Y = e.Y;
+            startPos.X = e.X;
+            startPos.Y = e.Y;
         }
         else if (labelFlag && LabelLstView.SelectedItems.Count > 0)
         {
-            DrawRubberBand(e);
+            DrawRubberBand(e, LabelLstView);
+        }
+        else if (maskFlag && MaskLstView.SelectedItems.Count > 0)
+        {
+            DrawRubberBand(e, MaskLstView);
         }
     }
-    private void DrawRubberBand(MouseEventArgs e)
+    private void DrawRubberBand(MouseEventArgs e, ListView listView)
     {
-        int movX; // 画像移動量:X or 四角の幅
-        int movY; // 画像移動量:Y or 四角の高さ
+        int movX = e.X - startPos.X;
+        int movY = e.Y - startPos.Y;
 
-        // 画像上のマウス座標取得し、画像移動量Ｘ＆Ｙ or 四角の高さ＆幅を算出
-        movX = e.X - OldPoint.X;
-        movY = e.Y - OldPoint.Y;
-
-        Color color = String2Color(LabelLstView.SelectedItems[0].SubItems[1].Text);
-        int penWidth = int.Parse(LabelLstView.SelectedItems[0].SubItems[2].Text);
+        Color color = String2Color(listView.SelectedItems[0].SubItems[1].Text);
+        int penWidth = int.Parse(listView.SelectedItems[0].SubItems[2].Text);
         Pen p = new Pen(color, penWidth / scale);
 
-        //長方形を描く
-        int x1,y1,w1,h1;
-
+        int x1, y1, w1, h1;
         if (movX > 0)
         {
-            x1 = (int)((OldPoint.X - mat!.Elements[4]) / scale);
-            w1 = (int)((movX + OldPoint.X - mat.Elements[4]) / scale);
+            x1 = (int)((startPos.X - mat!.Elements[4]) / scale);
+            w1 = (int)((movX + startPos.X - mat.Elements[4]) / scale);
         }
         else
         {
-            movX = OldPoint.X - e.X;
+            movX = startPos.X - e.X;
             x1 = (int)((e.X - mat!.Elements[4]) / scale);
             w1 = (int)((movX + e.X - mat.Elements[4]) / scale);
         }
 
         if (movY > 0)
         {
-            y1 = (int)((OldPoint.Y - mat.Elements[5]) / scale);
-            h1 = (int)((movY + OldPoint.Y - mat.Elements[5]) / scale);
+            y1 = (int)((startPos.Y - mat.Elements[5]) / scale);
+            h1 = (int)((movY + startPos.Y - mat.Elements[5]) / scale);
         }
         else
         {
@@ -196,6 +229,7 @@ public partial class cls_posPicBox : PictureBox
         if (bmp == null) { return; }
 
         mat!.Translate(-e.X, -e.Y, System.Drawing.Drawing2D.MatrixOrder.Append);
+
         if (e.Delta > 0)
         {
             if (mat.Elements[0] < 100)
@@ -257,62 +291,89 @@ public partial class cls_posPicBox : PictureBox
         g!.Clear(this.BackColor);
         g.DrawImage(bmp, 0, 0);
         scale = mat!.Elements[0];
-        DrawLabel();
+        DrawRect();
         this.Refresh();
 
         sLabel!.Text = "Scale = " + scale.ToString() + " Pos.X = " + pos.X.ToString() + " Pos.Y = " + pos.Y.ToString();
     }
-    private void CreateLabel()
+    private List<cls_rectangle> CreateRectangle(string folderName)
     {
-        lblRect_AllDelete();
-        if (!System.IO.File.Exists(rootPath + "pos\\" + GetFileName() + ".txt")) { return; }
+        List<cls_rectangle> rectangle = new();
+        string filepath = "";
 
-        StreamReader sr = new(rootPath + "pos\\" + GetFileName() + ".txt");
+        switch (folderName)
+        {
+            case "pos":
+                filepath = rootPath + folderName + "\\" + GetFileName() + ".txt";
+                lblRect_AllDelete();
+                break;
+            case "mask":
+                filepath = rootPath + folderName + "\\mask.txt";
+                maskRect_AllDelete();
+                break;
+        }
+
+        if (!System.IO.File.Exists(filepath)) { return new List<cls_rectangle>(); }
+
+        StreamReader sr = new(filepath);
         while (!sr.EndOfStream)
         {
             string? line = sr.ReadLine();
             string[] split = line!.Split(",");
 
-            cls_label_rectangle ctrl = new(this, g!, split[0], split[1], split[2], int.Parse(split[3]), int.Parse(split[4]), int.Parse(split[5]), int.Parse(split[6]));
-            lblRect.Add(ctrl);
+            cls_rectangle ctrl = new(this, g!, split[0], split[1], split[2], int.Parse(split[3]), int.Parse(split[4]), int.Parse(split[5]), int.Parse(split[6]));
+            rectangle.Add(ctrl);
         }
         sr.Close();
+        return rectangle;
     }
 
-    internal void SaveLabel()
+    private void SaveRect(string folderPath, List<cls_rectangle> rectangle)
     {
-        StreamWriter sw = new(rootPath + "pos\\" + GetFileName() + ".txt", false);
-        for (int i = 0; i < lblRect.Count(); i++)
+        string filePath = "";
+
+        switch (folderPath)
         {
-            int x1 = lblRect[i].pos.X;
-            int y1 = lblRect[i].pos.Y;
-            int x2 = lblRect[i].pos.X + lblRect[i].size.Width;
-            int y2 = lblRect[i].pos.Y + lblRect[i].size.Height;
+            case "pos":
+                filePath = rootPath + folderPath + "\\" + GetFileName() + ".txt";
+                break;
+            case "mask":
+                filePath = rootPath + folderPath + "\\mask.txt";
+                break;
+        }
+
+        StreamWriter sw = new(filePath, false);
+        for (int i = 0; i < rectangle.Count(); i++)
+        {
+            int x1 = rectangle[i].pos.X;
+            int y1 = rectangle[i].pos.Y;
+            int x2 = rectangle[i].pos.X + rectangle[i].size.Width;
+            int y2 = rectangle[i].pos.Y + rectangle[i].size.Height;
             int dummy = 0;
-            
-            if(x1>x2)
+
+            if (x1 > x2)
             {
                 dummy = x1;
                 x1 = x2;
                 x2 = dummy;
             }
 
-            if(y1>y2)
+            if (y1 > y2)
             {
                 dummy = y1;
                 y1 = y2;
                 y2 = dummy;
             }
 
-            lblRect[i].pos.X = x1;
-            lblRect[i].pos.Y = y1;
-            lblRect[i].size.Width = x2 - x1;
-            lblRect[i].size.Height = y2 - y1;
+            rectangle[i].pos.X = x1;
+            rectangle[i].pos.Y = y1;
+            rectangle[i].size.Width = x2 - x1;
+            rectangle[i].size.Height = y2 - y1;
 
 
-            string line = lblRect[i].labelName + "," +
-                          lblRect[i].strColor + "," +
-                          lblRect[i].penWidth.ToString() + "," +
+            string line = rectangle[i].labelName + "," +
+                          rectangle[i].strColor + "," +
+                          rectangle[i].penWidth.ToString() + "," +
                           x1.ToString() + "," +
                           y1.ToString() + "," +
                           x2.ToString() + "," +
@@ -320,6 +381,14 @@ public partial class cls_posPicBox : PictureBox
             sw.WriteLine(line);
         }
         sw.Close();
+    }
+    internal void SaveLabel()
+    {
+        SaveRect("pos", lblRect);
+    }
+    internal void SaveMask()
+    {
+        SaveRect("mask", maskRect);
     }
     private void lblRect_AllDelete()
     {
@@ -329,11 +398,23 @@ public partial class cls_posPicBox : PictureBox
         }
         lblRect = new();
     }
-    private void DrawLabel()
+    private void maskRect_AllDelete()
+    {
+        for (int i = 0; i < maskRect.Count(); i++)
+        {
+            maskRect[i].Delete();
+        }
+        maskRect = new();
+    }
+    private void DrawRect()
     {
         for (int i = 0; i < lblRect.Count(); i++)
         {
             lblRect[i].DrawLabel(scale, mat!);
+        }
+        for (int i = 0; i < maskRect.Count(); i++)
+        {
+            maskRect[i].DrawLabel(scale, mat!);
         }
     }
 
@@ -368,7 +449,8 @@ public partial class cls_posPicBox : PictureBox
         scale = baseScale;
         mat!.Reset();
         mat.Scale(baseScale, baseScale, System.Drawing.Drawing2D.MatrixOrder.Prepend);
-        CreateLabel();
+        lblRect = CreateRectangle("pos");
+        maskRect = CreateRectangle("mask");
         DrawImage();
     }
     private Color String2Color(string strColor)
@@ -392,24 +474,42 @@ public partial class cls_posPicBox : PictureBox
         {
             lblRect[i].SetSelect(false);
         }
+        for (int i = 0; i < maskRect.Count(); i++)
+        {
+            maskRect[i].SetSelect(false);
+        }
     }
     internal void Control_KeyDown(object? sender, KeyEventArgs e)
     {
         if (e.Control && e.KeyCode == Keys.Delete)
         {
-            for (int i = 0; i < lblRect.Count;i++)
+            for (int i = 0; i < lblRect.Count; i++)
             {
-                if(lblRect[i].selectFlag)
+                if (lblRect[i].selectFlag)
                 {
                     lblRect[i].Delete();
                     lblRect.Remove(lblRect[i]);
                     break;
                 }
             }
-            SaveLabel();
+            SaveRect("pos", lblRect);
             DrawImage();
         }
-        else if(e.KeyCode == Keys.Escape)
+        else if (e.Alt && e.KeyCode == Keys.Delete)
+        {
+            for (int i = 0; i < maskRect.Count; i++)
+            {
+                if (maskRect[i].selectFlag)
+                {
+                    maskRect[i].Delete();
+                    maskRect.Remove(maskRect[i]);
+                    break;
+                }
+            }
+            SaveRect("mask", maskRect);
+            DrawImage();
+        }
+        else if (e.KeyCode == Keys.Escape)
         {
             AllUnSelect();
         }
