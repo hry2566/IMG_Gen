@@ -30,8 +30,8 @@ public partial class MainForm : Form
         if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
         {
             FileTreeView.Path = folderBrowserDialog1.SelectedPath + "\\";
-            RootPathTxtBox.Text = FileTreeView.Path;
-            SaveAppIni("./IMG_Gen.ini",RootPathTxtBox.Text);
+            RootPathTxtBox.Text = folderBrowserDialog1.SelectedPath + "\\";
+            SaveAppIni("./IMG_Gen.ini", folderBrowserDialog1.SelectedPath + "\\");
         }
     }
 
@@ -95,18 +95,19 @@ public partial class MainForm : Form
     {
         ColorBtn_Click(LabelColorTxtBox);
     }
-    
+
     // ***********************************************************************
     // 関数
     // ***********************************************************************
     private void ReadAppIni(string iniFileName)
     {
+        if (!cls_posPicBox.CheckFile(iniFileName)) { return; }
         StreamReader sr = new StreamReader(iniFileName);
         while (!sr.EndOfStream)
         {
             string? line = sr.ReadLine();
             string[] values = line!.Split(":::");
-            switch(values[0])
+            switch (values[0])
             {
                 case "rootpath":
                     RootPathTxtBox.Text = values[1];
@@ -116,14 +117,15 @@ public partial class MainForm : Form
         }
         sr.Close();
     }
-    private void SaveAppIni(string iniFileName,string rootPath)
+    private void SaveAppIni(string iniFileName, string rootPath)
     {
-        StreamWriter sw = new StreamWriter(iniFileName,false);
+        StreamWriter sw = new StreamWriter(iniFileName, false);
         sw.WriteLine("rootpath:::" + RootPathTxtBox.Text);
         sw.Close();
     }
     private void ReadIni(string iniFileName, ListView listview)
     {
+        if (!cls_posPicBox.CheckFile(iniFileName)) { return; }
         StreamReader sr = new StreamReader(iniFileName);
         while (!sr.EndOfStream)
         {
