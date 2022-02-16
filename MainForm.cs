@@ -1,4 +1,4 @@
-using Microsoft.Win32.SafeHandles;
+
 namespace IMG_Gen2;
 
 public partial class MainForm : Form
@@ -102,7 +102,8 @@ public partial class MainForm : Form
     }
 
     private void MaskEntBtn_Click(Object? sender, EventArgs? e)
-    { 
+    {
+        MaskNameTxtBox.Text = "Mask";
         TextBox[] textBox = new TextBox[3] { MaskNameTxtBox, MaskColorTxtBox, MaskWidthTxtBox };
         EntBtn_Click(textBox, MaskLstView);
         SaveIni("./mask.ini", MaskLstView);
