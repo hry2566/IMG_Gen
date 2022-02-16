@@ -4,7 +4,7 @@ public partial class cls_treeview : TreeView
 {
     private cls_posPicBox picBox1;
     private TabPage PosPage;
-    private string? rootPath;              // ルートフォルダパス
+    private string? rootPath;                               // ルートフォルダパス
     private cls_treenode[] treeNode = new cls_treenode[0];
 
     public cls_treeview(cls_posPicBox picBox1, TabPage PosPage)
@@ -13,13 +13,11 @@ public partial class cls_treeview : TreeView
         this.PosPage = PosPage;
         this.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(SelectChange);
     }
-
     private void SelectChange(Object? sender, TreeViewEventArgs e)
     {
         if (e.Node!.Text.IndexOf(".") > -1)
         {
             string filePath;
-
             if (e.Node.Parent != null)
             {
                 filePath = rootPath + e.Node.Parent.Text + "\\" + e.Node.Text;
@@ -28,12 +26,10 @@ public partial class cls_treeview : TreeView
             {
                 filePath = rootPath + e.Node.Text;
             }
-
             picBox1.SetImage(filePath, rootPath!);
         }
     }
-
-    public string Path
+    internal string Path
     {
         set
         {
@@ -42,11 +38,9 @@ public partial class cls_treeview : TreeView
         }
         get { return this.rootPath!; }
     }
-
     private void SetView(string path)
     {
         string[] fPath = System.IO.Directory.GetDirectories(path, "*", System.IO.SearchOption.TopDirectoryOnly);
-
         if (fPath.Length == 0)
         {
             System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(path);
@@ -65,11 +59,9 @@ public partial class cls_treeview : TreeView
                 treeNode[treeNode.Length - 1] = new cls_treenode(path, fPath[i]);
             }
         }
-
         this.Nodes.AddRange(treeNode);
         this.ExpandAll();
     }
-
     public void Node_Clear()
     {
         treeNode = new cls_treenode[0];
