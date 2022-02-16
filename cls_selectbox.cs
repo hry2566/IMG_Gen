@@ -2,21 +2,17 @@ namespace IMG_Gen2
 {
     public class cls_selectbox
     {
-        Control posPicBox;
-        cls_rectangle rectangle;
         private Panel[] selectbox = new Panel[4];       // 選択ボックス
         private Point pos;                              // 四角位置
         private Size size;                              // 四角サイズ
         
         public cls_selectbox(cls_rectangle rectangle, Control posPicBox, Point pos, Size size)
         {
-            this.rectangle = rectangle;
-            this.posPicBox = posPicBox;
             this.pos = pos;
             this.size = size;
-            Init();
+            Init(posPicBox, rectangle);
         }
-        private void Init()
+        private void Init(Control posPicBox, cls_rectangle rectangle)
         {
             for (int i = 0; i < 4; i++)
             {
@@ -39,7 +35,6 @@ namespace IMG_Gen2
                 this.selectbox[i].MouseDown += new MouseEventHandler(rectangle.SelectboxMouseDown);
                 this.selectbox[i].MouseUp += new MouseEventHandler(rectangle.SelectboxMouseUp);
                 this.selectbox[i].MouseMove += new MouseEventHandler(rectangle.SelectboxMouseMove);
-                this.selectbox[i].TabIndex = i;
             }
             posPicBox.Controls.AddRange(this.selectbox);
         }
@@ -50,9 +45,8 @@ namespace IMG_Gen2
                 this.selectbox[i].Visible = flag;
             }
         }
-        internal void SetPos(Point pos, System.Drawing.Drawing2D.Matrix mat, Size size)
+        internal void SetPos(Point pos, Size size, System.Drawing.Drawing2D.Matrix mat)
         {
-            //new Point((int)((pos.X * scale) + mat.Elements[4]), (int)((pos.Y * scale) + mat.Elements[5]))
             this.selectbox[0].Location = new Point(
                 (int)((pos.X * mat.Elements[0]) + mat.Elements[4]) - 8,
                 (int)((pos.Y * mat.Elements[0]) + mat.Elements[5]) - 8);
