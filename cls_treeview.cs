@@ -33,6 +33,7 @@ public partial class cls_treeview : TreeView
     {
         set
         {
+            if (!cls_posPicBox.CheckFolder(value)) { return; }
             this.rootPath = value;
             SetView(value);
         }
