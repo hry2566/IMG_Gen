@@ -4,19 +4,19 @@ namespace IMG_Gen2
     public class cls_rectangle
     {
         cls_posPicBox posPicBox;
-        private Button btn = new();
-        private Graphics? g;
-        internal string? labelName;
-        internal string strColor;
-        internal int penWidth;
-        internal Point pos;
-        internal Size size;
-        private cls_selectbox selectBox;
-        internal bool selectFlag = false;
-        private System.Drawing.Drawing2D.Matrix? mat;
-        private Point memPos;
-        private bool changeFlag = false;
-        private Size memSize;
+        private Button btn = new();                     // 選択用
+        private Graphics? g;                            // 描画用Graphicsオブジェクト
+        internal string? labelName;                     // ラベル名（マスク名含む）
+        internal string strColor;                       // 色（文字列）
+        internal int penWidth;                          // ペン幅
+        internal Point pos;                             // 四角位置
+        internal Size size;                             // 四角サイズ
+        private cls_selectbox selectBox;                // 選択ボックス
+        internal bool selectFlag = false;               // 選択フラグ
+        private System.Drawing.Drawing2D.Matrix? mat;   // アフィン変換行列
+        private Point memPos;                           // 座標記憶
+        private bool changeFlag = false;                // 編集フラグ
+        private Size memSize;                           // サイズ記憶
         public cls_rectangle(cls_posPicBox posPicBox, Graphics g, string labelName, string strColor, string strWidth, int x1, int y1, int x2, int y2)
         {
             this.posPicBox = posPicBox;
@@ -88,21 +88,26 @@ namespace IMG_Gen2
 
         public void DrawRectangle(System.Drawing.Drawing2D.Matrix mat)
         {
+            int width = (int)(size.Width / 5 * mat.Elements[0]);
+            int height = (int)(size.Height / 5 * mat.Elements[0]);
+            int btnSize;
+            if(width > height)
+            {
+                btnSize = width;
+            }else{
+                btnSize = height;
+            }
+            if (btnSize < 5 || btnSize > 30)
+            {
+                btnSize = 30;
+            }
+
             this.mat = mat;
             btn.Location = new Point((int)((pos.X * mat.Elements[0]) + mat.Elements[4]), (int)((pos.Y * mat.Elements[0]) + mat.Elements[5]));
-            btn.Size = new Size((int)(size.Width / 5 * mat.Elements[0]), (int)(size.Height / 5 * mat.Elements[0]));
+            btn.Size = new Size(btnSize, btnSize);
             btn.Visible = true;
             btn.BackColor = String2Color(strColor);
             selectBox.SetPos(pos, mat, size);
-
-            if ((int)((size.Width / 5) * mat.Elements[0]) < 5)
-            {
-                btn.Width = 50;
-            }
-            if ((int)((size.Height / 5) * mat.Elements[0]) < 5)
-            {
-                btn.Height = 50;
-            }
 
             Pen p = new Pen(String2Color(strColor), penWidth / mat.Elements[0]);
             try
