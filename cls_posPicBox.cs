@@ -28,6 +28,10 @@ public partial class cls_posPicBox : PictureBox
         InitializeUserComponent();
         Controls_EventHandler();
     }
+
+    // ***********************************************************************
+    // this
+    // ***********************************************************************
     private void Control_MouseDown(object? sender, MouseEventArgs e)
     {
         if (mat == null) { return; }
@@ -86,6 +90,222 @@ public partial class cls_posPicBox : PictureBox
             maskRect[maskRect.Count - 1].SetSelect(true);
             DrawImage();
         }
+    }
+    private void Control_MouseMove(object? sender, MouseEventArgs e)
+    {
+        if (mat == null) { return; }
+
+        pos.X = (int)((e.X - mat.Elements[4]) / mat!.Elements[0]);
+        pos.Y = (int)((e.Y - mat.Elements[5]) / mat!.Elements[0]);
+        sLabel!.Text = "Scale = " + mat!.Elements[0].ToString() +
+                       " Pos.X = " + pos.X.ToString() +
+                       " Pos.Y = " + pos.Y.ToString();
+
+        if (scaleFlag)
+        {
+            mat!.Translate(e.X - startPos.X, e.Y - startPos.Y, System.Drawing.Drawing2D.MatrixOrder.Append);
+            DrawImage();
+            startPos.X = e.X;
+            startPos.Y = e.Y;
+        }
+        else if (labelFlag && LabelLstView.SelectedItems.Count > 0)
+        {
+            DrawRubberBand(e, LabelLstView);
+        }
+        else if (maskFlag && MaskLstView.SelectedItems.Count > 0)
+        {
+            DrawRubberBand(e, MaskLstView);
+        }
+    }
+    private void Control_MouseWheel(object? sender, MouseEventArgs e)
+    {
+        if (bmp == null) { return; }
+
+        mat!.Translate(-e.X, -e.Y, System.Drawing.Drawing2D.MatrixOrder.Append);
+
+        if (e.Delta > 0)
+        {
+            if (mat.Elements[0] < 100)
+            {
+                mat.Scale(1.5f, 1.5f, System.Drawing.Drawing2D.MatrixOrder.Append);
+            }
+        }
+        else
+        {
+            if (mat.Elements[0] > baseScale)
+            {
+                mat.Scale(1.0f / 1.5f, 1.0f / 1.5f, System.Drawing.Drawing2D.MatrixOrder.Append);
+            }
+        }
+
+        if (mat.Elements[0] > baseScale)
+        {
+            mat.Translate(e.X, e.Y, System.Drawing.Drawing2D.MatrixOrder.Append);
+            DrawImage();
+        }
+        else
+        {
+            ImageReset();
+        }
+    }
+    private void Control_ReSize(object? sender, EventArgs? e)
+    {
+        if (g != null)
+        {
+            mat = g.Transform;
+            g.Dispose();
+            g = null;
+        }
+
+        Bitmap bmpPicBox = new Bitmap(this.Width, this.Height);
+        this.Image = bmpPicBox;
+        g = Graphics.FromImage(this.Image);
+
+        if (mat != null)
+        {
+            g.Transform = mat;
+        }
+
+        g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+        // g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+
+        DrawImage();
+        ImageReset();
+    }
+    internal void Control_KeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.Control && e.KeyCode == Keys.Delete)
+        {
+            for (int i = 0; i < lblRect.Count; i++)
+            {
+                if (lblRect[i].selectFlag)
+                {
+                    lblRect[i].Delete();
+                    lblRect.Remove(lblRect[i]);
+                    break;
+                }
+            }
+            SaveRect("pos", lblRect);
+            DrawImage();
+        }
+        else if (e.Alt && e.KeyCode == Keys.Delete)
+        {
+            for (int i = 0; i < maskRect.Count; i++)
+            {
+                if (maskRect[i].selectFlag)
+                {
+                    maskRect[i].Delete();
+                    maskRect.Remove(maskRect[i]);
+                    break;
+                }
+            }
+            SaveRect("mask", maskRect);
+            DrawImage();
+        }
+        else if (e.KeyCode == Keys.Escape)
+        {
+            AllUnSelect();
+        }
+    }
+
+    // ***********************************************************************
+    // 関数
+    // ***********************************************************************
+    // Image
+    internal void SetImage(string filePath, String rootPath)
+    {
+        this.filePath = filePath;
+        this.rootPath = rootPath;
+
+        if (bmp != null)
+        {
+            bmp.Dispose();
+        }
+        bmp = new Bitmap(filePath);
+        mat = new System.Drawing.Drawing2D.Matrix();
+        ImageReset();
+    }
+    private void ImageReset()
+    {
+        if (bmp == null) { return; }
+        float scaleX = (float)this.Width / (float)bmp!.Width;
+        float scaleY = (float)this.Height / (float)bmp.Height;
+
+        if (scaleX < scaleY)
+        {
+            this.baseScale = scaleX;
+        }
+        else
+        {
+            this.baseScale = scaleY;
+        }
+        mat!.Reset();
+        mat.Scale(baseScale, baseScale, System.Drawing.Drawing2D.MatrixOrder.Prepend);
+        lblRect = CreateRectangle("pos");
+        maskRect = CreateRectangle("mask");
+        DrawImage();
+    }
+
+    // ***********************************************************************
+    // File
+    internal void SaveLabel()
+    {
+        SaveRect("pos", lblRect);
+    }
+    internal void SaveMask()
+    {
+        SaveRect("mask", maskRect);
+    }
+    private void SaveRect(string folderPath, List<cls_rectangle> rectangle)
+    {
+        string filePath = "";
+
+        switch (folderPath)
+        {
+            case "pos":
+                filePath = rootPath + folderPath + "\\" + GetFileName() + ".txt";
+                break;
+            case "mask":
+                filePath = rootPath + folderPath + "\\mask.txt";
+                break;
+        }
+        if (!CheckFile(filePath)) { return; }
+        StreamWriter sw = new(filePath, false);
+        for (int i = 0; i < rectangle.Count(); i++)
+        {
+            int x1 = rectangle[i].pos.X;
+            int y1 = rectangle[i].pos.Y;
+            int x2 = rectangle[i].pos.X + rectangle[i].size.Width;
+            int y2 = rectangle[i].pos.Y + rectangle[i].size.Height;
+            int dummy = 0;
+
+            if (x1 > x2)
+            {
+                dummy = x1;
+                x1 = x2;
+                x2 = dummy;
+            }
+            if (y1 > y2)
+            {
+                dummy = y1;
+                y1 = y2;
+                y2 = dummy;
+            }
+            rectangle[i].pos.X = x1;
+            rectangle[i].pos.Y = y1;
+            rectangle[i].size.Width = x2 - x1;
+            rectangle[i].size.Height = y2 - y1;
+
+            string line = rectangle[i].labelName + "," +
+                          rectangle[i].strColor + "," +
+                          rectangle[i].penWidth.ToString() + "," +
+                          x1.ToString() + "," +
+                          y1.ToString() + "," +
+                          x2.ToString() + "," +
+                          y2.ToString();
+            sw.WriteLine(line);
+        }
+        sw.Close();
     }
     private void AddPosFile(ListView listview, string folderName)
     {
@@ -149,14 +369,14 @@ public partial class cls_posPicBox : PictureBox
         }
         return split[split.Count() - 1];
     }
-    private void CheckFolder(string rootPath, string param)
+    private static void CheckFolder(string rootPath, string param)
     {
         if (!System.IO.File.Exists(rootPath + param))
         {
             Directory.CreateDirectory(rootPath + param);
         }
     }
-    private bool CheckFile(string filePath)
+    private static bool CheckFile(string filePath)
     {
         if (System.IO.File.Exists(filePath))
         {
@@ -165,32 +385,9 @@ public partial class cls_posPicBox : PictureBox
             return false;
         }
     }
-    private void Control_MouseMove(object? sender, MouseEventArgs e)
-    {
-        if (mat == null) { return; }
-
-        pos.X = (int)((e.X - mat.Elements[4]) / mat!.Elements[0]);
-        pos.Y = (int)((e.Y - mat.Elements[5]) / mat!.Elements[0]);
-        sLabel!.Text = "Scale = " + mat!.Elements[0].ToString() +
-                       " Pos.X = " + pos.X.ToString() +
-                       " Pos.Y = " + pos.Y.ToString();
-
-        if (scaleFlag)
-        {
-            mat!.Translate(e.X - startPos.X, e.Y - startPos.Y, System.Drawing.Drawing2D.MatrixOrder.Append);
-            DrawImage();
-            startPos.X = e.X;
-            startPos.Y = e.Y;
-        }
-        else if (labelFlag && LabelLstView.SelectedItems.Count > 0)
-        {
-            DrawRubberBand(e, LabelLstView);
-        }
-        else if (maskFlag && MaskLstView.SelectedItems.Count > 0)
-        {
-            DrawRubberBand(e, MaskLstView);
-        }
-    }
+    
+    // ***********************************************************************
+    // Draw
     private void DrawRubberBand(MouseEventArgs e, ListView listView)
     {
         int movX = e.X - startPos.X;
@@ -229,61 +426,6 @@ public partial class cls_posPicBox : PictureBox
         p.Dispose();
         this.Refresh();
         g.DrawImage(bmp!, 0, 0);
-    }
-    private void Control_MouseWheel(object? sender, MouseEventArgs e)
-    {
-        if (bmp == null) { return; }
-
-        mat!.Translate(-e.X, -e.Y, System.Drawing.Drawing2D.MatrixOrder.Append);
-
-        if (e.Delta > 0)
-        {
-            if (mat.Elements[0] < 100)
-            {
-                mat.Scale(1.5f, 1.5f, System.Drawing.Drawing2D.MatrixOrder.Append);
-            }
-        }
-        else
-        {
-            if (mat.Elements[0] > baseScale)
-            {
-                mat.Scale(1.0f / 1.5f, 1.0f / 1.5f, System.Drawing.Drawing2D.MatrixOrder.Append);
-            }
-        }
-
-        if (mat.Elements[0] > baseScale)
-        {
-            mat.Translate(e.X, e.Y, System.Drawing.Drawing2D.MatrixOrder.Append);
-            DrawImage();
-        }
-        else
-        {
-            ImageReset();
-        }
-    }
-    private void Control_ReSize(object? sender, EventArgs? e)
-    {
-        if (g != null)
-        {
-            mat = g.Transform;
-            g.Dispose();
-            g = null;
-        }
-
-        Bitmap bmpPicBox = new Bitmap(this.Width, this.Height);
-        this.Image = bmpPicBox;
-        g = Graphics.FromImage(this.Image);
-
-        if (mat != null)
-        {
-            g.Transform = mat;
-        }
-
-        g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-        // g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-
-        DrawImage();
-        ImageReset();
     }
     internal void DrawImage()
     {
@@ -332,69 +474,6 @@ public partial class cls_posPicBox : PictureBox
         sr.Close();
         return rectangle;
     }
-
-    private void SaveRect(string folderPath, List<cls_rectangle> rectangle)
-    {
-        string filePath = "";
-
-        switch (folderPath)
-        {
-            case "pos":
-                filePath = rootPath + folderPath + "\\" + GetFileName() + ".txt";
-                break;
-            case "mask":
-                filePath = rootPath + folderPath + "\\mask.txt";
-                break;
-        }
-        if (!CheckFile(filePath)) { return; }
-        StreamWriter sw = new(filePath, false);
-        for (int i = 0; i < rectangle.Count(); i++)
-        {
-            int x1 = rectangle[i].pos.X;
-            int y1 = rectangle[i].pos.Y;
-            int x2 = rectangle[i].pos.X + rectangle[i].size.Width;
-            int y2 = rectangle[i].pos.Y + rectangle[i].size.Height;
-            int dummy = 0;
-
-            if (x1 > x2)
-            {
-                dummy = x1;
-                x1 = x2;
-                x2 = dummy;
-            }
-
-            if (y1 > y2)
-            {
-                dummy = y1;
-                y1 = y2;
-                y2 = dummy;
-            }
-
-            rectangle[i].pos.X = x1;
-            rectangle[i].pos.Y = y1;
-            rectangle[i].size.Width = x2 - x1;
-            rectangle[i].size.Height = y2 - y1;
-
-
-            string line = rectangle[i].labelName + "," +
-                          rectangle[i].strColor + "," +
-                          rectangle[i].penWidth.ToString() + "," +
-                          x1.ToString() + "," +
-                          y1.ToString() + "," +
-                          x2.ToString() + "," +
-                          y2.ToString();
-            sw.WriteLine(line);
-        }
-        sw.Close();
-    }
-    internal void SaveLabel()
-    {
-        SaveRect("pos", lblRect);
-    }
-    internal void SaveMask()
-    {
-        SaveRect("mask", maskRect);
-    }
     private void lblRect_AllDelete()
     {
         for (int i = 0; i < lblRect.Count(); i++)
@@ -422,42 +501,18 @@ public partial class cls_posPicBox : PictureBox
             maskRect[i].DrawRectangle(mat!);
         }
     }
-
-    internal void SetImage(string filePath, String rootPath)
+    internal void AllUnSelect()
     {
-        this.filePath = filePath;
-        this.rootPath = rootPath;
-
-        if (bmp != null)
+        for (int i = 0; i < lblRect.Count(); i++)
         {
-            bmp.Dispose();
+            lblRect[i].SetSelect(false);
         }
-        bmp = new Bitmap(filePath);
-        mat = new System.Drawing.Drawing2D.Matrix();
-        ImageReset();
+        for (int i = 0; i < maskRect.Count(); i++)
+        {
+            maskRect[i].SetSelect(false);
+        }
     }
-    private void ImageReset()
-    {
-        if (bmp == null) { return; }
-
-        float scaleX = (float)this.Width / (float)bmp!.Width;
-        float scaleY = (float)this.Height / (float)bmp.Height;
-
-        if (scaleX < scaleY)
-        {
-            this.baseScale = scaleX;
-        }
-        else
-        {
-            this.baseScale = scaleY;
-        }
-        mat!.Reset();
-        mat.Scale(baseScale, baseScale, System.Drawing.Drawing2D.MatrixOrder.Prepend);
-        lblRect = CreateRectangle("pos");
-        maskRect = CreateRectangle("mask");
-        DrawImage();
-    }
-    private Color String2Color(string strColor)
+    internal static Color String2Color(string strColor)
     {
         Color color;
         try
@@ -470,52 +525,5 @@ public partial class cls_posPicBox : PictureBox
             color = ColorTranslator.FromHtml(strColor);
         }
         return color;
-    }
-
-    internal void AllUnSelect()
-    {
-        for (int i = 0; i < lblRect.Count(); i++)
-        {
-            lblRect[i].SetSelect(false);
-        }
-        for (int i = 0; i < maskRect.Count(); i++)
-        {
-            maskRect[i].SetSelect(false);
-        }
-    }
-    internal void Control_KeyDown(object? sender, KeyEventArgs e)
-    {
-        if (e.Control && e.KeyCode == Keys.Delete)
-        {
-            for (int i = 0; i < lblRect.Count; i++)
-            {
-                if (lblRect[i].selectFlag)
-                {
-                    lblRect[i].Delete();
-                    lblRect.Remove(lblRect[i]);
-                    break;
-                }
-            }
-            SaveRect("pos", lblRect);
-            DrawImage();
-        }
-        else if (e.Alt && e.KeyCode == Keys.Delete)
-        {
-            for (int i = 0; i < maskRect.Count; i++)
-            {
-                if (maskRect[i].selectFlag)
-                {
-                    maskRect[i].Delete();
-                    maskRect.Remove(maskRect[i]);
-                    break;
-                }
-            }
-            SaveRect("mask", maskRect);
-            DrawImage();
-        }
-        else if (e.KeyCode == Keys.Escape)
-        {
-            AllUnSelect();
-        }
     }
 }
