@@ -117,7 +117,7 @@ partial class MainForm
         this.ImgPage.TabIndex = 6;
         this.ImgPage.Text =  "画像処理";
         this.ImgPage.Name =  "ImgPage";
-        this.ImgPage.Size = new System.Drawing.Size(497,501);
+        this.ImgPage.Size = new System.Drawing.Size(495,491);
         this.ViewTab.Controls.Add(this.ImgPage);
 
         //
@@ -129,7 +129,7 @@ partial class MainForm
         this.SplitPage.TabIndex = 7;
         this.SplitPage.Text =  "分割";
         this.SplitPage.Name =  "SplitPage";
-        this.SplitPage.Size = new System.Drawing.Size(497,501);
+        this.SplitPage.Size = new System.Drawing.Size(495,491);
         this.ViewTab.Controls.Add(this.SplitPage);
 
         //
@@ -153,7 +153,7 @@ partial class MainForm
         this.FilePage.TabIndex = 8;
         this.FilePage.Text =  "ファイル";
         this.FilePage.Name =  "FilePage";
-        this.FilePage.Size = new System.Drawing.Size(253,501);
+        this.FilePage.Size = new System.Drawing.Size(253,491);
         this.MenuTab.Controls.Add(this.FilePage);
 
         //
@@ -165,7 +165,7 @@ partial class MainForm
         this.LabelPage.TabIndex = 9;
         this.LabelPage.Text =  "ラベル";
         this.LabelPage.Name =  "LabelPage";
-        this.LabelPage.Size = new System.Drawing.Size(253,501);
+        this.LabelPage.Size = new System.Drawing.Size(253,491);
         this.MenuTab.Controls.Add(this.LabelPage);
 
         //
@@ -412,7 +412,9 @@ partial class MainForm
         //
         this.MaskNameTxtBox = new System.Windows.Forms.TextBox();
         this.MaskNameTxtBox.Text =  "TextBox4";
+        this.MaskNameTxtBox.BackColor = System.Drawing.SystemColors.ControlLightLight;
         this.MaskNameTxtBox.Modified =  true;
+        this.MaskNameTxtBox.ReadOnly =  true;
         this.MaskNameTxtBox.Location = new System.Drawing.Point(72,64);
         this.MaskNameTxtBox.Name =  "MaskNameTxtBox";
         this.MaskNameTxtBox.Size = new System.Drawing.Size(165,23);
@@ -477,7 +479,7 @@ partial class MainForm
         this.SplitOptPage.TabIndex = 38;
         this.SplitOptPage.Text =  "分割";
         this.SplitOptPage.Name =  "SplitOptPage";
-        this.SplitOptPage.Size = new System.Drawing.Size(253,501);
+        this.SplitOptPage.Size = new System.Drawing.Size(253,491);
         this.MenuTab.Controls.Add(this.SplitOptPage);
 
         //
@@ -498,9 +500,9 @@ partial class MainForm
         //
         this.StatusStrip1 = new System.Windows.Forms.StatusStrip();
         this.StatusStrip1.BackColor = System.Drawing.Color.Silver;
-        this.StatusStrip1.Location = new System.Drawing.Point(0,596);
+        this.StatusStrip1.Location = new System.Drawing.Point(0,598);
         this.StatusStrip1.Name =  "StatusStrip1";
-        this.StatusStrip1.Size = new System.Drawing.Size(810,22);
+        this.StatusStrip1.Size = new System.Drawing.Size(812,22);
         this.StatusStrip1.TabIndex = 39;
         this.StatusStrip1.Text =  "StatusStrip1";
         this.Controls.Add(this.StatusStrip1);
