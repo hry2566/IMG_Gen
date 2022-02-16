@@ -1,8 +1,4 @@
 ﻿
-using System;
-using System.Windows.Forms;
-using System.IO;
-
 namespace IMG_Gen2
 {
     public class cls_treenode : TreeNode
