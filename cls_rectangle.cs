@@ -86,7 +86,7 @@ namespace IMG_Gen2
             selectBox.SetShow(selectFlag);
         }
 
-        public void DrawRectangle(System.Drawing.Drawing2D.Matrix mat)
+        internal void DrawRectangle(System.Drawing.Drawing2D.Matrix mat)
         {
             int width = (int)(size.Width / 5 * mat.Elements[0]);
             int height = (int)(size.Height / 5 * mat.Elements[0]);
