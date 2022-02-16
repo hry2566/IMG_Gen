@@ -1,4 +1,5 @@
 
+
 namespace IMG_Gen2;
 
 public partial class cls_posPicBox : PictureBox
@@ -376,16 +377,30 @@ public partial class cls_posPicBox : PictureBox
             Directory.CreateDirectory(rootPath + param);
         }
     }
-    private static bool CheckFile(string filePath)
+    internal static bool CheckFolder(string file_folder_Path)
     {
-        if (System.IO.File.Exists(filePath))
+        if (System.IO.Directory.Exists(file_folder_Path))
         {
             return true;
-        }else{
+        }
+        else
+        {
             return false;
         }
     }
-    
+    internal static bool CheckFile(string file_folder_Path)
+    {
+        if (System.IO.File.Exists(file_folder_Path))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
     // ***********************************************************************
     // Draw
     private void DrawRubberBand(MouseEventArgs e, ListView listView)
