@@ -135,14 +135,13 @@ public partial class MainForm : Form
             item.SubItems.Add(values[1]);
             item.SubItems.Add(values[2]);
             item.UseItemStyleForSubItems = false;
-            item.SubItems[1].BackColor = String2Color(values[1]);
+            item.SubItems[1].BackColor = cls_posPicBox.String2Color(values[1]);
         }
         sr.Close();
     }
     private void SaveIni(string iniFileName, ListView listview)
     {
         StreamWriter sw = new StreamWriter(iniFileName);
-
         for (int i = 0; i < listview.Items.Count; i++)
         {
             sw.WriteLine(listview.Items[i].SubItems[0].Text + "," +
@@ -155,38 +154,36 @@ public partial class MainForm : Form
     private void SelectedIndexChanged(TextBox[] textBox, ListView listview)
     {
         if (listview.SelectedItems.Count == 0) { return; }
-
-        textBox[0].Text = listview.SelectedItems[0].SubItems[0].Text;
-        textBox[1].Text = listview.SelectedItems[0].SubItems[1].Text;
-        textBox[2].Text = listview.SelectedItems[0].SubItems[2].Text;
+        for (int i = 0; i < 3; i++)
+        {
+            textBox[i].Text = listview.SelectedItems[0].SubItems[i].Text;
+        }
     }
     private void EntBtn_Click(TextBox[] textBox, ListView listview)
     {
         if (textBox[0].Text == "") { return; }
-
         ListViewItem item;
         item = listview.Items.Add(textBox[0].Text);
         item.SubItems.Add(textBox[1].Text);
         item.SubItems.Add(textBox[2].Text);
         item.UseItemStyleForSubItems = false;
-        item.SubItems[1].BackColor = String2Color(textBox[1].Text);
+        item.SubItems[1].BackColor = cls_posPicBox.String2Color(textBox[1].Text);
         listview.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
     }
     private void ModBtn_Click(TextBox[] textBox, ListView listview)
     {
         if (listview.SelectedItems.Count == 0) { return; }
-
-        listview.SelectedItems[0].SubItems[0].Text = textBox[0].Text;
-        listview.SelectedItems[0].SubItems[1].Text = textBox[1].Text;
-        listview.SelectedItems[0].SubItems[2].Text = textBox[2].Text;
+        for (int i = 0; i < 3; i++)
+        {
+            listview.SelectedItems[0].SubItems[i].Text = textBox[i].Text;
+        }
         listview.SelectedItems[0].UseItemStyleForSubItems = false;
-        listview.SelectedItems[0].SubItems[1].BackColor = String2Color(textBox[1].Text);
+        listview.SelectedItems[0].SubItems[1].BackColor = cls_posPicBox.String2Color(textBox[1].Text);
         listview.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
     }
     private void DelBtn_Click(ListView listView)
     {
         if (listView.SelectedItems.Count == 0) { return; }
-
         listView.Items[listView.SelectedItems[0].Index].Remove();
         listView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
     }
@@ -201,19 +198,4 @@ public partial class MainForm : Form
             textbox.Text = cd.Color.Name;
         }
     }
-    private Color String2Color(string strColor)
-    {
-        Color color;
-        try
-        {
-            color = ColorTranslator.FromHtml(strColor);
-        }
-        catch
-        {
-            strColor = "#" + strColor;
-            color = ColorTranslator.FromHtml(strColor);
-        }
-        return color;
-    }
-
 }
