@@ -5,7 +5,6 @@ namespace IMG_Gen2
     {
         private string nodePath;
         private cls_treenode[] node = new cls_treenode[0];
-
         public cls_treenode(string path, string nodeName)
         {
             nodePath = nodeName + "\\";
