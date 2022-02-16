@@ -3,7 +3,7 @@ namespace IMG_Gen2
 {
     public class cls_rectangle
     {
-        cls_posPicBox posPicBox;
+        private cls_posPicBox posPicBox;
         private Button btn = new();                     // 選択用
         private Graphics? g;                            // 描画用Graphicsオブジェクト
         internal string? labelName;                     // ラベル名（マスク名含む）
@@ -38,6 +38,10 @@ namespace IMG_Gen2
             btn.MouseMove += new MouseEventHandler(Btn_MouseMove);
             btn.MouseUp += new MouseEventHandler(Btn_MouseUp);
         }
+
+        // ***********************************************************************
+        // Btn
+        // ***********************************************************************
         private void Btn_MouseUp(object? sender, MouseEventArgs e)
         {
             if (changeFlag)
@@ -80,69 +84,9 @@ namespace IMG_Gen2
             }
         }
 
-        internal void SetSelect(bool selectFlag)
-        {
-            this.selectFlag = selectFlag;
-            selectBox.SetShow(selectFlag);
-        }
-
-        internal void DrawRectangle(System.Drawing.Drawing2D.Matrix mat)
-        {
-            int width = (int)(size.Width / 5 * mat.Elements[0]);
-            int height = (int)(size.Height / 5 * mat.Elements[0]);
-            int btnSize;
-            if(width > height)
-            {
-                btnSize = width;
-            }else{
-                btnSize = height;
-            }
-            if (btnSize < 5 || btnSize > 30)
-            {
-                btnSize = 30;
-            }
-
-            this.mat = mat;
-            btn.Location = new Point((int)((pos.X * mat.Elements[0]) + mat.Elements[4]), (int)((pos.Y * mat.Elements[0]) + mat.Elements[5]));
-            btn.Size = new Size(btnSize, btnSize);
-            btn.Visible = true;
-            btn.BackColor = String2Color(strColor);
-            selectBox.SetPos(pos, mat, size);
-
-            Pen p = new Pen(String2Color(strColor), penWidth / mat.Elements[0]);
-            try
-            {
-                if(labelName=="Mask")
-                {
-                    SolidBrush sBrush = new(Color.FromArgb(128, String2Color(strColor)));
-                    g!.FillRectangle(sBrush, pos.X, pos.Y, size.Width, size.Height);
-                    g!.DrawRectangle(p, pos.X, pos.Y, size.Width, size.Height);
-                }else{
-                    g!.DrawRectangle(p, pos.X, pos.Y, size.Width, size.Height);
-                }
-            }
-            catch { }
-        }
-
-        public void Delete()
-        {
-            btn.Dispose();
-            selectBox.Delete();
-        }
-        private Color String2Color(string strColor)
-        {
-            Color color;
-            try
-            {
-                color = ColorTranslator.FromHtml(strColor);
-            }
-            catch
-            {
-                strColor = "#" + strColor;
-                color = ColorTranslator.FromHtml(strColor);
-            }
-            return color;
-        }
+        // ***********************************************************************
+        // SelectBox
+        // ***********************************************************************
         internal void SelectboxMouseDown(object? sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left && selectFlag)
@@ -198,6 +142,58 @@ namespace IMG_Gen2
                 }
                 posPicBox.DrawImage();
             }
+        }
+
+        // ***********************************************************************
+        // 関数
+        // ***********************************************************************
+        internal void SetSelect(bool selectFlag)
+        {
+            this.selectFlag = selectFlag;
+            selectBox.SetShow(selectFlag);
+        }
+        internal void DrawRectangle(System.Drawing.Drawing2D.Matrix mat)
+        {
+            int width = (int)(size.Width / 5 * mat.Elements[0]);
+            int height = (int)(size.Height / 5 * mat.Elements[0]);
+            int btnSize;
+            if(width > height)
+            {
+                btnSize = width;
+            }else{
+                btnSize = height;
+            }
+            if (btnSize < 5 || btnSize > 30)
+            {
+                btnSize = 30;
+            }
+
+            this.mat = mat;
+            btn.Location = new Point((int)((pos.X * mat.Elements[0]) + mat.Elements[4]), (int)((pos.Y * mat.Elements[0]) + mat.Elements[5]));
+            btn.Size = new Size(btnSize, btnSize);
+            btn.Visible = true;
+            btn.BackColor = cls_posPicBox.String2Color(strColor);
+            btn.Cursor = Cursors.SizeAll;
+            selectBox.SetPos(pos, size, mat);
+
+            Pen p = new Pen(cls_posPicBox.String2Color(strColor), penWidth / mat.Elements[0]);
+            try
+            {
+                if(labelName=="Mask")
+                {
+                    SolidBrush sBrush = new(Color.FromArgb(128, cls_posPicBox.String2Color(strColor)));
+                    g!.FillRectangle(sBrush, pos.X, pos.Y, size.Width, size.Height);
+                    g!.DrawRectangle(p, pos.X, pos.Y, size.Width, size.Height);
+                }else{
+                    g!.DrawRectangle(p, pos.X, pos.Y, size.Width, size.Height);
+                }
+            }
+            catch { }
+        }
+        internal void Delete()
+        {
+            btn.Dispose();
+            selectBox.Delete();
         }
     }
 }
