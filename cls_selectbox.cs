@@ -2,18 +2,18 @@ namespace IMG_Gen2
 {
     public class cls_selectbox
     {
-        private Panel[] selectbox = new Panel[4];
-        private Point pos;
-        private Size size;
         Control posPicBox;
-        cls_rectangle lblRect;
-        public cls_selectbox(cls_rectangle lblRect, Control posPicBox, Point pos, Size size)
+        cls_rectangle rectangle;
+        private Panel[] selectbox = new Panel[4];       // 選択ボックス
+        private Point pos;                              // 四角位置
+        private Size size;                              // 四角サイズ
+        
+        public cls_selectbox(cls_rectangle rectangle, Control posPicBox, Point pos, Size size)
         {
-            this.lblRect = lblRect;
+            this.rectangle = rectangle;
             this.posPicBox = posPicBox;
             this.pos = pos;
             this.size = size;
-
             Init();
         }
         private void Init()
@@ -36,9 +36,9 @@ namespace IMG_Gen2
                 this.selectbox[i].Visible = false;
                 this.selectbox[i].TabIndex = i;
 
-                this.selectbox[i].MouseDown += new MouseEventHandler(lblRect.SelectboxMouseDown);
-                this.selectbox[i].MouseUp += new MouseEventHandler(lblRect.SelectboxMouseUp);
-                this.selectbox[i].MouseMove += new MouseEventHandler(lblRect.SelectboxMouseMove);
+                this.selectbox[i].MouseDown += new MouseEventHandler(rectangle.SelectboxMouseDown);
+                this.selectbox[i].MouseUp += new MouseEventHandler(rectangle.SelectboxMouseUp);
+                this.selectbox[i].MouseMove += new MouseEventHandler(rectangle.SelectboxMouseMove);
                 this.selectbox[i].TabIndex = i;
             }
             posPicBox.Controls.AddRange(this.selectbox);
