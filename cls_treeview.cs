@@ -17,15 +17,9 @@ public partial class cls_treeview : TreeView
     {
         if (e.Node!.Text.IndexOf(".") > -1)
         {
-            string filePath;
-            if (e.Node.Parent != null)
-            {
-                filePath = rootPath + e.Node.Parent.Text + "\\" + e.Node.Text;
-            }
-            else
-            {
-                filePath = rootPath + e.Node.Text;
-            }
+            string filePath = rootPath + e.Node!.FullPath;
+
+            if (!System.IO.File.Exists(filePath)){ return; }
             picBox1.SetImage(filePath, rootPath!);
         }
     }
@@ -41,25 +35,28 @@ public partial class cls_treeview : TreeView
     }
     private void SetView(string path)
     {
-        string[] fPath = System.IO.Directory.GetDirectories(path, "*", System.IO.SearchOption.TopDirectoryOnly);
-        if (fPath.Length == 0)
-        {
-            System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(path);
-            System.IO.FileInfo[] files = di.GetFiles("*.*", System.IO.SearchOption.AllDirectories);
-            foreach (System.IO.FileInfo f in files)
+        string[] subFolders = System.IO.Directory.GetDirectories(
+                path, "*", System.IO.SearchOption.TopDirectoryOnly);
+
+        for (int i = 0; i < subFolders.Length;i++)
+        { 
+            string[] split = subFolders[i].Split("\\");
+            string folderName = split[split.Length - 1];
+
+            if (folderName != "pos" && folderName != "mask" && folderName != "split")
             {
                 Array.Resize(ref treeNode, treeNode.Length + 1);
-                treeNode[treeNode.Length - 1] = new cls_treenode(path, f.FullName);
+                treeNode[treeNode.Length - 1] = new(folderName, path);
             }
         }
-        else
-        {
-            for (int i = 0; i < fPath.Length; i++)
-            {
-                Array.Resize(ref treeNode, treeNode.Length + 1);
-                treeNode[treeNode.Length - 1] = new cls_treenode(path, fPath[i]);
-            }
-        }
+        this.Nodes.AddRange(treeNode);
+        treeNode= cls_treenode.AddFileNode(path, "*.jpg");
+        this.Nodes.AddRange(treeNode);
+        treeNode= cls_treenode.AddFileNode(path, "*.bmp");
+        this.Nodes.AddRange(treeNode);
+        treeNode= cls_treenode.AddFileNode(path, "*.png");
+        this.Nodes.AddRange(treeNode);
+        treeNode= cls_treenode.AddFileNode(path, "*.gif");
         this.Nodes.AddRange(treeNode);
         this.ExpandAll();
     }
