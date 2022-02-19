@@ -5,6 +5,26 @@ partial class MainForm
     #region 
     private void InitializeUserComponent()
     {
+        // Image_BrightContrast
+        List<Control> imgCtrl = new();
+        imgCtrl.Add(BrightChkBox);
+        imgCtrl.Add(BrightMaxRadioBtn);
+        imgCtrl.Add(BrightMinRadioBtn);
+        imgCtrl.Add(BrightMaxHScrBar);
+        imgCtrl.Add(BrightMinHScrBar);
+        imgCtrl.Add(BrightMaxTxtBox);
+        imgCtrl.Add(BrightMinTxtBox);
+        imgCtrl.Add(ContrastChkBox);
+        imgCtrl.Add(ContrastMaxRadioBtn);
+        imgCtrl.Add(ContrastMinRadioBtn);
+        imgCtrl.Add(ContrastMaxHScrBar);
+        imgCtrl.Add(ContrastMinHScrBar);
+        imgCtrl.Add(ContrastMaxTxtBox);
+        imgCtrl.Add(ContrastMinTxtBox);
+        imgCtrl.Add(BrightRndPreviewBtn);
+        imgCtrl.Add(PicBox2);
+        Image_BrightContrast = new(imgCtrl);
+
         // sLabel1
         this.sLabel1 = new ToolStripStatusLabel();
         this.sLabel1.Text = "sLabel1";
@@ -26,7 +46,7 @@ partial class MainForm
         this.PosPage.Controls.Add(this.PosPicBox);
 
         // FileTreeView
-        this.FileTreeView = new cls_treeview(PosPicBox!, PosPage);
+        this.FileTreeView = new cls_treeview(PosPicBox!, PosPage, Image_BrightContrast!);
         this.FileTreeView.ItemHeight = 22;
         this.FileTreeView.LineColor = System.Drawing.Color.Black;
         this.FileTreeView.Text = "TreeView2";
@@ -59,6 +79,9 @@ partial class MainForm
         maskColumn[2].Text = "線　幅";
         this.MaskLstView.Columns.AddRange(maskColumn);
         MaskLstView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+
+
+
     }
     private void Controls_EventHandler()
     {
@@ -105,5 +128,7 @@ partial class MainForm
     private cls_posPicBox? PosPicBox;
     private ToolStripStatusLabel? sLabel1;
     private ToolStripStatusLabel? sLabel2;
+
+    private cls_image_BrightContrast? Image_BrightContrast;
 
 }
