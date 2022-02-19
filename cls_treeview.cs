@@ -4,13 +4,15 @@ public partial class cls_treeview : TreeView
 {
     private cls_posPicBox picBox1;
     private TabPage PosPage;
+    private cls_image_BrightContrast Image_BrightContrast;
     private string? rootPath;                               // ルートフォルダパス
     private cls_treenode[] treeNode = new cls_treenode[0];
 
-    public cls_treeview(cls_posPicBox picBox1, TabPage PosPage)
+    public cls_treeview(cls_posPicBox picBox1, TabPage PosPage, cls_image_BrightContrast Image_BrightContrast)
     {
         this.picBox1 = picBox1;
         this.PosPage = PosPage;
+        this.Image_BrightContrast = Image_BrightContrast;
         this.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(SelectChange);
     }
     private void SelectChange(Object? sender, TreeViewEventArgs e)
@@ -19,8 +21,9 @@ public partial class cls_treeview : TreeView
         {
             string filePath = rootPath + e.Node!.FullPath;
 
-            if (!System.IO.File.Exists(filePath)){ return; }
+            if (!System.IO.File.Exists(filePath)) { return; }
             picBox1.SetImage(filePath, rootPath!);
+            Image_BrightContrast.SetImage(filePath);
         }
     }
     internal string Path
@@ -38,8 +41,8 @@ public partial class cls_treeview : TreeView
         string[] subFolders = System.IO.Directory.GetDirectories(
                 path, "*", System.IO.SearchOption.TopDirectoryOnly);
 
-        for (int i = 0; i < subFolders.Length;i++)
-        { 
+        for (int i = 0; i < subFolders.Length; i++)
+        {
             string[] split = subFolders[i].Split("\\");
             string folderName = split[split.Length - 1];
 
@@ -50,13 +53,13 @@ public partial class cls_treeview : TreeView
             }
         }
         this.Nodes.AddRange(treeNode);
-        treeNode= cls_treenode.AddFileNode(path, "*.jpg");
+        treeNode = cls_treenode.AddFileNode(path, "*.jpg");
         this.Nodes.AddRange(treeNode);
-        treeNode= cls_treenode.AddFileNode(path, "*.bmp");
+        treeNode = cls_treenode.AddFileNode(path, "*.bmp");
         this.Nodes.AddRange(treeNode);
-        treeNode= cls_treenode.AddFileNode(path, "*.png");
+        treeNode = cls_treenode.AddFileNode(path, "*.png");
         this.Nodes.AddRange(treeNode);
-        treeNode= cls_treenode.AddFileNode(path, "*.gif");
+        treeNode = cls_treenode.AddFileNode(path, "*.gif");
         this.Nodes.AddRange(treeNode);
         this.ExpandAll();
     }
