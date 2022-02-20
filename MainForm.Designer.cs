@@ -64,7 +64,7 @@ partial class MainForm
         this.RootPathTxtBox.ReadOnly =  true;
         this.RootPathTxtBox.Location = new System.Drawing.Point(152,20);
         this.RootPathTxtBox.Name =  "RootPathTxtBox";
-        this.RootPathTxtBox.Size = new System.Drawing.Size(892,27);
+        this.RootPathTxtBox.Size = new System.Drawing.Size(892,23);
         this.RootPathTxtBox.TabIndex = 1;
         this.RootPathTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.Controls.Add(this.RootPathTxtBox);
@@ -202,7 +202,7 @@ partial class MainForm
         this.LabelNameLbl.BackColor = System.Drawing.SystemColors.ActiveCaption;
         this.LabelNameLbl.Location = new System.Drawing.Point(8,64);
         this.LabelNameLbl.Name =  "LabelNameLbl";
-        this.LabelNameLbl.Size = new System.Drawing.Size(58,20);
+        this.LabelNameLbl.Size = new System.Drawing.Size(47,15);
         this.LabelNameLbl.TabIndex = 11;
         this.LabelGrpBox.Controls.Add(this.LabelNameLbl);
 
@@ -213,7 +213,7 @@ partial class MainForm
         this.LabelNameTxtBox.Text =  "TextBox1";
         this.LabelNameTxtBox.Location = new System.Drawing.Point(72,64);
         this.LabelNameTxtBox.Name =  "LabelNameTxtBox";
-        this.LabelNameTxtBox.Size = new System.Drawing.Size(166,27);
+        this.LabelNameTxtBox.Size = new System.Drawing.Size(166,23);
         this.LabelNameTxtBox.TabIndex = 12;
         this.LabelNameTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.LabelGrpBox.Controls.Add(this.LabelNameTxtBox);
@@ -227,7 +227,7 @@ partial class MainForm
         this.LabelColorLbl.BackColor = System.Drawing.SystemColors.ActiveCaption;
         this.LabelColorLbl.Location = new System.Drawing.Point(8,96);
         this.LabelColorLbl.Name =  "LabelColorLbl";
-        this.LabelColorLbl.Size = new System.Drawing.Size(39,20);
+        this.LabelColorLbl.Size = new System.Drawing.Size(31,15);
         this.LabelColorLbl.TabIndex = 13;
         this.LabelGrpBox.Controls.Add(this.LabelColorLbl);
 
@@ -240,7 +240,7 @@ partial class MainForm
         this.LabelColorTxtBox.ReadOnly =  true;
         this.LabelColorTxtBox.Location = new System.Drawing.Point(72,96);
         this.LabelColorTxtBox.Name =  "LabelColorTxtBox";
-        this.LabelColorTxtBox.Size = new System.Drawing.Size(122,27);
+        this.LabelColorTxtBox.Size = new System.Drawing.Size(122,23);
         this.LabelColorTxtBox.TabIndex = 14;
         this.LabelColorTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.LabelGrpBox.Controls.Add(this.LabelColorTxtBox);
@@ -267,7 +267,7 @@ partial class MainForm
         this.LabelWidthLbl.BackColor = System.Drawing.SystemColors.ActiveCaption;
         this.LabelWidthLbl.Location = new System.Drawing.Point(8,128);
         this.LabelWidthLbl.Name =  "LabelWidthLbl";
-        this.LabelWidthLbl.Size = new System.Drawing.Size(39,20);
+        this.LabelWidthLbl.Size = new System.Drawing.Size(31,15);
         this.LabelWidthLbl.TabIndex = 16;
         this.LabelGrpBox.Controls.Add(this.LabelWidthLbl);
 
@@ -278,7 +278,7 @@ partial class MainForm
         this.LabelWidthTxtBox.Text =  "1";
         this.LabelWidthTxtBox.Location = new System.Drawing.Point(72,128);
         this.LabelWidthTxtBox.Name =  "LabelWidthTxtBox";
-        this.LabelWidthTxtBox.Size = new System.Drawing.Size(166,27);
+        this.LabelWidthTxtBox.Size = new System.Drawing.Size(166,23);
         this.LabelWidthTxtBox.TabIndex = 17;
         this.LabelWidthTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.LabelGrpBox.Controls.Add(this.LabelWidthTxtBox);
@@ -377,7 +377,7 @@ partial class MainForm
         this.MaskNameLbl.BackColor = System.Drawing.SystemColors.ActiveCaption;
         this.MaskNameLbl.Location = new System.Drawing.Point(8,64);
         this.MaskNameLbl.Name =  "MaskNameLbl";
-        this.MaskNameLbl.Size = new System.Drawing.Size(57,20);
+        this.MaskNameLbl.Size = new System.Drawing.Size(46,15);
         this.MaskNameLbl.TabIndex = 28;
         this.MaskGrpBox.Controls.Add(this.MaskNameLbl);
 
@@ -390,7 +390,7 @@ partial class MainForm
         this.MaskColorLbl.BackColor = System.Drawing.SystemColors.ActiveCaption;
         this.MaskColorLbl.Location = new System.Drawing.Point(8,96);
         this.MaskColorLbl.Name =  "MaskColorLbl";
-        this.MaskColorLbl.Size = new System.Drawing.Size(39,20);
+        this.MaskColorLbl.Size = new System.Drawing.Size(31,15);
         this.MaskColorLbl.TabIndex = 29;
         this.MaskGrpBox.Controls.Add(this.MaskColorLbl);
 
@@ -403,7 +403,7 @@ partial class MainForm
         this.MaskWidthLbl.BackColor = System.Drawing.SystemColors.ActiveCaption;
         this.MaskWidthLbl.Location = new System.Drawing.Point(8,128);
         this.MaskWidthLbl.Name =  "MaskWidthLbl";
-        this.MaskWidthLbl.Size = new System.Drawing.Size(39,20);
+        this.MaskWidthLbl.Size = new System.Drawing.Size(31,15);
         this.MaskWidthLbl.TabIndex = 30;
         this.MaskGrpBox.Controls.Add(this.MaskWidthLbl);
 
@@ -417,7 +417,7 @@ partial class MainForm
         this.MaskNameTxtBox.ReadOnly =  true;
         this.MaskNameTxtBox.Location = new System.Drawing.Point(72,64);
         this.MaskNameTxtBox.Name =  "MaskNameTxtBox";
-        this.MaskNameTxtBox.Size = new System.Drawing.Size(166,27);
+        this.MaskNameTxtBox.Size = new System.Drawing.Size(166,23);
         this.MaskNameTxtBox.TabIndex = 31;
         this.MaskNameTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.MaskGrpBox.Controls.Add(this.MaskNameTxtBox);
@@ -429,7 +429,7 @@ partial class MainForm
         this.MaskColorTxtBox.Text =  "Red";
         this.MaskColorTxtBox.Location = new System.Drawing.Point(72,96);
         this.MaskColorTxtBox.Name =  "MaskColorTxtBox";
-        this.MaskColorTxtBox.Size = new System.Drawing.Size(122,27);
+        this.MaskColorTxtBox.Size = new System.Drawing.Size(122,23);
         this.MaskColorTxtBox.TabIndex = 32;
         this.MaskColorTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.MaskGrpBox.Controls.Add(this.MaskColorTxtBox);
@@ -441,22 +441,10 @@ partial class MainForm
         this.MaskWidthTxtBox.Text =  "1";
         this.MaskWidthTxtBox.Location = new System.Drawing.Point(72,128);
         this.MaskWidthTxtBox.Name =  "MaskWidthTxtBox";
-        this.MaskWidthTxtBox.Size = new System.Drawing.Size(166,27);
+        this.MaskWidthTxtBox.Size = new System.Drawing.Size(166,23);
         this.MaskWidthTxtBox.TabIndex = 33;
         this.MaskWidthTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.MaskGrpBox.Controls.Add(this.MaskWidthTxtBox);
-
-        //
-        // PicBox3
-        //
-        this.PicBox3 = new System.Windows.Forms.PictureBox();
-        this.PicBox3.TabIndex = 37;
-        this.PicBox3.Text =  "PictureBox2";
-        this.PicBox3.BackColor = System.Drawing.Color.White;
-        this.PicBox3.Location = new System.Drawing.Point(16,16);
-        this.PicBox3.Name =  "PicBox3";
-        this.PicBox3.Size = new System.Drawing.Size(320,240);
-        this.SplitPage.Controls.Add(this.PicBox3);
 
         //
         // MaskColorBtn
@@ -523,18 +511,6 @@ partial class MainForm
         this.MaskLstView.TabIndex = 40;
         this.MaskLstView.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
         this.MaskPage.Controls.Add(this.MaskLstView);
-
-        //
-        // SplitOptPage
-        //
-        this.SplitOptPage = new System.Windows.Forms.TabPage();
-        this.SplitOptPage.BackColor = System.Drawing.SystemColors.ActiveCaption;
-        this.SplitOptPage.Location = new System.Drawing.Point(4,29);
-        this.SplitOptPage.TabIndex = 40;
-        this.SplitOptPage.Text =  "分割";
-        this.SplitOptPage.Name =  "SplitOptPage";
-        this.SplitOptPage.Size = new System.Drawing.Size(254,593);
-        this.MenuTab.Controls.Add(this.SplitOptPage);
 
         //
         // SplitContainer1
@@ -609,7 +585,7 @@ partial class MainForm
         this.BrightChkBox.Text =  "明るさ（有効／無効）";
         this.BrightChkBox.Location = new System.Drawing.Point(8,8);
         this.BrightChkBox.Name =  "BrightChkBox";
-        this.BrightChkBox.Size = new System.Drawing.Size(172,24);
+        this.BrightChkBox.Size = new System.Drawing.Size(139,19);
         this.BrightChkBox.TabIndex = 45;
         this.BrightPage.Controls.Add(this.BrightChkBox);
 
@@ -651,7 +627,7 @@ partial class MainForm
         this.BrightMaxTxtBox.ReadOnly =  true;
         this.BrightMaxTxtBox.Location = new System.Drawing.Point(160,32);
         this.BrightMaxTxtBox.Name =  "BrightMaxTxtBox";
-        this.BrightMaxTxtBox.Size = new System.Drawing.Size(52,27);
+        this.BrightMaxTxtBox.Size = new System.Drawing.Size(52,23);
         this.BrightMaxTxtBox.TabIndex = 53;
         this.BrightMaxTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
         this.GroupBox2.Controls.Add(this.BrightMaxTxtBox);
@@ -681,7 +657,7 @@ partial class MainForm
         this.BrightMinTxtBox.ReadOnly =  true;
         this.BrightMinTxtBox.Location = new System.Drawing.Point(160,104);
         this.BrightMinTxtBox.Name =  "BrightMinTxtBox";
-        this.BrightMinTxtBox.Size = new System.Drawing.Size(52,27);
+        this.BrightMinTxtBox.Size = new System.Drawing.Size(52,23);
         this.BrightMinTxtBox.TabIndex = 55;
         this.BrightMinTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
         this.GroupBox2.Controls.Add(this.BrightMinTxtBox);
@@ -710,7 +686,7 @@ partial class MainForm
         this.BrightMaxRadioBtn.Text =  "Max";
         this.BrightMaxRadioBtn.Location = new System.Drawing.Point(16,32);
         this.BrightMaxRadioBtn.Name =  "BrightMaxRadioBtn";
-        this.BrightMaxRadioBtn.Size = new System.Drawing.Size(58,24);
+        this.BrightMaxRadioBtn.Size = new System.Drawing.Size(48,19);
         this.BrightMaxRadioBtn.TabIndex = 57;
         this.GroupBox2.Controls.Add(this.BrightMaxRadioBtn);
 
@@ -723,7 +699,7 @@ partial class MainForm
         this.BrightMinRadioBtn.Text =  "Min";
         this.BrightMinRadioBtn.Location = new System.Drawing.Point(16,104);
         this.BrightMinRadioBtn.Name =  "BrightMinRadioBtn";
-        this.BrightMinRadioBtn.Size = new System.Drawing.Size(55,24);
+        this.BrightMinRadioBtn.Size = new System.Drawing.Size(46,19);
         this.BrightMinRadioBtn.TabIndex = 58;
         this.GroupBox2.Controls.Add(this.BrightMinRadioBtn);
 
@@ -738,7 +714,7 @@ partial class MainForm
         this.ContrastMaxRadioBtn.Text =  "Max";
         this.ContrastMaxRadioBtn.Location = new System.Drawing.Point(16,32);
         this.ContrastMaxRadioBtn.Name =  "ContrastMaxRadioBtn";
-        this.ContrastMaxRadioBtn.Size = new System.Drawing.Size(58,24);
+        this.ContrastMaxRadioBtn.Size = new System.Drawing.Size(48,19);
         this.ContrastMaxRadioBtn.TabIndex = 53;
         this.GroupBox3.Controls.Add(this.ContrastMaxRadioBtn);
 
@@ -751,7 +727,7 @@ partial class MainForm
         this.ContrastMinRadioBtn.Text =  "Min";
         this.ContrastMinRadioBtn.Location = new System.Drawing.Point(16,104);
         this.ContrastMinRadioBtn.Name =  "ContrastMinRadioBtn";
-        this.ContrastMinRadioBtn.Size = new System.Drawing.Size(55,24);
+        this.ContrastMinRadioBtn.Size = new System.Drawing.Size(46,19);
         this.ContrastMinRadioBtn.TabIndex = 54;
         this.GroupBox3.Controls.Add(this.ContrastMinRadioBtn);
 
@@ -765,7 +741,7 @@ partial class MainForm
         this.ContrastMaxTxtBox.ReadOnly =  true;
         this.ContrastMaxTxtBox.Location = new System.Drawing.Point(128,32);
         this.ContrastMaxTxtBox.Name =  "ContrastMaxTxtBox";
-        this.ContrastMaxTxtBox.Size = new System.Drawing.Size(48,27);
+        this.ContrastMaxTxtBox.Size = new System.Drawing.Size(48,23);
         this.ContrastMaxTxtBox.TabIndex = 55;
         this.ContrastMaxTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
         this.GroupBox3.Controls.Add(this.ContrastMaxTxtBox);
@@ -780,7 +756,7 @@ partial class MainForm
         this.ContrastMinTxtBox.ReadOnly =  true;
         this.ContrastMinTxtBox.Location = new System.Drawing.Point(128,104);
         this.ContrastMinTxtBox.Name =  "ContrastMinTxtBox";
-        this.ContrastMinTxtBox.Size = new System.Drawing.Size(48,27);
+        this.ContrastMinTxtBox.Size = new System.Drawing.Size(48,23);
         this.ContrastMinTxtBox.TabIndex = 56;
         this.ContrastMinTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
         this.GroupBox3.Controls.Add(this.ContrastMinTxtBox);
@@ -839,7 +815,7 @@ partial class MainForm
         this.ContrastChkBox.Text =  "コントラスト（有効／無効）";
         this.ContrastChkBox.Location = new System.Drawing.Point(8,232);
         this.ContrastChkBox.Name =  "ContrastChkBox";
-        this.ContrastChkBox.Size = new System.Drawing.Size(198,24);
+        this.ContrastChkBox.Size = new System.Drawing.Size(160,19);
         this.ContrastChkBox.TabIndex = 60;
         this.BrightPage.Controls.Add(this.ContrastChkBox);
 
@@ -852,7 +828,7 @@ partial class MainForm
         this.RndNoiseChkBox.Text =  "ランダムノイズ（有効／無効）";
         this.RndNoiseChkBox.Location = new System.Drawing.Point(8,8);
         this.RndNoiseChkBox.Name =  "RndNoiseChkBox";
-        this.RndNoiseChkBox.Size = new System.Drawing.Size(212,24);
+        this.RndNoiseChkBox.Size = new System.Drawing.Size(169,19);
         this.RndNoiseChkBox.TabIndex = 61;
         this.RndNoisePage.Controls.Add(this.RndNoiseChkBox);
 
@@ -891,7 +867,7 @@ partial class MainForm
         this.RndNoiseTxtBox.Text =  "TextBox11";
         this.RndNoiseTxtBox.Location = new System.Drawing.Point(144,32);
         this.RndNoiseTxtBox.Name =  "RndNoiseTxtBox";
-        this.RndNoiseTxtBox.Size = new System.Drawing.Size(68,27);
+        this.RndNoiseTxtBox.Size = new System.Drawing.Size(68,23);
         this.RndNoiseTxtBox.TabIndex = 66;
         this.RndNoiseTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
         this.GroupBox4.Controls.Add(this.RndNoiseTxtBox);
@@ -918,7 +894,7 @@ partial class MainForm
         this.RndNoiseCntTxtBox.Text =  "TextBox12";
         this.RndNoiseCntTxtBox.Location = new System.Drawing.Point(144,104);
         this.RndNoiseCntTxtBox.Name =  "RndNoiseCntTxtBox";
-        this.RndNoiseCntTxtBox.Size = new System.Drawing.Size(68,27);
+        this.RndNoiseCntTxtBox.Size = new System.Drawing.Size(68,23);
         this.RndNoiseCntTxtBox.TabIndex = 69;
         this.RndNoiseCntTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
         this.GroupBox4.Controls.Add(this.RndNoiseCntTxtBox);
@@ -932,7 +908,7 @@ partial class MainForm
         this.Label6.BackColor = System.Drawing.SystemColors.ActiveCaption;
         this.Label6.Location = new System.Drawing.Point(16,32);
         this.Label6.Name =  "Label6";
-        this.Label6.Size = new System.Drawing.Size(42,20);
+        this.Label6.Size = new System.Drawing.Size(33,15);
         this.Label6.TabIndex = 70;
         this.GroupBox4.Controls.Add(this.Label6);
 
@@ -945,7 +921,7 @@ partial class MainForm
         this.Label7.BackColor = System.Drawing.SystemColors.ActiveCaption;
         this.Label7.Location = new System.Drawing.Point(16,104);
         this.Label7.Name =  "Label7";
-        this.Label7.Size = new System.Drawing.Size(39,20);
+        this.Label7.Size = new System.Drawing.Size(31,15);
         this.Label7.TabIndex = 71;
         this.GroupBox4.Controls.Add(this.Label7);
 
@@ -971,7 +947,7 @@ partial class MainForm
         this.Label8.BackColor = System.Drawing.SystemColors.ActiveCaption;
         this.Label8.Location = new System.Drawing.Point(176,32);
         this.Label8.Name =  "Label8";
-        this.Label8.Size = new System.Drawing.Size(39,20);
+        this.Label8.Size = new System.Drawing.Size(30,15);
         this.Label8.TabIndex = 70;
         this.Label8.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
         this.GroupBox3.Controls.Add(this.Label8);
@@ -985,10 +961,61 @@ partial class MainForm
         this.Label9.BackColor = System.Drawing.SystemColors.ActiveCaption;
         this.Label9.Location = new System.Drawing.Point(176,104);
         this.Label9.Name =  "Label9";
-        this.Label9.Size = new System.Drawing.Size(39,20);
+        this.Label9.Size = new System.Drawing.Size(30,15);
         this.Label9.TabIndex = 71;
         this.Label9.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
         this.GroupBox3.Controls.Add(this.Label9);
+
+        //
+        // SplitContainer2
+        //
+        this.SplitContainer2 = new System.Windows.Forms.SplitContainer();
+        this.SplitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+        this.SplitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+        this.SplitContainer2.Text =  "SplitContainer2";
+        this.SplitContainer2.BackColor = System.Drawing.Color.Gray;
+        this.SplitContainer2.Name =  "SplitContainer2";
+        this.SplitContainer2.Size = new System.Drawing.Size(748,593);
+        this.SplitContainer2.TabIndex = 72;
+        this.SplitContainer2.SplitterDistance = 263;
+        this.SplitPage.Controls.Add(this.SplitContainer2);
+
+        //
+        // PicBox3
+        //
+        this.PicBox3 = new System.Windows.Forms.PictureBox();
+        this.PicBox3.TabIndex = 73;
+        this.PicBox3.Text =  "PictureBox2";
+        this.PicBox3.BackColor = System.Drawing.Color.White;
+        this.PicBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+        this.PicBox3.Name =  "PicBox3";
+        this.PicBox3.Size = new System.Drawing.Size(479,591);
+        this.SplitContainer2.Panel2.Controls.Add(this.PicBox3);
+
+        //
+        // SplitTab
+        //
+        this.SplitTab = new System.Windows.Forms.TabControl();
+        this.SplitTab.ItemSize = new System.Drawing.Size(60,20);
+        this.SplitTab.Text =  "TabControl3";
+        this.SplitTab.Location = new System.Drawing.Point(8,8);
+        this.SplitTab.Name =  "SplitTab";
+        this.SplitTab.Size = new System.Drawing.Size(250,568);
+        this.SplitTab.TabIndex = 74;
+        this.SplitTab.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
+        this.SplitContainer2.Panel1.Controls.Add(this.SplitTab);
+
+        //
+        // SplitOptPage
+        //
+        this.SplitOptPage = new System.Windows.Forms.TabPage();
+        this.SplitOptPage.BackColor = System.Drawing.SystemColors.ActiveCaption;
+        this.SplitOptPage.Location = new System.Drawing.Point(4,24);
+        this.SplitOptPage.TabIndex = 75;
+        this.SplitOptPage.Text =  "分割設定";
+        this.SplitOptPage.Name =  "SplitOptPage";
+        this.SplitOptPage.Size = new System.Drawing.Size(242,540);
+        this.SplitTab.Controls.Add(this.SplitOptPage);
 
     }
 
@@ -1025,13 +1052,11 @@ partial class MainForm
     private TextBox MaskNameTxtBox;
     private TextBox MaskColorTxtBox;
     private TextBox MaskWidthTxtBox;
-    private PictureBox PicBox3;
     private Button MaskColorBtn;
     private StatusStrip StatusStrip1;
     private StatusStrip StatusStrip2;
     private ListView LabelLstView;
     private ListView MaskLstView;
-    private TabPage SplitOptPage;
     private SplitContainer SplitContainer1;
     private TabControl ImageTab;
     private TabPage BrightPage;
@@ -1065,4 +1090,8 @@ partial class MainForm
     private Button RndNoisePreviewBtn;
     private Label Label8;
     private Label Label9;
+    private SplitContainer SplitContainer2;
+    private PictureBox PicBox3;
+    private TabControl SplitTab;
+    private TabPage SplitOptPage;
 }
