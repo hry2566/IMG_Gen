@@ -47,8 +47,8 @@ namespace IMG_Gen2
 
             BrightMaxTxtBox!.Text = "0";
             BrightMinTxtBox!.Text = "0";
-            ContrastMaxTxtBox!.Text = "0";
-            ContrastMinTxtBox!.Text = "0";
+            ContrastMaxTxtBox!.Text = "100";
+            ContrastMinTxtBox!.Text = "100";
 
             BrightMaxHScrBar!.ValueChanged += new EventHandler(BrightContrast_HScrBar_ValueChanged);
             BrightMinHScrBar!.ValueChanged += new EventHandler(BrightContrast_HScrBar_ValueChanged);
@@ -64,7 +64,7 @@ namespace IMG_Gen2
 
             BrightRndPreviewBtn!.Click += new EventHandler(BrightRndPreviewBtn_Click);
 
-            ReadImageIni("./image.ini");
+            ReadImageIni("./image_bright_contrast.ini");
         }
         internal void SetImage(string filePath)
         {
@@ -123,7 +123,7 @@ namespace IMG_Gen2
         {
             Console.WriteLine(sender);
 
-            SaveImageIni("./image.ini");
+            SaveImageIni("./image_bright_contrast.ini");
         }
         private void BrightRndPreviewBtn_Click(Object? sender, EventArgs e)
         {
@@ -161,7 +161,7 @@ namespace IMG_Gen2
             }
             if (!readFlag)
             {
-                SaveImageIni("./image.ini");
+                SaveImageIni("./image_bright_contrast.ini");
             }
         }
         private void BrightContrast_View()
