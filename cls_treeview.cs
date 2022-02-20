@@ -5,14 +5,16 @@ public partial class cls_treeview : TreeView
     private cls_posPicBox picBox1;
     private TabPage PosPage;
     private cls_image_BrightContrast Image_BrightContrast;
+    private cls_image_RandomNoise? Image_RandomNoise;
     private string? rootPath;                               // ルートフォルダパス
     private cls_treenode[] treeNode = new cls_treenode[0];
 
-    public cls_treeview(cls_posPicBox picBox1, TabPage PosPage, cls_image_BrightContrast Image_BrightContrast)
+    public cls_treeview(cls_posPicBox picBox1, TabPage PosPage, cls_image_BrightContrast Image_BrightContrast, cls_image_RandomNoise Image_RandomNoise)
     {
         this.picBox1 = picBox1;
         this.PosPage = PosPage;
         this.Image_BrightContrast = Image_BrightContrast;
+        this.Image_RandomNoise = Image_RandomNoise;
         this.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(SelectChange);
     }
     private void SelectChange(Object? sender, TreeViewEventArgs e)
@@ -24,6 +26,7 @@ public partial class cls_treeview : TreeView
             if (!System.IO.File.Exists(filePath)) { return; }
             picBox1.SetImage(filePath, rootPath!);
             Image_BrightContrast.SetImage(filePath);
+            Image_RandomNoise!.SetImage(filePath);
         }
     }
     internal string Path
