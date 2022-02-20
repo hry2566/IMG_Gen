@@ -25,6 +25,17 @@ partial class MainForm
         imgCtrl.Add(PicBox2);
         Image_BrightContrast = new(imgCtrl);
 
+        // Image_RandomNoise
+        imgCtrl = new();
+        imgCtrl.Add(RndNoiseChkBox);
+        imgCtrl.Add(RndNoiseScrBar);
+        imgCtrl.Add(RndNoiseRatioScrBar);
+        imgCtrl.Add(RndNoiseTxtBox);
+        imgCtrl.Add(RndNoiseRatioTxtBox);
+        imgCtrl.Add(RndNoisePreviewBtn);
+        imgCtrl.Add(PicBox2);
+        Image_RandomNoise = new(imgCtrl);
+
         // sLabel1
         this.sLabel1 = new ToolStripStatusLabel();
         this.sLabel1.Text = "sLabel1";
@@ -46,7 +57,7 @@ partial class MainForm
         this.PosPage.Controls.Add(this.PosPicBox);
 
         // FileTreeView
-        this.FileTreeView = new cls_treeview(PosPicBox!, PosPage, Image_BrightContrast!);
+        this.FileTreeView = new cls_treeview(PosPicBox!, PosPage, Image_BrightContrast!, Image_RandomNoise);
         this.FileTreeView.ItemHeight = 22;
         this.FileTreeView.LineColor = System.Drawing.Color.Black;
         this.FileTreeView.Text = "TreeView2";
@@ -128,7 +139,7 @@ partial class MainForm
     private cls_posPicBox? PosPicBox;
     private ToolStripStatusLabel? sLabel1;
     private ToolStripStatusLabel? sLabel2;
-
     private cls_image_BrightContrast? Image_BrightContrast;
+    private cls_image_RandomNoise? Image_RandomNoise;
 
 }
