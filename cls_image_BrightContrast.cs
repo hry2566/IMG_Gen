@@ -22,6 +22,7 @@ namespace IMG_Gen2
         private TextBox? ContrastMinTxtBox;
         private Button? BrightRndPreviewBtn;
         private PictureBox? PicBox2;
+        private Boolean readFlag = false;
 
         public cls_image_BrightContrast(List<Control> imgCtrl)
         {
@@ -54,17 +55,60 @@ namespace IMG_Gen2
             ContrastMaxHScrBar!.ValueChanged += new EventHandler(BrightContrast_HScrBar_ValueChanged);
             ContrastMinHScrBar!.ValueChanged += new EventHandler(BrightContrast_HScrBar_ValueChanged);
 
+            BrightChkBox!.Click += new EventHandler(ChkBox_Click);
+            ContrastChkBox!.Click += new EventHandler(ChkBox_Click);
             BrightMaxRadioBtn!.Click += new EventHandler(BrightContrast_RadioBtn_Click);
             BrightMinRadioBtn!.Click += new EventHandler(BrightContrast_RadioBtn_Click);
             ContrastMaxRadioBtn!.Click += new EventHandler(BrightContrast_RadioBtn_Click);
             ContrastMinRadioBtn!.Click += new EventHandler(BrightContrast_RadioBtn_Click);
 
             BrightRndPreviewBtn!.Click += new EventHandler(BrightRndPreviewBtn_Click);
+
+            ReadImageIni("./image.ini");
         }
         internal void SetImage(string filePath)
         {
             this.filePath = filePath;
             ResetView();
+        }
+        private void ReadImageIni(string iniFileName)
+        {
+            if (!cls_posPicBox.CheckFile(iniFileName)) { return; }
+
+            readFlag = true;
+            CheckBox[] chkBox = new CheckBox[2] { BrightChkBox!, ContrastChkBox! };
+            HScrollBar[] hScrollBars = new HScrollBar[4] { BrightMaxHScrBar!, BrightMinHScrBar!, ContrastMaxHScrBar!, ContrastMinHScrBar! };
+            StreamReader sr = new StreamReader(iniFileName);
+            for (int i = 0; i < 6; i++)
+            {
+                string? line = sr.ReadLine();
+                string[] Split = line!.Split(":");
+                if (i < 2)
+                {
+                    chkBox[i].Checked = System.Convert.ToBoolean(Split[1]);
+                }
+                else
+                {
+                    hScrollBars[i - 2].Value = int.Parse(Split[1]);
+                }
+            }
+            sr.Close();
+            readFlag = false;
+        }
+        private void SaveImageIni(string iniFileName)
+        {
+            string settings = "";
+            settings += "BrightChkBox:" + BrightChkBox!.Checked.ToString() + "\n";
+            settings += "ContrastChkBox:" + ContrastChkBox!.Checked.ToString() + "\n";
+            settings += "BrightMaxHScrBar:" + BrightMaxHScrBar!.Value.ToString() + "\n";
+            settings += "BrightMinHScrBar:" + BrightMinHScrBar!.Value.ToString() + "\n";
+            settings += "ContrastMaxHScrBar:" + ContrastMaxHScrBar!.Value.ToString() + "\n";
+            settings += "ContrastMinHScrBar:" + ContrastMinHScrBar!.Value.ToString();
+
+            StreamWriter sw = new StreamWriter(iniFileName);
+            sw.WriteLine(settings);
+            sw.Flush();
+            sw.Close();
         }
         private void ResetView()
         {
@@ -74,6 +118,12 @@ namespace IMG_Gen2
                 PicBox2.Image = null;
             }
             PicBox2.Image = new Bitmap(filePath!);
+        }
+        private void ChkBox_Click(Object? sender, EventArgs e)
+        {
+            Console.WriteLine(sender);
+
+            SaveImageIni("./image.ini");
         }
         private void BrightRndPreviewBtn_Click(Object? sender, EventArgs e)
         {
@@ -108,6 +158,10 @@ namespace IMG_Gen2
                     BrightContrast_View();
                     break;
                 }
+            }
+            if (!readFlag)
+            {
+                SaveImageIni("./image.ini");
             }
         }
         private void BrightContrast_View()
@@ -150,5 +204,6 @@ namespace IMG_Gen2
             mat.Dispose();
             bmp.Dispose();
         }
+
     }
 }
