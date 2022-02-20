@@ -607,7 +607,7 @@ partial class MainForm
         //
         this.BrightMaxHScrBar = new System.Windows.Forms.HScrollBar();
         this.BrightMaxHScrBar.BackColor = System.Drawing.SystemColors.ActiveCaption;
-        this.BrightMaxHScrBar.Maximum = 200;
+        this.BrightMaxHScrBar.Maximum = 209;
         this.BrightMaxHScrBar.Minimum = -200;
         this.BrightMaxHScrBar.Text =  "HScrollBar0";
         this.BrightMaxHScrBar.Location = new System.Drawing.Point(16,64);
@@ -637,7 +637,7 @@ partial class MainForm
         //
         this.BrightMinHScrBar = new System.Windows.Forms.HScrollBar();
         this.BrightMinHScrBar.BackColor = System.Drawing.SystemColors.ActiveCaption;
-        this.BrightMinHScrBar.Maximum = 200;
+        this.BrightMinHScrBar.Maximum = 209;
         this.BrightMinHScrBar.Minimum = -200;
         this.BrightMinHScrBar.Text =  "HScrollBar1";
         this.BrightMinHScrBar.Location = new System.Drawing.Point(16,136);
@@ -766,7 +766,7 @@ partial class MainForm
         //
         this.ContrastMaxHScrBar = new System.Windows.Forms.HScrollBar();
         this.ContrastMaxHScrBar.BackColor = System.Drawing.SystemColors.ActiveCaption;
-        this.ContrastMaxHScrBar.Maximum = 300;
+        this.ContrastMaxHScrBar.Maximum = 309;
         this.ContrastMaxHScrBar.Minimum = 100;
         this.ContrastMaxHScrBar.Text =  "HScrollBar2";
         this.ContrastMaxHScrBar.Value = 100;
@@ -782,7 +782,7 @@ partial class MainForm
         //
         this.ContrastMinHScrBar = new System.Windows.Forms.HScrollBar();
         this.ContrastMinHScrBar.BackColor = System.Drawing.SystemColors.ActiveCaption;
-        this.ContrastMinHScrBar.Maximum = 300;
+        this.ContrastMinHScrBar.Maximum = 309;
         this.ContrastMinHScrBar.Minimum = 100;
         this.ContrastMinHScrBar.Text =  "HScrollBar3";
         this.ContrastMinHScrBar.Value = 100;
@@ -823,6 +823,7 @@ partial class MainForm
         // RndNoiseChkBox
         //
         this.RndNoiseChkBox = new System.Windows.Forms.CheckBox();
+        this.RndNoiseChkBox.Checked =  true;
         this.RndNoiseChkBox.AutoSize =  true;
         this.RndNoiseChkBox.BackColor = System.Drawing.SystemColors.ActiveCaption;
         this.RndNoiseChkBox.Text =  "ランダムノイズ（有効／無効）";
@@ -850,9 +851,8 @@ partial class MainForm
         //
         this.RndNoiseScrBar = new System.Windows.Forms.HScrollBar();
         this.RndNoiseScrBar.BackColor = System.Drawing.SystemColors.ActiveCaption;
-        this.RndNoiseScrBar.Minimum = 1;
+        this.RndNoiseScrBar.Maximum = 264;
         this.RndNoiseScrBar.Text =  "HScrollBar4";
-        this.RndNoiseScrBar.Value = 1;
         this.RndNoiseScrBar.Location = new System.Drawing.Point(16,64);
         this.RndNoiseScrBar.Name =  "RndNoiseScrBar";
         this.RndNoiseScrBar.Size = new System.Drawing.Size(192,32);
@@ -865,39 +865,46 @@ partial class MainForm
         //
         this.RndNoiseTxtBox = new System.Windows.Forms.TextBox();
         this.RndNoiseTxtBox.Text =  "TextBox11";
-        this.RndNoiseTxtBox.Location = new System.Drawing.Point(144,32);
+        this.RndNoiseTxtBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+        this.RndNoiseTxtBox.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+        this.RndNoiseTxtBox.ReadOnly =  true;
+        this.RndNoiseTxtBox.Location = new System.Drawing.Point(160,32);
         this.RndNoiseTxtBox.Name =  "RndNoiseTxtBox";
-        this.RndNoiseTxtBox.Size = new System.Drawing.Size(68,23);
+        this.RndNoiseTxtBox.Size = new System.Drawing.Size(52,23);
         this.RndNoiseTxtBox.TabIndex = 66;
         this.RndNoiseTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
         this.GroupBox4.Controls.Add(this.RndNoiseTxtBox);
 
         //
-        // RndNoiseCntScrBar
+        // RndNoiseRatioScrBar
         //
-        this.RndNoiseCntScrBar = new System.Windows.Forms.HScrollBar();
-        this.RndNoiseCntScrBar.BackColor = System.Drawing.SystemColors.ActiveCaption;
-        this.RndNoiseCntScrBar.Minimum = 1;
-        this.RndNoiseCntScrBar.Text =  "HScrollBar5";
-        this.RndNoiseCntScrBar.Value = 1;
-        this.RndNoiseCntScrBar.Location = new System.Drawing.Point(16,136);
-        this.RndNoiseCntScrBar.Name =  "RndNoiseCntScrBar";
-        this.RndNoiseCntScrBar.Size = new System.Drawing.Size(192,32);
-        this.RndNoiseCntScrBar.TabIndex = 68;
-        this.RndNoiseCntScrBar.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
-        this.GroupBox4.Controls.Add(this.RndNoiseCntScrBar);
+        this.RndNoiseRatioScrBar = new System.Windows.Forms.HScrollBar();
+        this.RndNoiseRatioScrBar.BackColor = System.Drawing.SystemColors.ActiveCaption;
+        this.RndNoiseRatioScrBar.Maximum = 109;
+        this.RndNoiseRatioScrBar.Minimum = 1;
+        this.RndNoiseRatioScrBar.Text =  "HScrollBar5";
+        this.RndNoiseRatioScrBar.Value = 1;
+        this.RndNoiseRatioScrBar.Location = new System.Drawing.Point(16,136);
+        this.RndNoiseRatioScrBar.Name =  "RndNoiseRatioScrBar";
+        this.RndNoiseRatioScrBar.Size = new System.Drawing.Size(192,32);
+        this.RndNoiseRatioScrBar.TabIndex = 68;
+        this.RndNoiseRatioScrBar.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
+        this.GroupBox4.Controls.Add(this.RndNoiseRatioScrBar);
 
         //
-        // RndNoiseCntTxtBox
+        // RndNoiseRatioTxtBox
         //
-        this.RndNoiseCntTxtBox = new System.Windows.Forms.TextBox();
-        this.RndNoiseCntTxtBox.Text =  "TextBox12";
-        this.RndNoiseCntTxtBox.Location = new System.Drawing.Point(144,104);
-        this.RndNoiseCntTxtBox.Name =  "RndNoiseCntTxtBox";
-        this.RndNoiseCntTxtBox.Size = new System.Drawing.Size(68,23);
-        this.RndNoiseCntTxtBox.TabIndex = 69;
-        this.RndNoiseCntTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
-        this.GroupBox4.Controls.Add(this.RndNoiseCntTxtBox);
+        this.RndNoiseRatioTxtBox = new System.Windows.Forms.TextBox();
+        this.RndNoiseRatioTxtBox.Text =  "TextBox12";
+        this.RndNoiseRatioTxtBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+        this.RndNoiseRatioTxtBox.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+        this.RndNoiseRatioTxtBox.ReadOnly =  true;
+        this.RndNoiseRatioTxtBox.Location = new System.Drawing.Point(160,104);
+        this.RndNoiseRatioTxtBox.Name =  "RndNoiseRatioTxtBox";
+        this.RndNoiseRatioTxtBox.Size = new System.Drawing.Size(48,23);
+        this.RndNoiseRatioTxtBox.TabIndex = 69;
+        this.RndNoiseRatioTxtBox.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
+        this.GroupBox4.Controls.Add(this.RndNoiseRatioTxtBox);
 
         //
         // Label6
@@ -917,7 +924,7 @@ partial class MainForm
         //
         this.Label7 = new System.Windows.Forms.Label();
         this.Label7.AutoSize =  true;
-        this.Label7.Text =  "回数";
+        this.Label7.Text =  "割合";
         this.Label7.BackColor = System.Drawing.SystemColors.ActiveCaption;
         this.Label7.Location = new System.Drawing.Point(16,104);
         this.Label7.Name =  "Label7";
@@ -1017,6 +1024,19 @@ partial class MainForm
         this.SplitOptPage.Size = new System.Drawing.Size(242,540);
         this.SplitTab.Controls.Add(this.SplitOptPage);
 
+        //
+        // Label10
+        //
+        this.Label10 = new System.Windows.Forms.Label();
+        this.Label10.AutoSize =  true;
+        this.Label10.Text =  "1/";
+        this.Label10.BackColor = System.Drawing.SystemColors.ActiveCaption;
+        this.Label10.Location = new System.Drawing.Point(136,104);
+        this.Label10.Name =  "Label10";
+        this.Label10.Size = new System.Drawing.Size(18,15);
+        this.Label10.TabIndex = 74;
+        this.GroupBox4.Controls.Add(this.Label10);
+
     }
 
     #endregion
@@ -1083,8 +1103,8 @@ partial class MainForm
     private GroupBox GroupBox4;
     private HScrollBar RndNoiseScrBar;
     private TextBox RndNoiseTxtBox;
-    private HScrollBar RndNoiseCntScrBar;
-    private TextBox RndNoiseCntTxtBox;
+    private HScrollBar RndNoiseRatioScrBar;
+    private TextBox RndNoiseRatioTxtBox;
     private Label Label6;
     private Label Label7;
     private Button RndNoisePreviewBtn;
@@ -1094,4 +1114,5 @@ partial class MainForm
     private PictureBox PicBox3;
     private TabControl SplitTab;
     private TabPage SplitOptPage;
+    private Label Label10;
 }
