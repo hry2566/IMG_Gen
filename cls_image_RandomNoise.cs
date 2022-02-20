@@ -32,7 +32,7 @@ namespace IMG_Gen2
             RndNoiseScrBar!.ValueChanged += new EventHandler(RndNoise_HScrBar_ValueChanged);
             RndNoiseRatioScrBar!.ValueChanged += new EventHandler(RndNoise_HScrBar_ValueChanged);
 
-            // RndNoisePreviewBtn!.Click += new EventHandler(RndNoisePreviewBtn_Click);
+            RndNoisePreviewBtn!.Click += new EventHandler(RndNoisePreviewBtn_Click);
 
             ReadImageIni("./image_random_noise.ini");
         }
@@ -86,27 +86,37 @@ namespace IMG_Gen2
             }
             PicBox2.Image = new Bitmap(filePath!);
         }
-        // private void ChkBox_Click(Object? sender, EventArgs e)
-        // {
-        //     // SaveImageIni("./image.ini");
-        // }
         private void RndNoisePreviewBtn_Click(Object? sender, EventArgs e)
         {
-            // int brightMax = BrightMaxHScrBar!.Value;
-            // int brightMin = BrightMinHScrBar!.Value;
-            // int ContrastMax = ContrastMaxHScrBar!.Value;
-            // int ContrastMin = ContrastMinHScrBar!.Value;
+            if (PicBox2!.Image == null) { return; }
 
-            // Random rnd = new System.Random();
-            // double alpha = rnd.Next(ContrastMin, ContrastMax) / 100;
-            // double beta = rnd.Next(brightMin, brightMax);
+            runFlag = true;
+            RndNoisePreviewBtn!.Visible = false;
+            ResetView();
 
-            // Run_BitmapConverter(alpha, beta);
+            Random rnd = new System.Random();
+            int noise = rnd.Next(128, RndNoiseScrBar!.Value);
+            int ratio = rnd.Next(RndNoiseRatioScrBar!.Value, 50);
+
+            CreateNoise(noise, ratio);
+            RndNoisePreviewBtn!.Visible = true;
+            runFlag = false;
         }
-        // private void BrightContrast_RadioBtn_Click(Object? sender, EventArgs e)
-        // {
-        //     // BrightContrast_View();
-        // }
+        private void CreateNoise(int noise, int ratio)
+        {
+            Bitmap bmp = new Bitmap(PicBox2!.Image!);
+            if (PicBox2!.Image != null)
+            {
+                PicBox2.Image.Dispose();
+                PicBox2.Image = null;
+            }
+            PicBox2.Image = bmp;
+            Application.DoEvents();
+            AddNoise(bmp, noise, ratio);
+
+            PicBox2.Refresh();
+            bmp.Dispose();
+        }
         private void RndNoise_HScrBar_ValueChanged(Object? sender, EventArgs e)
         {
             HScrollBar? ctrl = sender as HScrollBar;
@@ -139,18 +149,7 @@ namespace IMG_Gen2
             int ratio = RndNoiseRatioScrBar!.Value;
 
             ResetView();
-            Bitmap bmp = new Bitmap(PicBox2!.Image!);
-            if (PicBox2!.Image != null)
-            {
-                PicBox2.Image.Dispose();
-                PicBox2.Image = null;
-            }
-            PicBox2.Image = bmp;
-            Application.DoEvents();
-            AddNoise(bmp, noise, ratio);
-
-            PicBox2.Refresh();
-            bmp.Dispose();
+            CreateNoise(noise, ratio);
             runFlag = false;
         }
         private void AddNoise(Bitmap bmp, int noise, int ratio)
