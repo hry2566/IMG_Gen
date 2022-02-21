@@ -3,19 +3,19 @@ namespace IMG_Gen2
     public class cls_image_Split
     {
         private string? filePath;
-        private TextBox? ImageWidthTxtBox; 
-        private TextBox? ImageHeightTxtBox; 
-        private TextBox? SplitWidthTxtBox; 
-        private TextBox? SplitHeightTxtBox; 
-        private TextBox? WrapWidthTxtBox; 
-        private TextBox? WrapHeightTxtBox; 
-        private TextBox? SplitCntTxtBox1; 
+        private TextBox? ImageWidthTxtBox;
+        private TextBox? ImageHeightTxtBox;
+        private TextBox? SplitWidthTxtBox;
+        private TextBox? SplitHeightTxtBox;
+        private TextBox? WrapWidthTxtBox;
+        private TextBox? WrapHeightTxtBox;
+        private TextBox? SplitCntTxtBox1;
         private CheckBox? RndSplitRadioBtn;
         private Button? SplitPreviewBtn;
         private TextBox? SplitCntTxtBox2;
         private DataGridView? SplitCntDataGridView;
         private Button? RunSplitBtn;
-        private Button? StopSplitBtn; 
+        private Button? StopSplitBtn;
         private PictureBox? PicBox2;
         private Boolean readFlag = false;
 
@@ -45,8 +45,8 @@ namespace IMG_Gen2
             SplitCntTxtBox1!.Text = "";
             SplitCntTxtBox2!.Text = "";
 
-            SplitCntDataGridView!.ColumnCount=3;
-            
+            SplitCntDataGridView!.ColumnCount = 3;
+
             SplitCntDataGridView.Columns[0].HeaderText = "ラベル";
             SplitCntDataGridView.Columns[1].HeaderText = "設定数";
             SplitCntDataGridView.Columns[2].HeaderText = "作成済";
@@ -67,7 +67,7 @@ namespace IMG_Gen2
         }
         private void ReadIni(string filePath)
         {
-            if (!cls_posPicBox.CheckFile(filePath)) {return;}
+            if (!cls_posPicBox.CheckFile(filePath)) { return; }
             readFlag = true;
             StreamReader sr = new(filePath);
             string[] split = sr.ReadLine()!.Split(":");
@@ -79,20 +79,20 @@ namespace IMG_Gen2
             split = sr.ReadLine()!.Split(":");
             WrapHeightTxtBox!.Text = split[1];
             split = sr.ReadLine()!.Split(":");
-            RndSplitRadioBtn!.ThreeState = System.Convert.ToBoolean(split[1]);
+            RndSplitRadioBtn!.Checked = System.Convert.ToBoolean(split[1]);
 
             sr.Close();
             readFlag = false;
         }
         private void TxtChanged(object? sender, EventArgs e)
         {
-            if(readFlag){return;}
+            if (readFlag) { return; }
             StreamWriter sw = new("./image_split.ini");
             sw.WriteLine("SplitWidth:" + SplitWidthTxtBox!.Text);
             sw.WriteLine("SplitHeight:" + SplitHeightTxtBox!.Text);
             sw.WriteLine("WrapWidth:" + WrapWidthTxtBox!.Text);
             sw.WriteLine("WrapHeight:" + WrapHeightTxtBox!.Text);
-            sw.WriteLine("RandomChkBox:" + RndSplitRadioBtn!.ThreeState.ToString());
+            sw.WriteLine("RandomChkBox:" + RndSplitRadioBtn!.Checked.ToString());
             sw.Close();
         }
         internal void CheckLabel()
@@ -102,21 +102,21 @@ namespace IMG_Gen2
             List<string> labelName3 = new();
             labelName3.Add("OK,1000,0");
 
-            if (cls_posPicBox.CheckFile("./label.ini")) 
+            if (cls_posPicBox.CheckFile("./label.ini"))
             {
                 StreamReader sr = new("./label.ini");
                 while (!sr.EndOfStream)
                 {
                     string[] split = sr.ReadLine()!.Split(",");
                     bool skipFlag = true;
-                    for(int i=0;i<labelName1.Count;i++)
+                    for (int i = 0; i < labelName1.Count; i++)
                     {
-                        if(labelName1[i]==split[0])
+                        if (labelName1[i] == split[0])
                         {
                             skipFlag = false;
                         }
                     }
-                    if(skipFlag)
+                    if (skipFlag)
                     {
                         labelName1.Add(split[0]);
                     }
@@ -124,7 +124,7 @@ namespace IMG_Gen2
                 sr.Close();
             }
 
-            if(cls_posPicBox.CheckFile("./image_split_label.ini"))
+            if (cls_posPicBox.CheckFile("./image_split_label.ini"))
             {
                 StreamReader sr = new("./image_split_label.ini");
                 while (!sr.EndOfStream)
@@ -134,30 +134,30 @@ namespace IMG_Gen2
                 }
                 sr.Close();
             }
-            
-            for(int i=0;i<labelName1.Count;i++)
+
+            for (int i = 0; i < labelName1.Count; i++)
             {
                 bool addFlag = true;
-                for(int j=0;j<labelName2.Count;j++)
+                for (int j = 0; j < labelName2.Count; j++)
                 {
                     string[] split = labelName2[j].Split(",");
-                    if(labelName1[i] == split[0])
+                    if (labelName1[i] == split[0])
                     {
                         labelName3.Add(labelName2[j]);
-                        addFlag=false;
+                        addFlag = false;
                         break;
                     }
                 }
-                if(addFlag)
+                if (addFlag)
                 {
                     labelName3.Add(labelName1[i] + ",0,0");
                 }
             }
 
             StreamWriter sw = new("./image_split_label.ini");
-            for(int i=0;i<labelName3.Count;i++)
+            for (int i = 0; i < labelName3.Count; i++)
             {
-                sw.WriteLine( labelName3[i]);
+                sw.WriteLine(labelName3[i]);
             }
             sw.Close();
 
@@ -165,13 +165,13 @@ namespace IMG_Gen2
         }
         private void SplitCntDataGridView_CellValueChanged(object? sender, DataGridViewCellEventArgs e)
         {
-            if(SplitCntDataGridView!.Rows[e.RowIndex].Cells[0].Value.ToString()==""){return;}
+            if (SplitCntDataGridView!.Rows[e.RowIndex].Cells[0].Value.ToString() == "") { return; }
             SaveIni("./image_split_label.ini");
         }
         private void SaveIni(string iniFileName)
         {
             StreamWriter sw = new(iniFileName);
-            for(int i=0;i<SplitCntDataGridView!.RowCount-1;i++)
+            for (int i = 0; i < SplitCntDataGridView!.RowCount - 1; i++)
             {
                 string str = SplitCntDataGridView.Rows[i].Cells[0].Value.ToString() + ",";
                 str += SplitCntDataGridView.Rows[i].Cells[1].Value.ToString() + ",";
@@ -190,7 +190,7 @@ namespace IMG_Gen2
             while (!sr.EndOfStream)
             {
                 string[] split = sr.ReadLine()!.Split(",");
-                SplitCntDataGridView!.Rows.Add(split[0],split[1],0);
+                SplitCntDataGridView!.Rows.Add(split[0], split[1], 0);
             }
             sr.Close();
         }
@@ -198,7 +198,7 @@ namespace IMG_Gen2
         {
             this.filePath = filePath;
             ImageWidthTxtBox!.Text = PicBox2!.Image.Width.ToString();
-            ImageHeightTxtBox!.Text=PicBox2.Image.Height.ToString();
+            ImageHeightTxtBox!.Text = PicBox2.Image.Height.ToString();
         }
     }
 }
