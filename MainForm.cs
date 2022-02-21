@@ -79,21 +79,42 @@ public partial class MainForm : Form
         TextBox[] textBox = new TextBox[3] { LabelNameTxtBox, LabelColorTxtBox, LabelWidthTxtBox };
         EntBtn_Click(textBox, LabelLstView);
         SaveIni("./label.ini", LabelLstView);
+        Image_Split!.CheckLabel();
     }
     private void LabelModBtn_Click(Object? sender, EventArgs? e)
     {
         TextBox[] textBox = new TextBox[3] { LabelNameTxtBox, LabelColorTxtBox, LabelWidthTxtBox };
         ModBtn_Click(textBox, LabelLstView);
         SaveIni("./label.ini", LabelLstView);
+        Image_Split!.CheckLabel();
+
     }
     private void LabelDelBtn_Click(Object? sender, EventArgs? e)
     {
         DelBtn_Click(LabelLstView);
         SaveIni("./label.ini", LabelLstView);
+        Image_Split!.CheckLabel();
     }
     private void LabelColorBtn_Click(Object? sender, EventArgs? e)
     {
         ColorBtn_Click(LabelColorTxtBox);
+    }
+
+    // ViewTab
+    private void ViewTab_SelectedIndexChanged(Object? sender, EventArgs? e)
+    {
+        switch(ViewTab.SelectedIndex)
+        {
+            case 0:
+                break;
+            case 1:
+                Image_BrightContrast!.ResetView();
+                this.SplitContainer1.Panel2.Controls.Add(this.PicBox2);
+                break;
+            case 2:
+                this.SplitContainer2.Panel2.Controls.Add(this.PicBox2);
+                break;
+        }
     }
 
     // ***********************************************************************
