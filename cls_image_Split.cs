@@ -17,6 +17,7 @@ namespace IMG_Gen2
         private Button? RunSplitBtn;
         private Button? StopSplitBtn; 
         private PictureBox? PicBox2;
+        private Boolean readFlag = false;
 
         public cls_image_Split(List<Control> splitCtrl)
         {
@@ -62,15 +63,36 @@ namespace IMG_Gen2
             RndSplitRadioBtn!.CheckedChanged += new EventHandler(TxtChanged);
 
             CheckLabel();
+            ReadIni("./image_split.ini");
+        }
+        private void ReadIni(string filePath)
+        {
+            if (!cls_posPicBox.CheckFile(filePath)) {return;}
+            readFlag = true;
+            StreamReader sr = new(filePath);
+            string[] split = sr.ReadLine()!.Split(":");
+            SplitWidthTxtBox!.Text = split[1];
+            split = sr.ReadLine()!.Split(":");
+            SplitHeightTxtBox!.Text = split[1];
+            split = sr.ReadLine()!.Split(":");
+            WrapWidthTxtBox!.Text = split[1];
+            split = sr.ReadLine()!.Split(":");
+            WrapHeightTxtBox!.Text = split[1];
+            split = sr.ReadLine()!.Split(":");
+            RndSplitRadioBtn!.ThreeState = System.Convert.ToBoolean(split[1]);
+
+            sr.Close();
+            readFlag = false;
         }
         private void TxtChanged(object? sender, EventArgs e)
         {
-            StreamWriter sw = new StreamWriter("./image_split.ini");
+            if(readFlag){return;}
+            StreamWriter sw = new("./image_split.ini");
             sw.WriteLine("SplitWidth:" + SplitWidthTxtBox!.Text);
             sw.WriteLine("SplitHeight:" + SplitHeightTxtBox!.Text);
             sw.WriteLine("WrapWidth:" + WrapWidthTxtBox!.Text);
             sw.WriteLine("WrapHeight:" + WrapHeightTxtBox!.Text);
-            sw.WriteLine("RandomChkBox:" + RndSplitRadioBtn!.CheckState.ToString());
+            sw.WriteLine("RandomChkBox:" + RndSplitRadioBtn!.ThreeState.ToString());
             sw.Close();
         }
         internal void CheckLabel()
@@ -82,7 +104,7 @@ namespace IMG_Gen2
 
             if (cls_posPicBox.CheckFile("./label.ini")) 
             {
-                StreamReader sr = new StreamReader("./label.ini");
+                StreamReader sr = new("./label.ini");
                 while (!sr.EndOfStream)
                 {
                     string[] split = sr.ReadLine()!.Split(",");
@@ -104,7 +126,7 @@ namespace IMG_Gen2
 
             if(cls_posPicBox.CheckFile("./image_split_label.ini"))
             {
-                StreamReader sr = new StreamReader("./image_split_label.ini");
+                StreamReader sr = new("./image_split_label.ini");
                 while (!sr.EndOfStream)
                 {
                     string? line = sr.ReadLine();
@@ -132,14 +154,14 @@ namespace IMG_Gen2
                 }
             }
 
-            StreamWriter sw = new StreamWriter("./image_split_label.ini");
+            StreamWriter sw = new("./image_split_label.ini");
             for(int i=0;i<labelName3.Count;i++)
             {
                 sw.WriteLine( labelName3[i]);
             }
             sw.Close();
 
-            ReadIni("./image_split_label.ini");
+            ReadLabelIni("./image_split_label.ini");
         }
         private void SplitCntDataGridView_CellValueChanged(object? sender, DataGridViewCellEventArgs e)
         {
@@ -148,7 +170,7 @@ namespace IMG_Gen2
         }
         private void SaveIni(string iniFileName)
         {
-            StreamWriter sw = new StreamWriter(iniFileName);
+            StreamWriter sw = new(iniFileName);
             for(int i=0;i<SplitCntDataGridView!.RowCount-1;i++)
             {
                 string str = SplitCntDataGridView.Rows[i].Cells[0].Value.ToString() + ",";
@@ -158,13 +180,13 @@ namespace IMG_Gen2
             }
             sw.Close();
         }
-        private void ReadIni(string iniFileName)
+        private void ReadLabelIni(string iniFileName)
         {
             if (!cls_posPicBox.CheckFile(iniFileName)) { return; }
 
             SplitCntDataGridView!.Rows.Clear();
 
-            StreamReader sr = new StreamReader(iniFileName);
+            StreamReader sr = new(iniFileName);
             while (!sr.EndOfStream)
             {
                 string[] split = sr.ReadLine()!.Split(",");
