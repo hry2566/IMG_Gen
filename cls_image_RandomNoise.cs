@@ -1,5 +1,6 @@
 ﻿using OpenCvSharp;
 using OpenCvSharp.Extensions;
+using System.Runtime.InteropServices;
 
 namespace IMG_Gen2
 {
@@ -111,11 +112,10 @@ namespace IMG_Gen2
                 PicBox2.Image = null;
             }
             PicBox2.Image = bmp;
-            Application.DoEvents();
+            // Application.DoEvents();
             AddNoise(bmp, noise, ratio);
 
             PicBox2.Refresh();
-            bmp.Dispose();
         }
         private void RndNoise_HScrBar_ValueChanged(Object? sender, EventArgs e)
         {
