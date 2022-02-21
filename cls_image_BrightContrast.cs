@@ -44,7 +44,7 @@ namespace IMG_Gen2
 
             BrightRndPreviewBtn = imgCtrl[14] as Button;
             PicBox2 = imgCtrl[15] as PictureBox;
-
+            
             BrightMaxTxtBox!.Text = "0";
             BrightMinTxtBox!.Text = "0";
             ContrastMaxTxtBox!.Text = "100";
@@ -110,8 +110,9 @@ namespace IMG_Gen2
             sw.Flush();
             sw.Close();
         }
-        private void ResetView()
+        internal void ResetView()
         {
+            if(filePath==null){return;}
             if (PicBox2!.Image != null)
             {
                 PicBox2.Image.Dispose();
@@ -192,6 +193,8 @@ namespace IMG_Gen2
         }
         private void Run_BitmapConverter(double alpha, double beta)
         {
+            if(filePath==null){return;}
+
             Bitmap bmp = new Bitmap(filePath!);
             Mat mat = BitmapConverter.ToMat(bmp);
             Cv2.ConvertScaleAbs(mat, mat, alpha, beta);
@@ -204,6 +207,5 @@ namespace IMG_Gen2
             mat.Dispose();
             bmp.Dispose();
         }
-
     }
 }
