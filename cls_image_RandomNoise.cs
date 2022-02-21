@@ -1,7 +1,4 @@
-﻿using OpenCvSharp;
-using OpenCvSharp.Extensions;
-using System.Runtime.InteropServices;
-
+﻿
 namespace IMG_Gen2
 {
     public class cls_image_RandomNoise
