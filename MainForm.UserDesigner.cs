@@ -5,6 +5,24 @@ partial class MainForm
     #region 
     private void InitializeUserComponent()
     {
+        //Image_Split
+        List<Control> splitCtrl = new();
+        splitCtrl.Add(ImageWidthTxtBox);
+        splitCtrl.Add(ImageHeightTxtBox);
+        splitCtrl.Add(SplitWidthTxtBox);
+        splitCtrl.Add(SplitHeightTxtBox);
+        splitCtrl.Add(WrapWidthTxtBox);
+        splitCtrl.Add(WrapHeightTxtBox);
+        splitCtrl.Add(SplitCntTxtBox1);
+        splitCtrl.Add(RndSplitRadioBtn);
+        splitCtrl.Add(SplitPreviewBtn);
+        splitCtrl.Add(SplitCntTxtBox2);
+        splitCtrl.Add(SplitCntDataGridView);
+        splitCtrl.Add(RunSplitBtn);
+        splitCtrl.Add(StopSplitBtn);
+        splitCtrl.Add(PicBox2);
+        Image_Split = new(splitCtrl);
+
         // Image_BrightContrast
         List<Control> imgCtrl = new();
         imgCtrl.Add(BrightChkBox);
@@ -57,7 +75,7 @@ partial class MainForm
         this.PosPage.Controls.Add(this.PosPicBox);
 
         // FileTreeView
-        this.FileTreeView = new cls_treeview(PosPicBox!, PosPage, Image_BrightContrast!, Image_RandomNoise);
+        this.FileTreeView = new cls_treeview(PosPicBox!, PosPage, Image_BrightContrast!, Image_RandomNoise, Image_Split);
         this.FileTreeView.ItemHeight = 22;
         this.FileTreeView.LineColor = System.Drawing.Color.Black;
         this.FileTreeView.Text = "TreeView2";
@@ -132,6 +150,8 @@ partial class MainForm
 
         // MaskDelBtn
         MaskDelBtn.Click += new EventHandler(MaskDelBtn_Click);
+
+        ViewTab.SelectedIndexChanged += new EventHandler(ViewTab_SelectedIndexChanged);
     }
 
     #endregion
@@ -141,5 +161,7 @@ partial class MainForm
     private ToolStripStatusLabel? sLabel2;
     private cls_image_BrightContrast? Image_BrightContrast;
     private cls_image_RandomNoise? Image_RandomNoise;
+
+    private cls_image_Split? Image_Split;
 
 }
