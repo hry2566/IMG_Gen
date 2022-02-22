@@ -2,6 +2,14 @@ namespace IMG_Gen2
 {
     public class cls_image_Split
     {
+        private struct RECTPOS			//四角の座標
+		{
+		  public int x1;
+		  public int y1;
+		  public int x2;
+		  public int y2;
+		}
+        private string? rootPath;
         private string? filePath;
         private TextBox? ImageWidthTxtBox;
         private TextBox? ImageHeightTxtBox;
@@ -61,10 +69,192 @@ namespace IMG_Gen2
             WrapWidthTxtBox.TextChanged += new EventHandler(TxtChanged);
             WrapHeightTxtBox.TextChanged += new EventHandler(TxtChanged);
             RndSplitRadioBtn!.CheckedChanged += new EventHandler(TxtChanged);
+            SplitPreviewBtn!.Click += new EventHandler(SplitPreviewBtn_Click);
 
             CheckLabel();
             ReadIni("./image_split.ini");
         }
+        private void SplitPreviewBtn_Click(object? sender, EventArgs e)
+        {
+            if(filePath==null){return;}
+
+            List<RECTPOS> rectPos = new List<RECTPOS>();
+			List<Point> maskDotPos = new List<Point>();
+
+			maskDotPos = GetMaskDotPos();
+
+            if(PicBox2!.Image!=null)
+            {
+                PicBox2.Image.Dispose();
+                PicBox2.Image=null;
+            }
+
+            PicBox2.Image = new Bitmap(filePath);
+			Graphics g = Graphics.FromImage(PicBox2!.Image);
+
+            // // マスク点座標表示
+            for(int i=0;i<maskDotPos.Count-1;i++)
+            {
+                g.FillEllipse(Brushes.Yellow, maskDotPos[i].X, maskDotPos[i].Y, 10, 10);
+            }
+
+			rectPos = CreateSplitPos(maskDotPos);
+			SplitCntTxtBox1!.Text = rectPos.Count.ToString();
+			SplitCntTxtBox2!.Text = rectPos.Count.ToString();
+			
+			Pen p = new Pen(Color.Red, 3);
+			int colorNo = 0;
+			
+			for (int i = 0; i < rectPos.Count; i++) 
+            {
+				switch(colorNo)
+				{
+				    case 0:
+						p = new Pen(Color.Red, 3);
+						break;
+				    case 1:
+						p = new Pen(Color.Blue, 3);
+						break;
+					case 2:
+						p = new Pen(Color.Yellow, 3);
+						break;
+					case 3:
+						p = new Pen(Color.Magenta, 3);
+						break;
+					case 4:
+						p = new Pen(Color.Green, 3);
+						break;
+					default:
+						colorNo = 0;
+						p = new Pen(Color.Red, 3);
+						break;
+				}
+				colorNo++;
+				g.DrawRectangle(p, rectPos[i].x1, rectPos[i].y1, rectPos[i].x2 - rectPos[i].x1, rectPos[i].y2 - rectPos[i].y1);			
+            }
+            PicBox2!.Refresh();
+            g.Dispose();
+        }
+        private List<RECTPOS> CreateSplitPos(List<Point>? maskPos = null){
+			List<RECTPOS> rectPos = new List<RECTPOS>();
+			RECTPOS newPos;
+			Random rnd = new System.Random();
+			
+			// 分割イメージ表示
+			int wrapX = 0;
+			int wrapY = 0;
+			int cutW = 0;
+			int cutH = 0;
+			int posX;
+			int posY;
+			bool rndFlag = RndSplitRadioBtn!.Checked;
+			
+			if (SplitWidthTxtBox!.Text == "") {
+				SplitWidthTxtBox.Text = "224";
+			}
+			if (SplitHeightTxtBox!.Text == "") {
+				SplitHeightTxtBox.Text = "224";
+			}
+			if (WrapWidthTxtBox!.Text == "") {
+				WrapWidthTxtBox.Text = "0";
+			}
+			if (WrapHeightTxtBox!.Text == "") {
+				WrapHeightTxtBox.Text = "0";
+			}
+			
+			cutW = int.Parse(SplitWidthTxtBox.Text);
+			cutH = int.Parse(SplitHeightTxtBox.Text);
+			wrapX = int.Parse(WrapWidthTxtBox.Text);
+			wrapY = int.Parse(WrapHeightTxtBox.Text);
+
+            int imgWidth = int.Parse(ImageWidthTxtBox!.Text);
+            int imgHeight = int.Parse(ImageHeightTxtBox!.Text);
+
+			for (int cntY = 0; cntY < imgHeight; cntY += cutH) {
+				cntY -= wrapY;
+				for (int cntX = 0; cntX < imgWidth; cntX += cutW) {
+					cntX -= wrapX;
+					
+					if (rndFlag) {
+						posX = cntX + rnd.Next(0, wrapX);
+						posY = cntY + rnd.Next(0, wrapY);
+					} else {
+						posX = cntX;
+						posY = cntY;
+					}
+					
+					newPos.x1 = posX;
+					newPos.y1 = posY;
+					newPos.x2 = cutW + posX;
+					newPos.y2 = cutH + posY;
+					
+//					rectPos.Add(newPos);
+					
+					if (maskPos != null) {
+						if (maskPos.Count > 0) {
+							bool flag = true;
+							for (int i = 0; i < maskPos.Count; i++) {
+								if (newPos.x1 < maskPos[i].X && maskPos[i].X < newPos.x2 &&
+								    newPos.y1 < maskPos[i].Y && maskPos[i].Y < newPos.y2) {
+									flag = false;
+									break;
+								}
+							}
+							if (flag) {
+								rectPos.Add(newPos);
+							}
+						} else {
+							rectPos.Add(newPos);
+						}
+					}else{
+						rectPos.Add(newPos);
+					}
+				}
+			}
+			return rectPos;	
+		}
+        private List<Point> GetMaskDotPos(){
+			List<Point> maskPos = new List<Point>();
+            string maskFile = rootPath+"mask\\mask.txt";
+            if (!File.Exists(maskFile)) {return new List<Point>();}
+
+            int x1,y1,x2,y2;
+
+            StreamReader sr = new StreamReader(maskFile);
+            string? line = "";
+            int Width = int.Parse(SplitWidthTxtBox!.Text);
+            int Height = int.Parse(SplitHeightTxtBox!.Text);
+
+            while ((line = sr.ReadLine()) != null)
+            {
+                if (line != "")
+                {
+                    string[] strSplit = line.Split(',');
+                    x1 = int.Parse(strSplit[3]);
+                    y1 = int.Parse(strSplit[4]);
+                    x2 = int.Parse(strSplit[5]);
+                    y2 = int.Parse(strSplit[6]);
+
+                    Point pos;
+
+                    int stepX = (int)(Width / 5);
+                    int stepY = (int)(Height / 5);
+                    if (stepX<1){stepX=1;}
+                    if (stepY<1){stepY=1;}
+
+                    for(int cntX = x1; cntX < x2; cntX += stepX)
+                    {
+                        for(int cntY = y1; cntY < y2; cntY += stepY)
+                        {
+                            pos = new Point(cntX, cntY);
+                            maskPos.Add(pos);
+                        }
+                    }
+                } 
+            }
+            sr.Close();
+            return maskPos;
+		}
         private void ReadIni(string filePath)
         {
             if (!cls_posPicBox.CheckFile(filePath)) { return; }
@@ -80,7 +270,6 @@ namespace IMG_Gen2
             WrapHeightTxtBox!.Text = split[1];
             split = sr.ReadLine()!.Split(":");
             RndSplitRadioBtn!.Checked = System.Convert.ToBoolean(split[1]);
-
             sr.Close();
             readFlag = false;
         }
@@ -194,9 +383,10 @@ namespace IMG_Gen2
             }
             sr.Close();
         }
-        internal void SetImage(string filePath)
+        internal void SetImage(string filePath,string rootPath)
         {
             this.filePath = filePath;
+            this.rootPath = rootPath;
             ImageWidthTxtBox!.Text = PicBox2!.Image.Width.ToString();
             ImageHeightTxtBox!.Text = PicBox2.Image.Height.ToString();
         }
