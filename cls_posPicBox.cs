@@ -222,15 +222,20 @@ public partial class cls_posPicBox : PictureBox
         {
             bmp.Dispose();
         }
-        bmp = new Bitmap(filePath);
+        PictureBox pic1 = new();
+        pic1.Image = new Bitmap(filePath);
+        bmp = new Bitmap(pic1.Image);
+        pic1.Image.Dispose();
+
         mat = new System.Drawing.Drawing2D.Matrix();
         ImageReset();
     }
     private void ImageReset()
     {
         if (bmp == null) { return; }
+
         float scaleX = (float)this.Width / (float)bmp!.Width;
-        float scaleY = (float)this.Height / (float)bmp.Height;
+        float scaleY = (float)(this.Height-22) / (float)bmp.Height;
 
         if (scaleX < scaleY)
         {
