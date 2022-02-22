@@ -29,7 +29,7 @@ public partial class cls_treeview : TreeView
             picBox1.SetImage(filePath, rootPath!);
             Image_BrightContrast.SetImage(filePath);
             Image_RandomNoise!.SetImage(filePath);
-            Image_Split!.SetImage(filePath);
+            Image_Split!.SetImage(filePath,rootPath!);
         }
     }
     internal string Path
