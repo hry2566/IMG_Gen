@@ -75,7 +75,7 @@ partial class MainForm
         this.PosPage.Controls.Add(this.PosPicBox);
 
         // FileTreeView
-        this.FileTreeView = new cls_treeview(PosPicBox!, PosPage, Image_BrightContrast!, Image_RandomNoise, Image_Split);
+        this.FileTreeView = new cls_treeview(PosPicBox!, ViewTab, Image_BrightContrast!, Image_RandomNoise, Image_Split!);
         this.FileTreeView.ItemHeight = 22;
         this.FileTreeView.LineColor = System.Drawing.Color.Black;
         this.FileTreeView.Text = "TreeView2";
@@ -161,7 +161,6 @@ partial class MainForm
     private ToolStripStatusLabel? sLabel2;
     private cls_image_BrightContrast? Image_BrightContrast;
     private cls_image_RandomNoise? Image_RandomNoise;
-
     private cls_image_Split? Image_Split;
 
 }
