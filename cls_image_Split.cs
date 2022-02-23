@@ -82,20 +82,13 @@ namespace IMG_Gen2
 			List<Point> maskDotPos = new List<Point>();
 
 			maskDotPos = GetMaskDotPos();
-
-            if(PicBox2!.Image!=null)
-            {
-                PicBox2.Image.Dispose();
-                PicBox2.Image=null;
-            }
-
-            PicBox2.Image = new Bitmap(filePath);
-			Graphics g = Graphics.FromImage(PicBox2!.Image);
+            
+			Graphics g = Graphics.FromImage(Pic2Bmp(filePath));
 
             // // マスク点座標表示
             for(int i=0;i<maskDotPos.Count-1;i++)
             {
-                g.FillEllipse(Brushes.Yellow, maskDotPos[i].X, maskDotPos[i].Y, 10, 10);
+                g.FillEllipse(Brushes.White, maskDotPos[i].X, maskDotPos[i].Y, 10, 10);
             }
 
 			rectPos = CreateSplitPos(maskDotPos);
@@ -134,6 +127,24 @@ namespace IMG_Gen2
             }
             PicBox2!.Refresh();
             g.Dispose();
+            p.Dispose();
+        }
+        private Bitmap Pic2Bmp(string filePath)
+        {
+            if(PicBox2!.Image!=null)
+            {
+                PicBox2.Image.Dispose();
+                PicBox2.Image=null;
+            }
+            PicBox2.Image = new Bitmap(filePath);
+            Bitmap bmp = new(PicBox2.Image);
+            if(PicBox2.Image!=null)
+            {
+                PicBox2.Image.Dispose();
+                PicBox2.Image=null;
+            }
+            PicBox2.Image=bmp;
+            return bmp;
         }
         private List<RECTPOS> CreateSplitPos(List<Point>? maskPos = null){
 			List<RECTPOS> rectPos = new List<RECTPOS>();
@@ -166,6 +177,16 @@ namespace IMG_Gen2
 			cutH = int.Parse(SplitHeightTxtBox.Text);
 			wrapX = int.Parse(WrapWidthTxtBox.Text);
 			wrapY = int.Parse(WrapHeightTxtBox.Text);
+
+            if(cutW<wrapX+1){
+                wrapX = cutW -1;
+                WrapWidthTxtBox.Text = wrapX.ToString();
+            }
+            if(cutH<wrapY+1)
+            {
+                wrapY=cutH-1;
+                WrapHeightTxtBox.Text=wrapY.ToString();
+            }
 
             int imgWidth = int.Parse(ImageWidthTxtBox!.Text);
             int imgHeight = int.Parse(ImageHeightTxtBox!.Text);
@@ -387,6 +408,9 @@ namespace IMG_Gen2
         {
             this.filePath = filePath;
             this.rootPath = rootPath;
+            PicBox2!.SizeMode = PictureBoxSizeMode.Zoom;
+            PicBox2.Image.Dispose();
+            PicBox2.Image = new Bitmap(filePath);
             ImageWidthTxtBox!.Text = PicBox2!.Image.Width.ToString();
             ImageHeightTxtBox!.Text = PicBox2.Image.Height.ToString();
         }
