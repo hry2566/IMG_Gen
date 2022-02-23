@@ -18,7 +18,7 @@ namespace IMG_Gen2
                     string[] split = subFolders[i].Split("\\");
                     string folderName = split[split.Length - 1];
 
-                    if(folderName!="pos" && folderName!="mask" && folderName!="split")
+                    if(folderName!="_pos" && folderName!="_mask" && folderName!="_split")
                     {
                         Array.Resize(ref node, node.Length + 1);
                         node[node.Length - 1] = new(folderName, rootPath);
