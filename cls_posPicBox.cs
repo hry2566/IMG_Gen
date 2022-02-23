@@ -76,8 +76,8 @@ public partial class cls_posPicBox : PictureBox
             labelFlag = false;
             endPos.X = e.X;
             endPos.Y = e.Y;
-            AddPosFile(LabelLstView, "pos");
-            lblRect = CreateRectangle("pos");
+            AddPosFile(LabelLstView, "_pos");
+            lblRect = CreateRectangle("_pos");
             lblRect[lblRect.Count - 1].SetSelect(true);
             DrawImage();
         }
@@ -86,8 +86,8 @@ public partial class cls_posPicBox : PictureBox
             maskFlag = false;
             endPos.X = e.X;
             endPos.Y = e.Y;
-            AddPosFile(MaskLstView, "mask");
-            maskRect = CreateRectangle("mask");
+            AddPosFile(MaskLstView, "_mask");
+            maskRect = CreateRectangle("_mask");
             maskRect[maskRect.Count - 1].SetSelect(true);
             DrawImage();
         }
@@ -186,7 +186,7 @@ public partial class cls_posPicBox : PictureBox
                     break;
                 }
             }
-            SaveRect("pos", lblRect);
+            SaveRect("_pos", lblRect);
             DrawImage();
         }
         else if (e.Alt && e.KeyCode == Keys.Delete)
@@ -200,7 +200,7 @@ public partial class cls_posPicBox : PictureBox
                     break;
                 }
             }
-            SaveRect("mask", maskRect);
+            SaveRect("_mask", maskRect);
             DrawImage();
         }
         else if (e.KeyCode == Keys.Escape)
@@ -247,8 +247,8 @@ public partial class cls_posPicBox : PictureBox
         }
         mat!.Reset();
         mat.Scale(baseScale, baseScale, System.Drawing.Drawing2D.MatrixOrder.Prepend);
-        lblRect = CreateRectangle("pos");
-        maskRect = CreateRectangle("mask");
+        lblRect = CreateRectangle("_pos");
+        maskRect = CreateRectangle("_mask");
         DrawImage();
     }
 
@@ -256,11 +256,11 @@ public partial class cls_posPicBox : PictureBox
     // File
     internal void SaveLabel()
     {
-        SaveRect("pos", lblRect);
+        SaveRect("_pos", lblRect);
     }
     internal void SaveMask()
     {
-        SaveRect("mask", maskRect);
+        SaveRect("_mask", maskRect);
     }
     private void SaveRect(string folderPath, List<cls_rectangle> rectangle)
     {
@@ -268,10 +268,10 @@ public partial class cls_posPicBox : PictureBox
 
         switch (folderPath)
         {
-            case "pos":
+            case "_pos":
                 filePath = rootPath + folderPath + "\\" + GetFileName() + ".txt";
                 break;
-            case "mask":
+            case "_mask":
                 filePath = rootPath + folderPath + "\\mask.txt";
                 break;
         }
@@ -344,17 +344,18 @@ public partial class cls_posPicBox : PictureBox
 
         string filename;
         StreamWriter sw;
-        CheckFolder(rootPath!, folderName);
+        // CheckFolder(rootPath!, folderName);
+        Directory.CreateDirectory(rootPath + folderName);
 
         switch (folderName)
         {
-            case "pos":
+            case "_pos":
                 filename = rootPath + folderName + "/" + GetFileName() + ".txt";
                 sw = new(filename, true);
                 sw.WriteLine(labelName + "," + strColor + "," + strWidth + "," + x1 + "," + y1 + "," + x2 + "," + y2);
                 sw.Close();
                 break;
-            case "mask":
+            case "_mask":
                 filename = rootPath + folderName + "/mask.txt";
                 sw = new(filename, true);
                 sw.WriteLine(labelName + "," + strColor + "," + strWidth + "," + x1 + "," + y1 + "," + x2 + "," + y2);
@@ -375,13 +376,10 @@ public partial class cls_posPicBox : PictureBox
         }
         return split[split.Count() - 1];
     }
-    private static void CheckFolder(string rootPath, string param)
-    {
-        if (!System.IO.File.Exists(rootPath + param))
-        {
-            Directory.CreateDirectory(rootPath + param);
-        }
-    }
+    // private static void CheckFolder(string rootPath, string param)
+    // {
+    //     Directory.CreateDirectory(rootPath + param);
+    // }
     internal static bool CheckFolder(string file_folder_Path)
     {
         if (System.IO.Directory.Exists(file_folder_Path))
@@ -470,11 +468,11 @@ public partial class cls_posPicBox : PictureBox
 
         switch (folderName)
         {
-            case "pos":
+            case "_pos":
                 filepath = rootPath + folderName + "\\" + GetFileName() + ".txt";
                 lblRect_AllDelete();
                 break;
-            case "mask":
+            case "_mask":
                 filepath = rootPath + folderName + "\\mask.txt";
                 maskRect_AllDelete();
                 break;
