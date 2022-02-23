@@ -88,11 +88,14 @@ namespace IMG_Gen2
 
             // Posファイル有無＆読込
             string[] split = filePath.Split("\\");
-            string posFileName = rootPath + "pos/" + split[split.Count()-1] + ".txt";
+            string posFileName = rootPath + "_pos/" + split[split.Count()-1] + ".txt";
+            List<LABEL_INFO> labelInfo = new();
+            LABEL_INFO lblInf = new();
+            List<RECTPOS> maskPos = new();
+            RECTPOS mPos = new();
+
             if(File.Exists(posFileName))
             {
-                List<LABEL_INFO> labelInfo = new();
-                LABEL_INFO lblInf = new();
                 StreamReader sr = new (posFileName);
                 while (!sr.EndOfStream)
                 {
@@ -104,17 +107,64 @@ namespace IMG_Gen2
                     lblInf.rectPos.x2 = int.Parse(split[5]);
                     lblInf.rectPos.y2 = int.Parse(split[6]);
                     labelInfo.Add(lblInf);
-                    // Console.WriteLine(line);
                 }
                 sr.Close();
             }
 
+            // splitフォルダー有無＆作成
+            Directory.CreateDirectory(rootPath + "/_split");
+
             // ラベルフォルダー有無＆作成
-            
+            for(int i=0;i<labelInfo.Count;i++)
+            {
+                Directory.CreateDirectory(rootPath + "/_split/" + labelInfo[i].labelName);
+            }
 
             // ラベル無　作成数-1
-
+            readFlag = true;
+            for(int i=1;i<SplitCntDataGridView!.RowCount-1;i++)
+            {
+                SplitCntDataGridView!.Rows[i].Cells[2].Value = -1;
+                string? labelName = SplitCntDataGridView!.Rows[i].Cells[0].Value.ToString();
+                for(int j=0;j<labelInfo.Count;j++)
+                {
+                    if(labelName ==labelInfo[j].labelName )
+                    {
+                        SplitCntDataGridView!.Rows[i].Cells[2].Value = 0;
+                        break;
+                    }
+                }
+            }
+            readFlag=false;
+            
             // Maskファイル有無＆読込
+            if(maskPos.Count==0)
+            {
+                string maskFileName = rootPath + "_mask/mask.txt";
+                if(File.Exists(maskFileName))
+                {
+                    StreamReader sr = new StreamReader(maskFileName);
+                    while (!sr.EndOfStream)
+                    {
+                        string? line = sr.ReadLine();
+                        string[] split2 = line!.Split(",");
+                        mPos.x1 = int.Parse(split2[3]);
+                        mPos.y1 = int.Parse(split2[4]);
+                        mPos.x2 = int.Parse(split2[5]);
+                        mPos.y2 = int.Parse(split2[6]);
+                        maskPos.Add(mPos);
+                        // Console.WriteLine(line);
+                    }
+                    sr.Close();
+                }
+            }
+
+            // 座標作成
+            
+
+            // 画像保存
+
+
 
 
         }
@@ -280,7 +330,7 @@ namespace IMG_Gen2
 		}
         private List<Point> GetMaskDotPos(){
 			List<Point> maskPos = new List<Point>();
-            string maskFile = rootPath+"mask\\mask.txt";
+            string maskFile = rootPath+"_mask\\mask.txt";
             if (!File.Exists(maskFile)) {return new List<Point>();}
 
             int x1,y1,x2,y2;
@@ -419,6 +469,7 @@ namespace IMG_Gen2
         }
         private void SplitCntDataGridView_CellValueChanged(object? sender, DataGridViewCellEventArgs e)
         {
+            if(readFlag){return;}
             if (SplitCntDataGridView!.Rows[e.RowIndex].Cells[0].Value.ToString() == "") { return; }
             SaveIni("./ini/image_split_label.ini");
         }
