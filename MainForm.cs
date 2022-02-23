@@ -15,9 +15,9 @@ public partial class MainForm : Form
     // ***********************************************************************
     private void Form_Load(object? sender, EventArgs e)
     {
-        ReadAppIni("./IMG_Gen.ini");
-        ReadIni("./label.ini", LabelLstView);
-        ReadIni("./mask.ini", MaskLstView);
+        ReadAppIni("./ini/IMG_Gen.ini");
+        ReadIni("./ini/label.ini", LabelLstView);
+        ReadIni("./ini/mask.ini", MaskLstView);
     }
     private void RootSelectBtn_Click(Object? sender, EventArgs? e)
     {
@@ -31,7 +31,7 @@ public partial class MainForm : Form
         {
             FileTreeView.Path = folderBrowserDialog1.SelectedPath + "\\";
             RootPathTxtBox.Text = folderBrowserDialog1.SelectedPath + "\\";
-            SaveAppIni("./IMG_Gen.ini", folderBrowserDialog1.SelectedPath + "\\");
+            SaveAppIni("./ini/IMG_Gen.ini", folderBrowserDialog1.SelectedPath + "\\");
         }
     }
 
@@ -48,18 +48,18 @@ public partial class MainForm : Form
         MaskNameTxtBox.Text = "Mask";
         TextBox[] textBox = new TextBox[3] { MaskNameTxtBox, MaskColorTxtBox, MaskWidthTxtBox };
         EntBtn_Click(textBox, MaskLstView);
-        SaveIni("./mask.ini", MaskLstView);
+        SaveIni("./ini/mask.ini", MaskLstView);
     }
     private void MaskModBtn_Click(Object? sender, EventArgs? e)
     {
         TextBox[] textBox = new TextBox[3] { MaskNameTxtBox, MaskColorTxtBox, MaskWidthTxtBox };
         ModBtn_Click(textBox, MaskLstView);
-        SaveIni("./mask.ini", MaskLstView);
+        SaveIni("./ini/mask.ini", MaskLstView);
     }
     private void MaskDelBtn_Click(Object? sender, EventArgs? e)
     {
         DelBtn_Click(MaskLstView);
-        SaveIni("./mask.ini", MaskLstView);
+        SaveIni("./ini/mask.ini", MaskLstView);
     }
     private void MaskColorBtn_Click(Object? sender, EventArgs? e)
     {
@@ -78,21 +78,21 @@ public partial class MainForm : Form
     {
         TextBox[] textBox = new TextBox[3] { LabelNameTxtBox, LabelColorTxtBox, LabelWidthTxtBox };
         EntBtn_Click(textBox, LabelLstView);
-        SaveIni("./label.ini", LabelLstView);
+        SaveIni("./ini/label.ini", LabelLstView);
         Image_Split!.CheckLabel();
     }
     private void LabelModBtn_Click(Object? sender, EventArgs? e)
     {
         TextBox[] textBox = new TextBox[3] { LabelNameTxtBox, LabelColorTxtBox, LabelWidthTxtBox };
         ModBtn_Click(textBox, LabelLstView);
-        SaveIni("./label.ini", LabelLstView);
+        SaveIni("./ini/label.ini", LabelLstView);
         Image_Split!.CheckLabel();
 
     }
     private void LabelDelBtn_Click(Object? sender, EventArgs? e)
     {
         DelBtn_Click(LabelLstView);
-        SaveIni("./label.ini", LabelLstView);
+        SaveIni("./ini/label.ini", LabelLstView);
         Image_Split!.CheckLabel();
     }
     private void LabelColorBtn_Click(Object? sender, EventArgs? e)
@@ -116,7 +116,7 @@ public partial class MainForm : Form
                 break;
         }
     }
-
+    
     // ***********************************************************************
     // 関数
     // ***********************************************************************
