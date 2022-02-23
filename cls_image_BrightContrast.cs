@@ -23,7 +23,9 @@ namespace IMG_Gen2
         private Button? BrightRndPreviewBtn;
         private PictureBox? PicBox2;
         private Boolean readFlag = false;
-
+        private Bitmap? bmp;                                // 表示するBitmap
+        private Graphics? g;                                // 描画用Graphicsオブジェクト
+        private System.Drawing.Drawing2D.Matrix? mat;       // アフィン変換行列
         public cls_image_BrightContrast(List<Control> imgCtrl)
         {
             BrightChkBox = imgCtrl[0] as CheckBox;
@@ -44,7 +46,7 @@ namespace IMG_Gen2
 
             BrightRndPreviewBtn = imgCtrl[14] as Button;
             PicBox2 = imgCtrl[15] as PictureBox;
-            
+
             BrightMaxTxtBox!.Text = "0";
             BrightMinTxtBox!.Text = "0";
             ContrastMaxTxtBox!.Text = "100";
@@ -63,14 +65,82 @@ namespace IMG_Gen2
             ContrastMinRadioBtn!.Click += new EventHandler(BrightContrast_RadioBtn_Click);
 
             BrightRndPreviewBtn!.Click += new EventHandler(BrightRndPreviewBtn_Click);
+            PicBox2!.Resize += new EventHandler(PicBox2_Resize);
 
             ReadImageIni("./image_bright_contrast.ini");
         }
-        internal void SetImage(string filePath)
+        //*************************************************************************
+        // Events
+        //*************************************************************************
+        private void ChkBox_Click(Object? sender, EventArgs e)
         {
-            this.filePath = filePath;
-            ResetView();
+            SaveImageIni("./image_bright_contrast.ini");
         }
+        private void BrightContrast_RadioBtn_Click(Object? sender, EventArgs e)
+        {
+            BrightContrast_View();
+        }
+        private void BrightRndPreviewBtn_Click(Object? sender, EventArgs e)
+        {
+            int brightMax = BrightMaxHScrBar!.Value;
+            int brightMin = BrightMinHScrBar!.Value;
+            int ContrastMax = ContrastMaxHScrBar!.Value;
+            int ContrastMin = ContrastMinHScrBar!.Value;
+
+            Random rnd = new System.Random();
+            double alpha = rnd.Next(ContrastMin, ContrastMax) / 100;
+            double beta = rnd.Next(brightMin, brightMax);
+
+            Run_BitmapConverter(alpha, beta);
+        }
+        private void BrightContrast_HScrBar_ValueChanged(Object? sender, EventArgs e)
+        {
+            HScrollBar? ctrl = sender as HScrollBar;
+            string ctrlName = ctrl!.Name.Replace("HScrBar", "TxtBox");
+            TextBox[] txtBox = new TextBox[4] { BrightMaxTxtBox!, BrightMinTxtBox!, ContrastMaxTxtBox!, ContrastMinTxtBox! };
+            RadioButton[] radioBtn = new RadioButton[4] { BrightMaxRadioBtn!, BrightMinRadioBtn!, ContrastMaxRadioBtn!, ContrastMinRadioBtn! };
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (txtBox[i].Name == ctrlName)
+                {
+                    txtBox[i].Text = ctrl.Value.ToString();
+                    radioBtn[i].Checked = true;
+                    BrightContrast_View();
+                    break;
+                }
+            }
+            if (!readFlag)
+            {
+                SaveImageIni("./image_bright_contrast.ini");
+            }
+        }
+        private void PicBox2_Resize(object? sender, EventArgs? e)
+        {
+            if (g != null)
+            {
+                mat = g.Transform;
+                g.Dispose();
+                g = null;
+            }
+            Bitmap bmpPicBox = new Bitmap(PicBox2!.Width, PicBox2!.Height);
+            PicBox2.Image = bmpPicBox;
+            g = Graphics.FromImage(PicBox2.Image);
+
+            if (mat != null)
+            {
+                g.Transform = mat;
+            }
+
+            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+            // g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+
+            DrawImage();
+            ImageReset();
+        }
+        //*************************************************************************
+        // 関数
+        //*************************************************************************
         private void ReadImageIni(string iniFileName)
         {
             if (!cls_posPicBox.CheckFile(iniFileName)) { return; }
@@ -110,60 +180,47 @@ namespace IMG_Gen2
             sw.Flush();
             sw.Close();
         }
-        internal void ResetView()
+        //*************************************************************************
+        // 関数（Image関連）
+        //*************************************************************************
+        internal void SetImage(string filePath)
         {
-            if(filePath==null){return;}
-            if (PicBox2!.Image != null)
+            this.filePath = filePath;
+            PicBox2!.SizeMode = PictureBoxSizeMode.AutoSize;
+            BmpReadFile(filePath);
+            mat = new System.Drawing.Drawing2D.Matrix();
+            ImageReset();
+        }
+        private void ImageReset()
+        {
+            if (bmp == null) { return; }
+
+            float scaleX = (float)PicBox2!.Width / (float)bmp!.Width;
+            float scaleY = (float)(PicBox2.Height - 22) / (float)bmp.Height;
+            float baseScale = 0;
+            if (scaleX < scaleY)
             {
-                PicBox2.Image.Dispose();
-                PicBox2.Image = null;
+                baseScale = scaleX;
             }
-            PicBox2.Image = new Bitmap(filePath!);
-        }
-        private void ChkBox_Click(Object? sender, EventArgs e)
-        {
-            Console.WriteLine(sender);
-
-            SaveImageIni("./image_bright_contrast.ini");
-        }
-        private void BrightRndPreviewBtn_Click(Object? sender, EventArgs e)
-        {
-            int brightMax = BrightMaxHScrBar!.Value;
-            int brightMin = BrightMinHScrBar!.Value;
-            int ContrastMax = ContrastMaxHScrBar!.Value;
-            int ContrastMin = ContrastMinHScrBar!.Value;
-
-            Random rnd = new System.Random();
-            double alpha = rnd.Next(ContrastMin, ContrastMax) / 100;
-            double beta = rnd.Next(brightMin, brightMax);
-
-            Run_BitmapConverter(alpha, beta);
-        }
-        private void BrightContrast_RadioBtn_Click(Object? sender, EventArgs e)
-        {
-            BrightContrast_View();
-        }
-        private void BrightContrast_HScrBar_ValueChanged(Object? sender, EventArgs e)
-        {
-            HScrollBar? ctrl = sender as HScrollBar;
-            string ctrlName = ctrl!.Name.Replace("HScrBar", "TxtBox");
-            TextBox[] txtBox = new TextBox[4] { BrightMaxTxtBox!, BrightMinTxtBox!, ContrastMaxTxtBox!, ContrastMinTxtBox! };
-            RadioButton[] radioBtn = new RadioButton[4] { BrightMaxRadioBtn!, BrightMinRadioBtn!, ContrastMaxRadioBtn!, ContrastMinRadioBtn! };
-
-            for (int i = 0; i < 4; i++)
+            else
             {
-                if (txtBox[i].Name == ctrlName)
-                {
-                    txtBox[i].Text = ctrl.Value.ToString();
-                    radioBtn[i].Checked = true;
-                    BrightContrast_View();
-                    break;
-                }
+                baseScale = scaleY;
             }
-            if (!readFlag)
+            mat!.Reset();
+            mat.Scale(baseScale, baseScale, System.Drawing.Drawing2D.MatrixOrder.Prepend);
+            DrawImage();
+        }
+        internal void DrawImage()
+        {
+            if (bmp == null) return;
+
+            if (mat != null)
             {
-                SaveImageIni("./image_bright_contrast.ini");
+                g!.Transform = mat;
             }
+            g!.Clear(Color.White);
+            g.DrawImage(bmp, 0, 0);
+            PicBox2!.Refresh();
         }
         private void BrightContrast_View()
         {
@@ -188,24 +245,32 @@ namespace IMG_Gen2
             {
                 alpha = (Double)ContrastMinHScrBar!.Value / 100;
             }
-
             Run_BitmapConverter(alpha, beta);
         }
         private void Run_BitmapConverter(double alpha, double beta)
         {
-            if(filePath==null){return;}
-
-            Bitmap bmp = new Bitmap(filePath!);
-            Mat mat = BitmapConverter.ToMat(bmp);
-            Cv2.ConvertScaleAbs(mat, mat, alpha, beta);
-            if (PicBox2!.Image != null)
+            if (filePath == null) { return; }
+            BmpReadFile(filePath);
+            Mat cvMat = BitmapConverter.ToMat(bmp!);
+            Cv2.ConvertScaleAbs(cvMat, cvMat, alpha, beta);
+            if (bmp != null)
             {
-                PicBox2.Image.Dispose();
-                PicBox2.Image = null;
+                bmp.Dispose();
             }
-            PicBox2!.Image = BitmapConverter.ToBitmap(mat);
-            mat.Dispose();
-            bmp.Dispose();
+            bmp = BitmapConverter.ToBitmap(cvMat);
+            cvMat.Dispose();
+            DrawImage();
+        }
+        private void BmpReadFile(string filePath)
+        {
+            if (bmp != null)
+            {
+                bmp.Dispose();
+            }
+            PictureBox pic1 = new();
+            pic1.Image = new Bitmap(filePath);
+            bmp = new Bitmap(pic1.Image);
+            pic1.Image.Dispose();
         }
     }
 }
