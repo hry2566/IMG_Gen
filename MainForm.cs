@@ -103,12 +103,12 @@ public partial class MainForm : Form
     // ViewTab
     private void ViewTab_SelectedIndexChanged(Object? sender, EventArgs? e)
     {
-        switch(ViewTab.SelectedIndex)
+        switch (ViewTab.SelectedIndex)
         {
             case 0:
                 break;
             case 1:
-                Image_BrightContrast!.ResetView();
+                // Image_BrightContrast!.ResetView();
                 this.SplitContainer1.Panel2.Controls.Add(this.PicBox2);
                 break;
             case 2:
