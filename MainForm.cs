@@ -5,6 +5,7 @@ public partial class MainForm : Form
 {
     public MainForm()
     {
+        Directory.CreateDirectory("./ini");
         InitializeComponent();
         InitializeUserComponent();
         Controls_EventHandler();
