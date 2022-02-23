@@ -67,14 +67,14 @@ namespace IMG_Gen2
             BrightRndPreviewBtn!.Click += new EventHandler(BrightRndPreviewBtn_Click);
             PicBox2!.Resize += new EventHandler(PicBox2_Resize);
 
-            ReadImageIni("./image_bright_contrast.ini");
+            ReadImageIni("./ini/image_bright_contrast.ini");
         }
         //*************************************************************************
         // Events
         //*************************************************************************
         private void ChkBox_Click(Object? sender, EventArgs e)
         {
-            SaveImageIni("./image_bright_contrast.ini");
+            SaveImageIni("./ini/image_bright_contrast.ini");
         }
         private void BrightContrast_RadioBtn_Click(Object? sender, EventArgs e)
         {
@@ -112,7 +112,7 @@ namespace IMG_Gen2
             }
             if (!readFlag)
             {
-                SaveImageIni("./image_bright_contrast.ini");
+                SaveImageIni("./ini/image_bright_contrast.ini");
             }
         }
         private void PicBox2_Resize(object? sender, EventArgs? e)
