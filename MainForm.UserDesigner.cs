@@ -83,6 +83,7 @@ partial class MainForm
         this.FileTreeView.Name = "FileTreeView";
         this.FileTreeView.Size = new System.Drawing.Size(207, 662);
         this.FileTreeView.TabIndex = 23;
+        this.FileTreeView.Sorted = true;
         this.FilePage.Controls.Add(this.FileTreeView);
 
         // LabelLstView
@@ -108,9 +109,6 @@ partial class MainForm
         maskColumn[2].Text = "線　幅";
         this.MaskLstView.Columns.AddRange(maskColumn);
         MaskLstView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-
-
-
     }
     private void Controls_EventHandler()
     {
