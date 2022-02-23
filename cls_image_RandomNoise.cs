@@ -36,7 +36,7 @@ namespace IMG_Gen2
             RndNoisePreviewBtn!.Click += new EventHandler(RndNoisePreviewBtn_Click);
             PicBox2!.Resize += new EventHandler(PicBox2_Resize);
 
-            ReadImageIni("./image_random_noise.ini");
+            ReadImageIni("./ini/image_random_noise.ini");
         }
         private void PicBox2_Resize(object? sender, EventArgs? e)
         {
@@ -139,7 +139,7 @@ namespace IMG_Gen2
             }
             if (!readFlag)
             {
-                SaveImageIni("./image_random_noise.ini");
+                SaveImageIni("./ini/image_random_noise.ini");
             }
         }
         private void RandomNoise_View()
