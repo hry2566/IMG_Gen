@@ -13,6 +13,9 @@ namespace IMG_Gen2
         private PictureBox? PicBox2;
         private Boolean readFlag = false;
         private Boolean runFlag = false;
+        private Bitmap? bmp;                                // 表示するBitmap
+        private Graphics? g;                                // 描画用Graphicsオブジェクト
+        private System.Drawing.Drawing2D.Matrix? mat;       // アフィン変換行列
 
         public cls_image_RandomNoise(List<Control> imgCtrl)
         {
@@ -31,13 +34,34 @@ namespace IMG_Gen2
             RndNoiseRatioScrBar!.ValueChanged += new EventHandler(RndNoise_HScrBar_ValueChanged);
 
             RndNoisePreviewBtn!.Click += new EventHandler(RndNoisePreviewBtn_Click);
+            PicBox2!.Resize += new EventHandler(PicBox2_Resize);
 
             ReadImageIni("./image_random_noise.ini");
+        }
+        private void PicBox2_Resize(object? sender, EventArgs? e)
+        {
+            if (g != null)
+            {
+                mat = g.Transform;
+                g.Dispose();
+                g = null;
+            }
+            g = Graphics.FromImage(PicBox2!.Image);
+
+            if (mat != null)
+            {
+                g.Transform = mat;
+            }
+
+            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+            // g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
         }
         internal void SetImage(string filePath)
         {
             this.filePath = filePath;
-            // ResetView();
+            PicBox2!.SizeMode = PictureBoxSizeMode.AutoSize;
+            BmpReadFile(filePath);
+            mat = new System.Drawing.Drawing2D.Matrix();
         }
         private void ReadImageIni(string iniFileName)
         {
@@ -75,44 +99,25 @@ namespace IMG_Gen2
             sw.Flush();
             sw.Close();
         }
-        private void ResetView()
-        {
-            if (PicBox2!.Image != null)
-            {
-                PicBox2.Image.Dispose();
-                PicBox2.Image = null;
-            }
-            PicBox2.Image = new Bitmap(filePath!);
-        }
         private void RndNoisePreviewBtn_Click(Object? sender, EventArgs e)
         {
             if (PicBox2!.Image == null) { return; }
 
             runFlag = true;
             RndNoisePreviewBtn!.Visible = false;
-            ResetView();
-
             Random rnd = new System.Random();
             int noise = rnd.Next(128, RndNoiseScrBar!.Value);
             int ratio = rnd.Next(RndNoiseRatioScrBar!.Value, 50);
 
             CreateNoise(noise, ratio);
+            ImageReset();
             RndNoisePreviewBtn!.Visible = true;
             runFlag = false;
         }
         private void CreateNoise(int noise, int ratio)
         {
-            Bitmap bmp = new Bitmap(PicBox2!.Image!);
-            if (PicBox2!.Image != null)
-            {
-                PicBox2.Image.Dispose();
-                PicBox2.Image = null;
-            }
-            PicBox2.Image = bmp;
-            // Application.DoEvents();
-            AddNoise(bmp, noise, ratio);
-
-            PicBox2.Refresh();
+            BmpReadFile(filePath!);
+            AddNoise(bmp!, noise, ratio);
         }
         private void RndNoise_HScrBar_ValueChanged(Object? sender, EventArgs e)
         {
@@ -145,8 +150,8 @@ namespace IMG_Gen2
             int noise = RndNoiseScrBar!.Value;
             int ratio = RndNoiseRatioScrBar!.Value;
 
-            ResetView();
             CreateNoise(noise, ratio);
+            ImageReset();
             runFlag = false;
         }
         private void AddNoise(Bitmap bmp, int noise, int ratio)
@@ -197,6 +202,48 @@ namespace IMG_Gen2
             }
             // アンロック
             bmp.UnlockBits(bmpData);
+        }
+        private void ImageReset()
+        {
+            if (bmp == null) { return; }
+
+            float scaleX = (float)PicBox2!.Width / (float)bmp!.Width;
+            float scaleY = (float)(PicBox2.Height - 22) / (float)bmp.Height;
+            float baseScale = 0;
+            if (scaleX < scaleY)
+            {
+                baseScale = scaleX;
+            }
+            else
+            {
+                baseScale = scaleY;
+            }
+            mat!.Reset();
+            mat.Scale(baseScale, baseScale, System.Drawing.Drawing2D.MatrixOrder.Prepend);
+            DrawImage();
+        }
+        internal void DrawImage()
+        {
+            if (bmp == null) return;
+
+            if (mat != null)
+            {
+                g!.Transform = mat;
+            }
+            g!.Clear(Color.White);
+            g.DrawImage(bmp, 0, 0);
+            PicBox2!.Refresh();
+        }
+        private void BmpReadFile(string filePath)
+        {
+            if (bmp != null)
+            {
+                bmp.Dispose();
+            }
+            PictureBox pic1 = new();
+            pic1.Image = new Bitmap(filePath);
+            bmp = new Bitmap(pic1.Image);
+            pic1.Image.Dispose();
         }
     }
 }
