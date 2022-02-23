@@ -72,7 +72,7 @@ public partial class cls_treeview : TreeView
             string[] split = subFolders[i].Split("\\");
             string folderName = split[split.Length - 1];
 
-            if (folderName != "pos" && folderName != "mask" && folderName != "split")
+            if (folderName != "_pos" && folderName != "_mask" && folderName != "_split")
             {
                 Array.Resize(ref treeNode, treeNode.Length + 1);
                 treeNode[treeNode.Length - 1] = new(folderName, path);
