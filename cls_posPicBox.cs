@@ -235,7 +235,7 @@ public partial class cls_posPicBox : PictureBox
         if (bmp == null) { return; }
 
         float scaleX = (float)this.Width / (float)bmp!.Width;
-        float scaleY = (float)(this.Height-22) / (float)bmp.Height;
+        float scaleY = (float)(this.Height - 22) / (float)bmp.Height;
 
         if (scaleX < scaleY)
         {
