@@ -9,6 +9,11 @@ namespace IMG_Gen2
 		  public int x2;
 		  public int y2;
 		}
+        private struct LABEL_INFO
+        {
+            public string labelName = "";
+            public RECTPOS rectPos = new();
+        }
         private string? rootPath;
         private string? filePath;
         private TextBox? ImageWidthTxtBox;
@@ -70,9 +75,48 @@ namespace IMG_Gen2
             WrapHeightTxtBox.TextChanged += new EventHandler(TxtChanged);
             RndSplitRadioBtn!.CheckedChanged += new EventHandler(TxtChanged);
             SplitPreviewBtn!.Click += new EventHandler(SplitPreviewBtn_Click);
+            RunSplitBtn!.Click += new EventHandler(RunSplitBtn_Click);
 
             CheckLabel();
-            ReadIni("./image_split.ini");
+            ReadIni("./ini/image_split.ini");
+        }
+        private void RunSplitBtn_Click(object? sender, EventArgs e)
+        {
+            // IMGファイル有無＆読込
+            if(!File.Exists(filePath)){return;}
+            // Bitmap srcBmp = new(filePath);
+
+            // Posファイル有無＆読込
+            string[] split = filePath.Split("\\");
+            string posFileName = rootPath + "pos/" + split[split.Count()-1] + ".txt";
+            if(File.Exists(posFileName))
+            {
+                List<LABEL_INFO> labelInfo = new();
+                LABEL_INFO lblInf = new();
+                StreamReader sr = new (posFileName);
+                while (!sr.EndOfStream)
+                {
+                    string line = sr.ReadLine()!;
+                    split = line.Split(",");
+                    lblInf.labelName = split[0];
+                    lblInf.rectPos.x1 = int.Parse(split[3]);
+                    lblInf.rectPos.y1 = int.Parse(split[4]);
+                    lblInf.rectPos.x2 = int.Parse(split[5]);
+                    lblInf.rectPos.y2 = int.Parse(split[6]);
+                    labelInfo.Add(lblInf);
+                    // Console.WriteLine(line);
+                }
+                sr.Close();
+            }
+
+            // ラベルフォルダー有無＆作成
+            
+
+            // ラベル無　作成数-1
+
+            // Maskファイル有無＆読込
+
+
         }
         private void SplitPreviewBtn_Click(object? sender, EventArgs e)
         {
@@ -297,7 +341,7 @@ namespace IMG_Gen2
         private void TxtChanged(object? sender, EventArgs e)
         {
             if (readFlag) { return; }
-            StreamWriter sw = new("./image_split.ini");
+            StreamWriter sw = new("./ini/image_split.ini");
             sw.WriteLine("SplitWidth:" + SplitWidthTxtBox!.Text);
             sw.WriteLine("SplitHeight:" + SplitHeightTxtBox!.Text);
             sw.WriteLine("WrapWidth:" + WrapWidthTxtBox!.Text);
@@ -312,9 +356,9 @@ namespace IMG_Gen2
             List<string> labelName3 = new();
             labelName3.Add("OK,1000,0");
 
-            if (cls_posPicBox.CheckFile("./label.ini"))
+            if (cls_posPicBox.CheckFile("./ini/label.ini"))
             {
-                StreamReader sr = new("./label.ini");
+                StreamReader sr = new("./ini/label.ini");
                 while (!sr.EndOfStream)
                 {
                     string[] split = sr.ReadLine()!.Split(",");
@@ -334,9 +378,9 @@ namespace IMG_Gen2
                 sr.Close();
             }
 
-            if (cls_posPicBox.CheckFile("./image_split_label.ini"))
+            if (cls_posPicBox.CheckFile("./ini/image_split_label.ini"))
             {
-                StreamReader sr = new("./image_split_label.ini");
+                StreamReader sr = new("./ini/image_split_label.ini");
                 while (!sr.EndOfStream)
                 {
                     string? line = sr.ReadLine();
@@ -364,19 +408,19 @@ namespace IMG_Gen2
                 }
             }
 
-            StreamWriter sw = new("./image_split_label.ini");
+            StreamWriter sw = new("./ini/image_split_label.ini");
             for (int i = 0; i < labelName3.Count; i++)
             {
                 sw.WriteLine(labelName3[i]);
             }
             sw.Close();
 
-            ReadLabelIni("./image_split_label.ini");
+            ReadLabelIni("./ini/image_split_label.ini");
         }
         private void SplitCntDataGridView_CellValueChanged(object? sender, DataGridViewCellEventArgs e)
         {
             if (SplitCntDataGridView!.Rows[e.RowIndex].Cells[0].Value.ToString() == "") { return; }
-            SaveIni("./image_split_label.ini");
+            SaveIni("./ini/image_split_label.ini");
         }
         private void SaveIni(string iniFileName)
         {
