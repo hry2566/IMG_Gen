@@ -85,6 +85,7 @@ partial class MainForm
         this.FileTreeView.TabIndex = 23;
         this.FileTreeView.Sorted = true;
         this.FilePage.Controls.Add(this.FileTreeView);
+        Image_Split.SetFileView(FileTreeView);
 
         // LabelLstView
         ColumnHeader[] labelColumn = new ColumnHeader[3];
