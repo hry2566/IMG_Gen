@@ -19,6 +19,7 @@ public partial class MainForm : Form
         ReadAppIni("./ini/IMG_Gen.ini");
         ReadIni("./ini/label.ini", LabelLstView);
         ReadIni("./ini/mask.ini", MaskLstView);
+        Image_Split!.SetOpt(RootPathTxtBox.Text,Image_BrightContrast!);
     }
     private void RootSelectBtn_Click(Object? sender, EventArgs? e)
     {
