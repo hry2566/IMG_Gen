@@ -20,6 +20,11 @@ namespace IMG_Gen2
             public int Cnt = 0;
             public List<RECTPOS> rectPos = new();
         }
+        private struct TREE_INFO
+        {
+            public List<string> fileList;
+            public List<TreeNode> node;
+        }
         private string? rootPath;
         private string? filePath;
         private TextBox? ImageWidthTxtBox;
@@ -39,6 +44,8 @@ namespace IMG_Gen2
         private Boolean readFlag = false;
         private Boolean stopFlag = true;
         private cls_treeview? FileTreeView;
+        private TREE_INFO treeInfo;
+        private cls_image_BrightContrast? Image_BrightContrast;
 
         public cls_image_Split(List<Control> splitCtrl)
         {
@@ -441,32 +448,40 @@ namespace IMG_Gen2
             ImageHeightTxtBox!.Text = PicBox2.Image.Height.ToString();
         }
 
+        internal void SetOpt(string rootPath, cls_image_BrightContrast Image_BrightContrast)
+        {
+            this.rootPath = rootPath;
+            this.Image_BrightContrast = Image_BrightContrast;
+        }
+
         private void StopSplitBtn_Click(object? sender, EventArgs e)
         {
             stopFlag=true;
         } 
-        private List<string> PrintRecursive(List<string> fileList, TreeNode treeNode)
+        private void SearchNode(TreeNode treeNode)
         {
-            fileList.Add(treeNode.FullPath); 
+            treeInfo.fileList!.Add(treeNode.FullPath);
+            treeInfo.node!.Add(treeNode);
             foreach (TreeNode tn in treeNode.Nodes)
             {
-                PrintRecursive(fileList, tn);
+                SearchNode(tn);
             }
-            return fileList;
-        }   
+        }        
         private void RunSplitBtn_Click(object? sender, EventArgs e)
         {
-            List<string> fileList = new();
+            treeInfo = new();
+            treeInfo.fileList = new();
+            treeInfo.node = new();
             foreach (TreeNode n in FileTreeView!.Nodes)
             {
-                fileList = PrintRecursive(fileList, n);
+                SearchNode(n);
             }
 
-            for(int l=0;l<fileList.Count;l++)
+            for(int l=0;l<treeInfo.fileList!.Count;l++)
             {
-                filePath = rootPath + fileList[l];
-
-                // Console.WriteLine(filePath);
+                filePath = rootPath + treeInfo.fileList[l];
+                FileTreeView.SelectedNode = treeInfo.node![l];
+                FileTreeView.Focus();
                 
                 // IMGファイル有無＆読込
                 if(File.Exists(filePath))
@@ -673,10 +688,6 @@ namespace IMG_Gen2
             }
             return true;
         }
-        private void SaveThread(Bitmap bmpNew,string newFilePath)
-        {
-            bmpNew.Save(newFilePath,System.Drawing.Imaging.ImageFormat.Jpeg);
-        }
         private void CreateImgInfo(List<IMG_INFO> imgInfo,List<RECTPOS> rectPos,List<LABEL_INFO> labelInfo)
         {
             // lblInf ラベル名と座標
@@ -741,6 +752,11 @@ namespace IMG_Gen2
                     }
                 }
             }
+        }
+        private void SaveThread(Bitmap bmpNew,string newFilePath)
+        {
+            bmpNew = Image_BrightContrast!.GetBrightContrast(bmpNew);
+            bmpNew.Save(newFilePath,System.Drawing.Imaging.ImageFormat.Jpeg);
         }
     }
 }
