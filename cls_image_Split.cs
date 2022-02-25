@@ -758,7 +758,59 @@ namespace IMG_Gen2
         private void SaveThread(Bitmap bmpNew,string newFilePath)
         {
             bmpNew = Image_BrightContrast!.GetBrightContrast(bmpNew);
+            // bmpNew = AddNoise(bmpNew,255,1);
             bmpNew.Save(newFilePath,System.Drawing.Imaging.ImageFormat.Jpeg);
+        }
+
+        private Bitmap AddNoise(Bitmap bmp, int noise, int ratio)
+        {
+            var width = bmp.Width;
+            var height = bmp.Height;
+
+            // Bitmapをロック
+            var bmpData = bmp.LockBits(
+                    new Rectangle(0, 0, width, height),
+                    System.Drawing.Imaging.ImageLockMode.ReadWrite,
+                    bmp.PixelFormat
+                );
+
+            // メモリの幅のバイト数を取得
+            var stride = Math.Abs(bmpData.Stride);
+
+            unsafe
+            {
+                // 画像データ格納用配列
+                var ptr = (byte*)bmpData.Scan0;
+
+                Random rnd = new System.Random();
+                int iRnd = 0;
+                int rgbPos = 0;
+                int flag = 0;
+
+                Parallel.For(0, height, y =>
+                 {
+                     // 行の先頭ポインタ
+                     byte* pLine = ptr + y * stride;
+
+                     for (int x = 0; x < width; x++)
+                     {
+                         // 輝度値の設定
+                         iRnd = rnd.Next(-noise, noise);
+                         flag = rnd.Next(0, ratio);
+                         rgbPos = rnd.Next(0, 2);
+                         if (flag == 0)
+                         {
+                             pLine[rgbPos] = (byte)(pLine[rgbPos] + iRnd);
+                         }
+                         // 次の画素へ
+                         pLine += 4;
+                     }
+                 }
+                );
+            }
+            // アンロック
+            bmp.UnlockBits(bmpData);
+            return bmp;
         }
     }
 }
