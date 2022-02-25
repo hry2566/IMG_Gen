@@ -47,6 +47,20 @@ public partial class cls_posPicBox : PictureBox
                 labelFlag = true;
                 AllUnSelect();
             }
+            if (e.Button == System.Windows.Forms.MouseButtons.Right)
+            {
+                for (int i = 0; i < lblRect.Count; i++)
+                {
+                    if (lblRect[i].selectFlag)
+                    {
+                        lblRect[i].Delete();
+                        lblRect.Remove(lblRect[i]);
+                        break;
+                    }
+                }
+                SaveRect("_pos", lblRect);
+                DrawImage();
+            }
             return;
         }
         else if (e.Button == System.Windows.Forms.MouseButtons.Right)
