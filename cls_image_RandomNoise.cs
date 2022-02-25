@@ -115,21 +115,6 @@ namespace IMG_Gen2
             runFlag = false;
         }
 
-        internal Bitmap RndNoisePreviewBtn_Click(Bitmap bmp)
-        {
-            RndNoisePreviewBtn!.Visible = false;
-            Random rnd = new System.Random();
-            int noise = rnd.Next(128, RndNoiseScrBar!.Value);
-            int ratio = rnd.Next(RndNoiseRatioScrBar!.Value, 50);
-
-            CreateNoise(noise, ratio);
-            ImageReset();
-            RndNoisePreviewBtn!.Visible = true;
-            runFlag = false;
-
-            return bmp;
-        }
-
         private void CreateNoise(int noise, int ratio)
         {
             BmpReadFile(filePath!);
@@ -172,6 +157,7 @@ namespace IMG_Gen2
         }
         private void AddNoise(Bitmap bmp, int noise, int ratio)
         {
+            if(bmp==null){return;}
             var width = bmp.Width;
             var height = bmp.Height;
 
@@ -252,6 +238,7 @@ namespace IMG_Gen2
         }
         private void BmpReadFile(string filePath)
         {
+            if(filePath==null){return;}
             if (bmp != null)
             {
                 bmp.Dispose();
