@@ -288,8 +288,6 @@ namespace IMG_Gen2
                 ContrastMax = ContrastMaxHScrBar!.Value;
                 ContrastMin = ContrastMinHScrBar!.Value;
             }
-            
-
             Random rnd = new System.Random();
             double alpha = rnd.Next(ContrastMin, ContrastMax) / 100;
             double beta = rnd.Next(brightMin, brightMax);
