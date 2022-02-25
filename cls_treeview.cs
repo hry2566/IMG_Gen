@@ -87,6 +87,8 @@ public partial class cls_treeview : TreeView
         this.Nodes.AddRange(treeNode);
         treeNode = cls_treenode.AddFileNode(path, "*.gif");
         this.Nodes.AddRange(treeNode);
+        treeNode = cls_treenode.AddFileNode(path, "*.tif");
+        this.Nodes.AddRange(treeNode);
         this.ExpandAll();
     }
     public void Node_Clear()
