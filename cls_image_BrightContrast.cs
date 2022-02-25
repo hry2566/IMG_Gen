@@ -272,5 +272,39 @@ namespace IMG_Gen2
             bmp = new Bitmap(pic1.Image);
             pic1.Image.Dispose();
         }
+        internal Bitmap GetBrightContrast(Bitmap bmp)
+        {
+            int brightMax = 0;
+            int brightMin = 0;
+            int ContrastMax = 100;
+            int ContrastMin = 100;
+            if(BrightChkBox!.Checked)
+            {
+                brightMax = BrightMaxHScrBar!.Value;
+                brightMin = BrightMinHScrBar!.Value;
+            }
+            if(ContrastChkBox!.Checked)
+            {
+                ContrastMax = ContrastMaxHScrBar!.Value;
+                ContrastMin = ContrastMinHScrBar!.Value;
+            }
+            
+
+            Random rnd = new System.Random();
+            double alpha = rnd.Next(ContrastMin, ContrastMax) / 100;
+            double beta = rnd.Next(brightMin, brightMax);
+
+            return BmpConv(bmp,alpha,beta);
+        }
+        private Bitmap BmpConv(Bitmap bmp, double alpha, double beta)
+        {
+            Mat cvMat = BitmapConverter.ToMat(bmp!);
+            Cv2.ConvertScaleAbs(cvMat, cvMat, alpha, beta);
+            if (bmp != null)
+            {
+                bmp.Dispose();
+            }
+            return BitmapConverter.ToBitmap(cvMat);
+        }
     }
 }
