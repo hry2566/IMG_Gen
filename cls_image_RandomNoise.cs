@@ -114,6 +114,22 @@ namespace IMG_Gen2
             RndNoisePreviewBtn!.Visible = true;
             runFlag = false;
         }
+
+        internal Bitmap RndNoisePreviewBtn_Click(Bitmap bmp)
+        {
+            RndNoisePreviewBtn!.Visible = false;
+            Random rnd = new System.Random();
+            int noise = rnd.Next(128, RndNoiseScrBar!.Value);
+            int ratio = rnd.Next(RndNoiseRatioScrBar!.Value, 50);
+
+            CreateNoise(noise, ratio);
+            ImageReset();
+            RndNoisePreviewBtn!.Visible = true;
+            runFlag = false;
+
+            return bmp;
+        }
+
         private void CreateNoise(int noise, int ratio)
         {
             BmpReadFile(filePath!);
