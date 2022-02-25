@@ -46,6 +46,7 @@ namespace IMG_Gen2
         private cls_treeview? FileTreeView;
         private TREE_INFO treeInfo;
         private cls_image_BrightContrast? Image_BrightContrast;
+        private cls_image_RandomNoise? Image_RandomNoise;
 
         public cls_image_Split(List<Control> splitCtrl)
         {
@@ -448,10 +449,11 @@ namespace IMG_Gen2
             ImageHeightTxtBox!.Text = PicBox2.Image.Height.ToString();
         }
 
-        internal void SetOpt(string rootPath, cls_image_BrightContrast Image_BrightContrast)
+        internal void SetOpt(string rootPath, cls_image_BrightContrast Image_BrightContrast, cls_image_RandomNoise Image_RandomNoise)
         {
             this.rootPath = rootPath;
             this.Image_BrightContrast = Image_BrightContrast;
+            this.Image_RandomNoise = Image_RandomNoise;
         }
 
         private void StopSplitBtn_Click(object? sender, EventArgs e)
