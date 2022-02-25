@@ -33,6 +33,8 @@ namespace IMG_Gen2
                 this.Nodes.AddRange(node);
                 node= AddFileNode(rootPath, "*.gif");
                 this.Nodes.AddRange(node);
+                node= AddFileNode(rootPath, "*.tif");
+                this.Nodes.AddRange(node);
             }
         }
         internal static cls_treenode[] AddFileNode(string rootPath,string fileExp)
