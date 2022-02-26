@@ -22,15 +22,15 @@ public partial class cls_treeview : TreeView
     }
     private void ViewTab_SelectedIndexChanged(Object? sender, EventArgs e)
     {
-        if(this.SelectedNode==null){return;}
+        if (this.SelectedNode == null) { return; }
         string filePath = rootPath + this.SelectedNode.FullPath;
         SwitchImage(ViewTab.SelectedIndex, filePath);
     }
     private void SwitchImage(int selectIndex, string filePath)
     {
         if (!System.IO.File.Exists(filePath)) { return; }
-        
-        switch(ViewTab.SelectedIndex)
+
+        switch (ViewTab.SelectedIndex)
         {
             case 0:
                 picBox1.SetImage(filePath, rootPath!);
