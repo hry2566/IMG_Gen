@@ -2,13 +2,13 @@ namespace IMG_Gen2
 {
     public class cls_image_Split
     {
-        private struct RECTPOS			//四角の座標
-		{
-		  public int x1;
-		  public int y1;
-		  public int x2;
-		  public int y2;
-		}
+        private struct RECTPOS          //四角の座標
+        {
+            public int x1;
+            public int y1;
+            public int x2;
+            public int y2;
+        }
         private struct LABEL_INFO
         {
             public string labelName = "";
@@ -101,57 +101,57 @@ namespace IMG_Gen2
         {
             this.FileTreeView = FileTreeView;
         }
-        
+
         private void SplitPreviewBtn_Click(object? sender, EventArgs e)
         {
-            if(filePath==null){return;}
+            if (filePath == null) { return; }
 
             List<RECTPOS> rectPos = new List<RECTPOS>();
-			List<Point> maskDotPos = new List<Point>();
+            List<Point> maskDotPos = new List<Point>();
 
-			maskDotPos = GetMaskDotPos();
-            
-			Graphics g = Graphics.FromImage(Pic2Bmp(filePath));
+            maskDotPos = GetMaskDotPos();
+
+            Graphics g = Graphics.FromImage(Pic2Bmp(filePath));
 
             // // マスク点座標表示
-            for(int i=0;i<maskDotPos.Count-1;i++)
+            for (int i = 0; i < maskDotPos.Count - 1; i++)
             {
                 g.FillEllipse(Brushes.White, maskDotPos[i].X, maskDotPos[i].Y, 10, 10);
             }
 
-			rectPos = CreateSplitPos(maskDotPos);
-			SplitCntTxtBox1!.Text = rectPos.Count.ToString();
-			SplitCntTxtBox2!.Text = rectPos.Count.ToString();
-			
-			Pen p = new Pen(Color.Red, 3);
-			int colorNo = 0;
-			
-			for (int i = 0; i < rectPos.Count; i++) 
+            rectPos = CreateSplitPos(maskDotPos);
+            SplitCntTxtBox1!.Text = rectPos.Count.ToString();
+            SplitCntTxtBox2!.Text = rectPos.Count.ToString();
+
+            Pen p = new Pen(Color.Red, 3);
+            int colorNo = 0;
+
+            for (int i = 0; i < rectPos.Count; i++)
             {
-				switch(colorNo)
-				{
-				    case 0:
-						p = new Pen(Color.Red, 3);
-						break;
-				    case 1:
-						p = new Pen(Color.Blue, 3);
-						break;
-					case 2:
-						p = new Pen(Color.Yellow, 3);
-						break;
-					case 3:
-						p = new Pen(Color.Magenta, 3);
-						break;
-					case 4:
-						p = new Pen(Color.Green, 3);
-						break;
-					default:
-						colorNo = 0;
-						p = new Pen(Color.Red, 3);
-						break;
-				}
-				colorNo++;
-				g.DrawRectangle(p, rectPos[i].x1, rectPos[i].y1, rectPos[i].x2 - rectPos[i].x1, rectPos[i].y2 - rectPos[i].y1);
+                switch (colorNo)
+                {
+                    case 0:
+                        p = new Pen(Color.Red, 3);
+                        break;
+                    case 1:
+                        p = new Pen(Color.Blue, 3);
+                        break;
+                    case 2:
+                        p = new Pen(Color.Yellow, 3);
+                        break;
+                    case 3:
+                        p = new Pen(Color.Magenta, 3);
+                        break;
+                    case 4:
+                        p = new Pen(Color.Green, 3);
+                        break;
+                    default:
+                        colorNo = 0;
+                        p = new Pen(Color.Red, 3);
+                        break;
+                }
+                colorNo++;
+                g.DrawRectangle(p, rectPos[i].x1, rectPos[i].y1, rectPos[i].x2 - rectPos[i].x1, rectPos[i].y2 - rectPos[i].y1);
             }
             PicBox2!.Refresh();
             g.Dispose();
@@ -159,115 +159,137 @@ namespace IMG_Gen2
         }
         private Bitmap Pic2Bmp(string filePath)
         {
-            if(PicBox2!.Image!=null)
+            if (PicBox2!.Image != null)
             {
                 PicBox2.Image.Dispose();
-                PicBox2.Image=null;
+                PicBox2.Image = null;
             }
             PicBox2.Image = new Bitmap(filePath);
             Bitmap bmp = new(PicBox2.Image);
-            if(PicBox2.Image!=null)
+            if (PicBox2.Image != null)
             {
                 PicBox2.Image.Dispose();
-                PicBox2.Image=null;
+                PicBox2.Image = null;
             }
-            PicBox2.Image=bmp;
+            PicBox2.Image = bmp;
             return bmp;
         }
-        private List<RECTPOS> CreateSplitPos(List<Point>? maskPos = null){
-			List<RECTPOS> rectPos = new List<RECTPOS>();
-			RECTPOS newPos;
-			Random rnd = new System.Random();
-			
-			// 分割イメージ表示
-			int wrapX = 0;
-			int wrapY = 0;
-			int cutW = 0;
-			int cutH = 0;
-			int posX;
-			int posY;
-			bool rndFlag = RndSplitRadioBtn!.Checked;
-			
-			if (SplitWidthTxtBox!.Text == "") {
-				SplitWidthTxtBox.Text = "224";
-			}
-			if (SplitHeightTxtBox!.Text == "") {
-				SplitHeightTxtBox.Text = "224";
-			}
-			if (WrapWidthTxtBox!.Text == "") {
-				WrapWidthTxtBox.Text = "0";
-			}
-			if (WrapHeightTxtBox!.Text == "") {
-				WrapHeightTxtBox.Text = "0";
-			}
-			
-			cutW = int.Parse(SplitWidthTxtBox.Text);
-			cutH = int.Parse(SplitHeightTxtBox.Text);
-			wrapX = int.Parse(WrapWidthTxtBox.Text);
-			wrapY = int.Parse(WrapHeightTxtBox.Text);
+        private List<RECTPOS> CreateSplitPos(List<Point>? maskPos = null)
+        {
+            List<RECTPOS> rectPos = new List<RECTPOS>();
+            RECTPOS newPos;
+            Random rnd = new System.Random();
 
-            if(cutW<wrapX+1){
-                wrapX = cutW -1;
+            // 分割イメージ表示
+            int wrapX = 0;
+            int wrapY = 0;
+            int cutW = 0;
+            int cutH = 0;
+            int posX;
+            int posY;
+            bool rndFlag = RndSplitRadioBtn!.Checked;
+
+            if (SplitWidthTxtBox!.Text == "")
+            {
+                SplitWidthTxtBox.Text = "224";
+            }
+            if (SplitHeightTxtBox!.Text == "")
+            {
+                SplitHeightTxtBox.Text = "224";
+            }
+            if (WrapWidthTxtBox!.Text == "")
+            {
+                WrapWidthTxtBox.Text = "0";
+            }
+            if (WrapHeightTxtBox!.Text == "")
+            {
+                WrapHeightTxtBox.Text = "0";
+            }
+
+            cutW = int.Parse(SplitWidthTxtBox.Text);
+            cutH = int.Parse(SplitHeightTxtBox.Text);
+            wrapX = int.Parse(WrapWidthTxtBox.Text);
+            wrapY = int.Parse(WrapHeightTxtBox.Text);
+
+            if (cutW < wrapX + 1)
+            {
+                wrapX = cutW - 1;
                 WrapWidthTxtBox.Text = wrapX.ToString();
             }
-            if(cutH<wrapY+1)
+            if (cutH < wrapY + 1)
             {
-                wrapY=cutH-1;
-                WrapHeightTxtBox.Text=wrapY.ToString();
+                wrapY = cutH - 1;
+                WrapHeightTxtBox.Text = wrapY.ToString();
             }
 
             int imgWidth = int.Parse(ImageWidthTxtBox!.Text);
             int imgHeight = int.Parse(ImageHeightTxtBox!.Text);
 
-			for (int cntY = 0; cntY < imgHeight; cntY += cutH) {
-				cntY -= wrapY;
-				for (int cntX = 0; cntX < imgWidth; cntX += cutW) {
-					cntX -= wrapX;
-					
-					if (rndFlag) {
-						posX = cntX + rnd.Next(0, wrapX);
-						posY = cntY + rnd.Next(0, wrapY);
-					} else {
-						posX = cntX;
-						posY = cntY;
-					}
-					
-					newPos.x1 = posX;
-					newPos.y1 = posY;
-					newPos.x2 = cutW + posX;
-					newPos.y2 = cutH + posY;
-					
-//					rectPos.Add(newPos);
-					
-					if (maskPos != null) {
-						if (maskPos.Count > 0) {
-							bool flag = true;
-							for (int i = 0; i < maskPos.Count; i++) {
-								if (newPos.x1 < maskPos[i].X && maskPos[i].X < newPos.x2 &&
-								    newPos.y1 < maskPos[i].Y && maskPos[i].Y < newPos.y2) {
-									flag = false;
-									break;
-								}
-							}
-							if (flag) {
-								rectPos.Add(newPos);
-							}
-						} else {
-							rectPos.Add(newPos);
-						}
-					}else{
-						rectPos.Add(newPos);
-					}
-				}
-			}
-			return rectPos;	
-		}
-        private List<Point> GetMaskDotPos(){
-			List<Point> maskPos = new List<Point>();
-            string maskFile = rootPath+"_mask\\mask.txt";
-            if (!File.Exists(maskFile)) {return new List<Point>();}
+            for (int cntY = 0; cntY < imgHeight; cntY += cutH)
+            {
+                cntY -= wrapY;
+                for (int cntX = 0; cntX < imgWidth; cntX += cutW)
+                {
+                    cntX -= wrapX;
 
-            int x1,y1,x2,y2;
+                    if (rndFlag)
+                    {
+                        posX = cntX + rnd.Next(0, wrapX);
+                        posY = cntY + rnd.Next(0, wrapY);
+                    }
+                    else
+                    {
+                        posX = cntX;
+                        posY = cntY;
+                    }
+
+                    newPos.x1 = posX;
+                    newPos.y1 = posY;
+                    newPos.x2 = cutW + posX;
+                    newPos.y2 = cutH + posY;
+
+                    if (-1 < newPos.x1 && -1 < newPos.y1 && newPos.x2 < imgWidth && newPos.y2 < imgHeight)
+                    {
+                        if (maskPos != null)
+                        {
+                            if (maskPos.Count > 0)
+                            {
+                                bool flag = true;
+                                for (int i = 0; i < maskPos.Count; i++)
+                                {
+                                    if (newPos.x1 < maskPos[i].X && maskPos[i].X < newPos.x2 &&
+                                        newPos.y1 < maskPos[i].Y && maskPos[i].Y < newPos.y2)
+                                    {
+                                        flag = false;
+                                        break;
+                                    }
+                                }
+                                if (flag)
+                                {
+                                    rectPos.Add(newPos);
+                                }
+                            }
+                            else
+                            {
+                                rectPos.Add(newPos);
+                            }
+                        }
+                        else
+                        {
+                            rectPos.Add(newPos);
+                        }
+                    }
+                }
+            }
+            return rectPos;
+        }
+        private List<Point> GetMaskDotPos()
+        {
+            List<Point> maskPos = new List<Point>();
+            string maskFile = rootPath + "_mask\\mask.txt";
+            if (!File.Exists(maskFile)) { return new List<Point>(); }
+
+            int x1, y1, x2, y2;
 
             StreamReader sr = new StreamReader(maskFile);
             string? line = "";
@@ -288,22 +310,22 @@ namespace IMG_Gen2
 
                     int stepX = (int)(Width / 5);
                     int stepY = (int)(Height / 5);
-                    if (stepX<1){stepX=1;}
-                    if (stepY<1){stepY=1;}
+                    if (stepX < 1) { stepX = 1; }
+                    if (stepY < 1) { stepY = 1; }
 
-                    for(int cntX = x1; cntX < x2; cntX += stepX)
+                    for (int cntX = x1; cntX < x2; cntX += stepX)
                     {
-                        for(int cntY = y1; cntY < y2; cntY += stepY)
+                        for (int cntY = y1; cntY < y2; cntY += stepY)
                         {
                             pos = new Point(cntX, cntY);
                             maskPos.Add(pos);
                         }
                     }
-                } 
+                }
             }
             sr.Close();
             return maskPos;
-		}
+        }
         private void ReadIni(string filePath)
         {
             if (!cls_posPicBox.CheckFile(filePath)) { return; }
@@ -407,13 +429,13 @@ namespace IMG_Gen2
         }
         private void SplitCntDataGridView_CellValueChanged(object? sender, DataGridViewCellEventArgs e)
         {
-            if(readFlag){return;}
+            if (readFlag) { return; }
             if (SplitCntDataGridView!.Rows[e.RowIndex].Cells[0].Value.ToString() == "") { return; }
             SaveIni("./ini/image_split_label.ini");
         }
         private void SaveIni(string iniFileName)
         {
-            if(readFlag){return;}
+            if (readFlag) { return; }
             StreamWriter sw = new(iniFileName);
             for (int i = 0; i < SplitCntDataGridView!.RowCount - 1; i++)
             {
@@ -438,7 +460,7 @@ namespace IMG_Gen2
             }
             sr.Close();
         }
-        internal void SetImage(string filePath,string rootPath)
+        internal void SetImage(string filePath, string rootPath)
         {
             this.filePath = filePath;
             this.rootPath = rootPath;
@@ -458,8 +480,8 @@ namespace IMG_Gen2
 
         private void StopSplitBtn_Click(object? sender, EventArgs e)
         {
-            stopFlag=true;
-        } 
+            stopFlag = true;
+        }
         private void SearchNode(TreeNode treeNode)
         {
             treeInfo.fileList!.Add(treeNode.FullPath);
@@ -468,7 +490,7 @@ namespace IMG_Gen2
             {
                 SearchNode(tn);
             }
-        }        
+        }
         private void RunSplitBtn_Click(object? sender, EventArgs e)
         {
             treeInfo = new();
@@ -479,16 +501,16 @@ namespace IMG_Gen2
                 SearchNode(n);
             }
 
-            for(int l=0;l<treeInfo.fileList!.Count;l++)
+            for (int l = 0; l < treeInfo.fileList!.Count; l++)
             {
                 filePath = rootPath + treeInfo.fileList[l];
                 FileTreeView.SelectedNode = treeInfo.node![l];
                 FileTreeView.Focus();
-                
+
                 // IMGファイル有無＆読込
-                if(File.Exists(filePath))
+                if (File.Exists(filePath))
                 {
-                    RunSplitBtn!.Enabled=false;
+                    RunSplitBtn!.Enabled = false;
                     readFlag = true;
 
                     List<LABEL_INFO> labelInfo = new();
@@ -500,16 +522,16 @@ namespace IMG_Gen2
 
                     // Posファイル有無＆読込
                     string[] split = filePath.Split("\\");
-                    string posFileName = rootPath + "_pos/" + split[split.Count()-1] + ".txt";
-                    
+                    string posFileName = rootPath + "_pos/" + split[split.Count() - 1] + ".txt";
+
 
                     info.labelName = "OK";
                     info.Cnt = int.Parse(SplitCntDataGridView!.Rows[0].Cells[1].Value.ToString()!);
                     imgInfo.Add(info);
 
-                    if(File.Exists(posFileName))
+                    if (File.Exists(posFileName))
                     {
-                        StreamReader sr = new (posFileName);
+                        StreamReader sr = new(posFileName);
                         while (!sr.EndOfStream)
                         {
                             string line = sr.ReadLine()!;
@@ -529,20 +551,20 @@ namespace IMG_Gen2
 
                     // ラベルフォルダー有無＆作成
                     Directory.CreateDirectory(rootPath + "/_split/OK");
-                    for(int i=0;i<labelInfo.Count;i++)
+                    for (int i = 0; i < labelInfo.Count; i++)
                     {
                         Directory.CreateDirectory(rootPath + "/_split/" + labelInfo[i].labelName);
-                        
+
                         bool flag = false;
-                        for(int j=0;j<imgInfo.Count;j++)
+                        for (int j = 0; j < imgInfo.Count; j++)
                         {
-                            if(labelInfo[i].labelName==imgInfo[j].labelName)
+                            if (labelInfo[i].labelName == imgInfo[j].labelName)
                             {
-                                flag=true;
-                                break;       
+                                flag = true;
+                                break;
                             }
                         }
-                        if(!flag)
+                        if (!flag)
                         {
                             info = new();
                             info.labelName = labelInfo[i].labelName;
@@ -551,18 +573,18 @@ namespace IMG_Gen2
                     }
 
                     // ラベル無　作成数-1
-                    for(int i=1;i<SplitCntDataGridView!.RowCount-1;i++)
+                    for (int i = 1; i < SplitCntDataGridView!.RowCount - 1; i++)
                     {
                         SplitCntDataGridView!.Rows[i].Cells[2].Value = -1;
                         string? labelName = SplitCntDataGridView!.Rows[i].Cells[0].Value.ToString();
-                        for(int j=0;j<labelInfo.Count;j++)
+                        for (int j = 0; j < labelInfo.Count; j++)
                         {
-                            if(labelName ==labelInfo[j].labelName )
+                            if (labelName == labelInfo[j].labelName)
                             {
                                 SplitCntDataGridView!.Rows[i].Cells[2].Value = 0;
-                                for(int k=0;k<imgInfo.Count;k++)
+                                for (int k = 0; k < imgInfo.Count; k++)
                                 {
-                                    if(imgInfo[k].labelName==labelName)
+                                    if (imgInfo[k].labelName == labelName)
                                     {
                                         info = imgInfo[k];
                                         info.Cnt = int.Parse(SplitCntDataGridView!.Rows[i].Cells[1].Value.ToString()!);
@@ -574,7 +596,7 @@ namespace IMG_Gen2
                             }
                         }
                     }
-                    
+
                     // Maskファイル有無＆読込
                     maskDotPos = GetMaskDotPos();
 
@@ -585,29 +607,29 @@ namespace IMG_Gen2
                         rectPos = CreateSplitPos(maskDotPos);
 
                         // 座標ラベル部仕分け
-                        CreateImgInfo(imgInfo,rectPos,labelInfo);
+                        CreateImgInfo(imgInfo, rectPos, labelInfo);
 
-                        for(int i=0;i<imgInfo.Count;i++)
+                        for (int i = 0; i < imgInfo.Count; i++)
                         {
-                            if(imgInfo[i].Cnt==imgInfo[i].rectPos.Count)
+                            if (imgInfo[i].Cnt == imgInfo[i].rectPos.Count)
                             {
                                 createdCnt++;
                             }
                         }
-                        if(createdCnt==imgInfo.Count){break;}
+                        if (createdCnt == imgInfo.Count) { break; }
                     }
 
                     // 画像保存
-                    stopFlag=false;
-                    saveSplit(filePath,imgInfo);
+                    stopFlag = false;
+                    saveSplit(filePath, imgInfo);
 
-                    if(stopFlag)
+                    if (stopFlag)
                     {
                         break;
                     }
                 }
             }
-            if(stopFlag)
+            if (stopFlag)
             {
                 MessageBox.Show("中断しました");
             }
@@ -615,151 +637,171 @@ namespace IMG_Gen2
             {
                 MessageBox.Show("終了");
             }
-            
-            RunSplitBtn!.Enabled=true;
-            readFlag=false;
+
+            RunSplitBtn!.Enabled = true;
+            readFlag = false;
         }
         private bool saveSplit(string filePath, List<IMG_INFO> imgInfo)
         {
             string path = rootPath + "_split/";
             string[] split = filePath.Split("\\");
-            string fileName = split[split.Count()-1];
+            string fileName = split[split.Count() - 1];
 
             Task[] task = new Task[imgInfo.Count];
-            readFlag=true;
-            for(int i=0;i<imgInfo.Count;i++)
+            readFlag = true;
+            for (int i = 0; i < imgInfo.Count; i++)
             {
-                task[i] = Task.Run(() => {
-                    SaveSplitImg(imgInfo,i,filePath);
+                task[i] = Task.Run(() =>
+                {
+                    SaveSplitImg(imgInfo, i, filePath);
                 });
                 Thread.Sleep(100);
             }
 
             //スレッド終了待ち
-            bool flag=true;
+            bool flag = true;
             while (flag)
             {
-                flag=false;
-                for(int i=0;i<task.Count();i++)
+                flag = false;
+                for (int i = 0; i < task.Count(); i++)
                 {
-                    if(task[i].Status==TaskStatus.Running)
+                    if (task[i].Status == TaskStatus.Running)
                     {
                         flag = true;
                         break;
                     }
                 }
                 Application.DoEvents();
-                if(stopFlag){return false;}
+                if (stopFlag) { return false; }
             }
             return true;
-		}
-        private bool SaveSplitImg(List<IMG_INFO> imgInfo,int index,string filePath)
+        }
+        private bool SaveSplitImg(List<IMG_INFO> imgInfo, int index, string filePath)
         {
             string path = rootPath + "_split/";
             string[] split = filePath.Split("\\");
-            string fileName = split[split.Count()-1];
+            string fileName = split[split.Count() - 1];
+            bool noiseFlag = Image_RandomNoise!.GetFlag();
 
             Bitmap bmpNew;
             Bitmap img3 = new Bitmap(filePath);
+
             int cnt = 0;
 
-            for(int j=0;j<imgInfo[index].rectPos.Count;j++)
+            for (int j = 0; j < imgInfo[index].rectPos.Count; j++)
             {
                 int x = imgInfo[index].rectPos[j].x1;
                 int y = imgInfo[index].rectPos[j].y1;
-                int width = imgInfo[index].rectPos[j].x2 -imgInfo[index].rectPos[j].x1;
-                int height = imgInfo[index].rectPos[j].y2 -imgInfo[index].rectPos[j].y1;
+                int width = imgInfo[index].rectPos[j].x2 - imgInfo[index].rectPos[j].x1;
+                int height = imgInfo[index].rectPos[j].y2 - imgInfo[index].rectPos[j].y1;
 
                 Rectangle rect = new Rectangle(x, y, width, height);
                 bmpNew = img3.Clone(rect, img3.PixelFormat);
 
                 // 画像を保存
-                string newFilePath = path + imgInfo[index].labelName +"/" + fileName + cnt.ToString() + ".jpg";
-                
-                Task task = Task.Run(() => {
-                    SaveThread(bmpNew,newFilePath);
+                string newFilePath = path + imgInfo[index].labelName + "/" + fileName + cnt.ToString() + ".jpg";
+
+                Random rnd = new System.Random();
+                int noise = rnd.Next(0, Image_RandomNoise!.GetNoise());
+                int ratio = rnd.Next(Image_RandomNoise.GetRatio(), 100);
+                int mode = rnd.Next(0, 3);
+                if (mode == 1 || mode == 3)
+                {
+                    bmpNew = Image_BrightContrast!.GetBrightContrast(bmpNew);
+                }
+                else if (mode == 2 || mode == 3)
+                {
+                    if (noiseFlag)
+                    {
+                        bmpNew = AddNoise(bmpNew, noise, ratio);
+                    }
+                }
+
+                Task task = Task.Run(() =>
+                {
+                    SaveThread(bmpNew, newFilePath);
                 });
-                // bmpNew.Save(newFilePath,System.Drawing.Imaging.ImageFormat.Jpeg);
-                
+
                 SplitCntDataGridView!.Invoke((MethodInvoker)(() =>
                 {
-                    SplitCntDataGridView!.Rows[index].Cells[2].Value = j+1;
+                    SplitCntDataGridView!.Rows[index].Cells[2].Value = j + 1;
                 }));
-                if(stopFlag){break;}
+                if (stopFlag) { break; }
                 cnt++;
+
+
+
             }
             return true;
         }
-        private void CreateImgInfo(List<IMG_INFO> imgInfo,List<RECTPOS> rectPos,List<LABEL_INFO> labelInfo)
+        private void CreateImgInfo(List<IMG_INFO> imgInfo, List<RECTPOS> rectPos, List<LABEL_INFO> labelInfo)
         {
             // lblInf ラベル名と座標
             // rectPos 分割座標（マスク除去後）
             // imgInfo 保存画像（ラベル名、作成枚数、座標配列）
 
-            for(int i=0;i<rectPos.Count;i++)
+            for (int i = 0; i < rectPos.Count; i++)
             {
-                bool okFlag=true;
-                bool grayFlag=false;
-                for(int j=0;j<labelInfo.Count;j++)
+                bool okFlag = true;
+                bool grayFlag = false;
+                for (int j = 0; j < labelInfo.Count; j++)
                 {
-                    if(rectPos[i].x1 < labelInfo[j].rectPos.x1 && rectPos[i].x2 > labelInfo[j].rectPos.x2 &&
+                    if (rectPos[i].x1 < labelInfo[j].rectPos.x1 && rectPos[i].x2 > labelInfo[j].rectPos.x2 &&
                        rectPos[i].y1 < labelInfo[j].rectPos.y1 && rectPos[i].y2 > labelInfo[j].rectPos.y2)
                     {
-                        for(int k=0;k<imgInfo.Count;k++)
+                        for (int k = 0; k < imgInfo.Count; k++)
                         {
-                            if(imgInfo[k].labelName==labelInfo[j].labelName)
+                            if (imgInfo[k].labelName == labelInfo[j].labelName)
                             {
-                                if(imgInfo[k].rectPos.Count<imgInfo[k].Cnt)
+                                if (imgInfo[k].rectPos.Count < imgInfo[k].Cnt)
                                 {
                                     imgInfo[k].rectPos.Add(rectPos[i]);
                                 }
-                                okFlag=false;
+                                okFlag = false;
                                 break;
                             }
                         }
                     }
-                    if(!okFlag)
+                    if (!okFlag)
                     {
-                        if(rectPos[i].x1 < labelInfo[j].rectPos.x1 && rectPos[i].x2 > labelInfo[j].rectPos.x1 &&
+                        if (rectPos[i].x1 < labelInfo[j].rectPos.x1 && rectPos[i].x2 > labelInfo[j].rectPos.x1 &&
                            rectPos[i].y1 < labelInfo[j].rectPos.y1 && rectPos[i].y2 > labelInfo[j].rectPos.y1)
                         {
-                            grayFlag=true;
+                            grayFlag = true;
                         }
-                        if(rectPos[i].x1 < labelInfo[j].rectPos.x2 && rectPos[i].x2 > labelInfo[j].rectPos.x2 &&
+                        if (rectPos[i].x1 < labelInfo[j].rectPos.x2 && rectPos[i].x2 > labelInfo[j].rectPos.x2 &&
                         rectPos[i].y1 < labelInfo[j].rectPos.y1 && rectPos[i].y2 > labelInfo[j].rectPos.y1)
                         {
-                            grayFlag=true;
+                            grayFlag = true;
                         }
-                        if(rectPos[i].x1 < labelInfo[j].rectPos.x1 && rectPos[i].x2 > labelInfo[j].rectPos.x1 &&
+                        if (rectPos[i].x1 < labelInfo[j].rectPos.x1 && rectPos[i].x2 > labelInfo[j].rectPos.x1 &&
                         rectPos[i].y1 < labelInfo[j].rectPos.y2 && rectPos[i].y2 > labelInfo[j].rectPos.y2)
                         {
-                            grayFlag=true;
+                            grayFlag = true;
                         }
-                        if(rectPos[i].x1 < labelInfo[j].rectPos.x2 && rectPos[i].x2 > labelInfo[j].rectPos.x2 &&
+                        if (rectPos[i].x1 < labelInfo[j].rectPos.x2 && rectPos[i].x2 > labelInfo[j].rectPos.x2 &&
                         rectPos[i].y1 < labelInfo[j].rectPos.y2 && rectPos[i].y2 > labelInfo[j].rectPos.y2)
                         {
-                            grayFlag=true;
+                            grayFlag = true;
                         }
                     }
-                    if(!okFlag)
+                    if (!okFlag)
                     {
                         break;
                     }
                 }
-                if(okFlag && !grayFlag)
+                if (okFlag && !grayFlag)
                 {
-                    if(imgInfo[0].rectPos.Count<imgInfo[0].Cnt)
+                    if (imgInfo[0].rectPos.Count < imgInfo[0].Cnt)
                     {
                         imgInfo[0].rectPos.Add(rectPos[i]);
                     }
                 }
             }
         }
-        private void SaveThread(Bitmap bmpNew,string newFilePath)
+        private void SaveThread(Bitmap bmpNew, string newFilePath)
         {
-            bmpNew = Image_BrightContrast!.GetBrightContrast(bmpNew);
-            bmpNew = AddNoise(bmpNew,255,100);
-            bmpNew.Save(newFilePath,System.Drawing.Imaging.ImageFormat.Jpeg);
+            bmpNew.Save(newFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
         }
 
         private Bitmap AddNoise(Bitmap bmp, int noise, int ratio)
@@ -774,7 +816,7 @@ namespace IMG_Gen2
             {
                 for (int y = 0; y < h; y++)
                 {
-                    Color pixel = bmp.GetPixel(x,y);
+                    Color pixel = bmp.GetPixel(x, y);
                     iRnd = rnd.Next(-noise, noise);
                     flag = rnd.Next(0, ratio);
                     rgbPos = rnd.Next(0, 2);
@@ -792,15 +834,8 @@ namespace IMG_Gen2
                     {
                         RGB[rgbPos] = (byte)(RGB[rgbPos] + iRnd);
                         pixel = Color.FromArgb(RGB[0], RGB[1], RGB[2]);
-                        bmp.SetPixel(x,y,pixel);
+                        bmp.SetPixel(x, y, pixel);
                     }
-                    
-                    // HSB
-                    // float h = pixel.GetHue(),
-                    //     s = pixel.GetSaturation(),
-                    //     b = pixel.GetBrightness();
-                    // SetPixelで書き込み
-                    
                 }
             }
             return bmp;
