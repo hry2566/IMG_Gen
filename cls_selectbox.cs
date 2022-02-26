@@ -5,7 +5,7 @@ namespace IMG_Gen2
         private Panel[] selectbox = new Panel[4];       // 選択ボックス
         private Point pos;                              // 四角位置
         private Size size;                              // 四角サイズ
-        
+
         public cls_selectbox(cls_rectangle rectangle, Control posPicBox, Point pos, Size size)
         {
             this.pos = pos;
