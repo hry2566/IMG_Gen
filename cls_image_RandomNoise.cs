@@ -157,53 +157,39 @@ namespace IMG_Gen2
         }
         private void AddNoise(Bitmap bmp, int noise, int ratio)
         {
-            if(bmp==null){return;}
-            var width = bmp.Width;
-            var height = bmp.Height;
+            if (bmp == null) { return; }
+            int w = bmp.Width, h = bmp.Height;
+            Random rnd = new System.Random();
+            int iRnd = 0;
+            int rgbPos = 0;
+            int flag = 0;
 
-            // Bitmapをロック
-            var bmpData = bmp.LockBits(
-                    new Rectangle(0, 0, width, height),
-                    System.Drawing.Imaging.ImageLockMode.ReadWrite,
-                    bmp.PixelFormat
-                );
-
-            // メモリの幅のバイト数を取得
-            var stride = Math.Abs(bmpData.Stride);
-
-            unsafe
+            for (int x = 0; x < w; x++)
             {
-                // 画像データ格納用配列
-                var ptr = (byte*)bmpData.Scan0;
+                for (int y = 0; y < h; y++)
+                {
+                    Color pixel = bmp.GetPixel(x, y);
+                    iRnd = rnd.Next(-noise, noise);
+                    flag = rnd.Next(0, ratio);
+                    rgbPos = rnd.Next(0, 2);
 
-                Random rnd = new System.Random();
-                int iRnd = 0;
-                int rgbPos = 0;
-                int flag = 0;
+                    // ARGB
+                    byte[] RGB = new byte[3];
+                    RGB[2] = pixel.B;
+                    RGB[1] = pixel.G;
+                    RGB[0] = pixel.R;
 
-                Parallel.For(0, height, y =>
-                 {
-                     // 行の先頭ポインタ
-                     byte* pLine = ptr + y * stride;
-
-                     for (int x = 0; x < width; x++)
-                     {
-                         // 輝度値の設定
-                         iRnd = rnd.Next(-noise, noise);
-                         flag = rnd.Next(0, ratio);
-                         rgbPos = rnd.Next(0, 2);
-                         if (flag == 0)
-                         {
-                             pLine[rgbPos] = (byte)(pLine[rgbPos] + iRnd);
-                         }
-                         // 次の画素へ
-                         pLine += 4;
-                     }
-                 }
-                );
+                    iRnd = rnd.Next(-noise, noise);
+                    flag = rnd.Next(0, ratio);
+                    rgbPos = rnd.Next(0, 2);
+                    if (flag == 0)
+                    {
+                        RGB[rgbPos] = (byte)(RGB[rgbPos] + iRnd);
+                        pixel = Color.FromArgb(RGB[0], RGB[1], RGB[2]);
+                        bmp.SetPixel(x, y, pixel);
+                    }
+                }
             }
-            // アンロック
-            bmp.UnlockBits(bmpData);
         }
         private void ImageReset()
         {
@@ -238,7 +224,7 @@ namespace IMG_Gen2
         }
         private void BmpReadFile(string filePath)
         {
-            if(filePath==null){return;}
+            if (filePath == null) { return; }
             if (bmp != null)
             {
                 bmp.Dispose();
@@ -248,5 +234,19 @@ namespace IMG_Gen2
             bmp = new Bitmap(pic1.Image);
             pic1.Image.Dispose();
         }
+
+        internal int GetNoise()
+        {
+            return RndNoiseScrBar!.Value;
+        }
+        internal int GetRatio()
+        {
+            return RndNoiseRatioScrBar!.Value;
+        }
+        internal bool GetFlag()
+        {
+            return RndNoiseChkBox!.Checked;
+        }
+
     }
 }
