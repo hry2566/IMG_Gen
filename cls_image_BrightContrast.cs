@@ -278,21 +278,23 @@ namespace IMG_Gen2
             int brightMin = 0;
             int ContrastMax = 100;
             int ContrastMin = 100;
-            if(BrightChkBox!.Checked)
+            if (BrightChkBox!.Checked)
             {
                 brightMax = BrightMaxHScrBar!.Value;
                 brightMin = BrightMinHScrBar!.Value;
             }
-            if(ContrastChkBox!.Checked)
+            if (ContrastChkBox!.Checked)
             {
                 ContrastMax = ContrastMaxHScrBar!.Value;
                 ContrastMin = ContrastMinHScrBar!.Value;
             }
+            if (BrightChkBox!.Checked && ContrastChkBox!.Checked) { return bmp; }
+
             Random rnd = new System.Random();
             double alpha = rnd.Next(ContrastMin, ContrastMax) / 100;
             double beta = rnd.Next(brightMin, brightMax);
 
-            return BmpConv(bmp,alpha,beta);
+            return BmpConv(bmp, alpha, beta);
         }
         private Bitmap BmpConv(Bitmap bmp, double alpha, double beta)
         {
