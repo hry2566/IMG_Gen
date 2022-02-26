@@ -157,10 +157,12 @@ namespace IMG_Gen2
             int width = (int)(size.Width / 5 * mat.Elements[0]);
             int height = (int)(size.Height / 5 * mat.Elements[0]);
             int btnSize;
-            if(width > height)
+            if (width > height)
             {
                 btnSize = width;
-            }else{
+            }
+            else
+            {
                 btnSize = height;
             }
             if (btnSize < 5 || btnSize > 30)
@@ -179,12 +181,14 @@ namespace IMG_Gen2
             Pen p = new Pen(cls_posPicBox.String2Color(strColor), penWidth / mat.Elements[0]);
             try
             {
-                if(labelName=="Mask")
+                if (labelName == "Mask")
                 {
                     SolidBrush sBrush = new(Color.FromArgb(128, cls_posPicBox.String2Color(strColor)));
                     g!.FillRectangle(sBrush, pos.X, pos.Y, size.Width, size.Height);
                     g!.DrawRectangle(p, pos.X, pos.Y, size.Width, size.Height);
-                }else{
+                }
+                else
+                {
                     g!.DrawRectangle(p, pos.X, pos.Y, size.Width, size.Height);
                 }
             }
