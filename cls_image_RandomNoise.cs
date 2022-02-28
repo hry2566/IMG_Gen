@@ -32,11 +32,15 @@ namespace IMG_Gen2
 
             RndNoiseScrBar!.ValueChanged += new EventHandler(RndNoise_HScrBar_ValueChanged);
             RndNoiseRatioScrBar!.ValueChanged += new EventHandler(RndNoise_HScrBar_ValueChanged);
-
+            RndNoiseChkBox!.Click += new EventHandler(RndNoiseChkBox_Click);
             RndNoisePreviewBtn!.Click += new EventHandler(RndNoisePreviewBtn_Click);
             PicBox2!.Resize += new EventHandler(PicBox2_Resize);
 
             ReadImageIni("./ini/image_random_noise.ini");
+        }
+        private void  RndNoiseChkBox_Click(object? sender, EventArgs e)
+        {
+            SaveImageIni("./ini/image_random_noise.ini");
         }
         private void PicBox2_Resize(object? sender, EventArgs? e)
         {
@@ -229,10 +233,13 @@ namespace IMG_Gen2
             {
                 bmp.Dispose();
             }
-            PictureBox pic1 = new();
-            pic1.Image = new Bitmap(filePath);
-            bmp = new Bitmap(pic1.Image);
-            pic1.Image.Dispose();
+            Image image = Image.FromFile(filePath);
+            bmp = new Bitmap(image);
+            image.Dispose();
+            // PictureBox pic1 = new();
+            // pic1.Image = new Bitmap(filePath);
+            // bmp = new Bitmap(pic1.Image);
+            // pic1.Image.Dispose();
         }
 
         internal int GetNoise()
