@@ -267,10 +267,13 @@ namespace IMG_Gen2
             {
                 bmp.Dispose();
             }
-            PictureBox pic1 = new();
-            pic1.Image = new Bitmap(filePath);
-            bmp = new Bitmap(pic1.Image);
-            pic1.Image.Dispose();
+            Image image = Image.FromFile(filePath);
+            bmp = new Bitmap(image);
+            image.Dispose();
+            // PictureBox pic1 = new();
+            // pic1.Image = new Bitmap(filePath);
+            // bmp = new Bitmap(pic1.Image);
+            // pic1.Image.Dispose();
         }
         internal Bitmap GetBrightContrast(Bitmap bmp)
         {
@@ -288,7 +291,7 @@ namespace IMG_Gen2
                 ContrastMax = ContrastMaxHScrBar!.Value;
                 ContrastMin = ContrastMinHScrBar!.Value;
             }
-            if (BrightChkBox!.Checked && ContrastChkBox!.Checked) { return bmp; }
+            if (!BrightChkBox!.Checked && !ContrastChkBox!.Checked) { return bmp; }
 
             Random rnd = new System.Random();
             double alpha = rnd.Next(ContrastMin, ContrastMax) / 100;
