@@ -164,14 +164,19 @@ namespace IMG_Gen2
                 PicBox2.Image.Dispose();
                 PicBox2.Image = null;
             }
-            PicBox2.Image = new Bitmap(filePath);
-            Bitmap bmp = new(PicBox2.Image);
-            if (PicBox2.Image != null)
-            {
-                PicBox2.Image.Dispose();
-                PicBox2.Image = null;
-            }
+            Image image = Image.FromFile(filePath);
+            Bitmap bmp = new(image);
+            image.Dispose();
             PicBox2.Image = bmp;
+
+            // PicBox2.Image = new Bitmap(filePath);
+            // Bitmap bmp = new(PicBox2.Image);
+            // if (PicBox2.Image != null)
+            // {
+            //     PicBox2.Image.Dispose();
+            //     PicBox2.Image = null;
+            // }
+            // PicBox2.Image = bmp;
             return bmp;
         }
         private List<RECTPOS> CreateSplitPos(List<Point>? maskPos = null)
@@ -604,11 +609,11 @@ namespace IMG_Gen2
                     {
                         int createdCnt = 0;
                         // 座標作成（マスク部削除）
-                        rectPos = CreateSplitPos(maskDotPos);
+                        rectPos =  CreateSplitPos(maskDotPos);
 
                         // 座標ラベル部仕分け
                         CreateImgInfo(imgInfo, rectPos, labelInfo);
-
+                    
                         for (int i = 0; i < imgInfo.Count; i++)
                         {
                             if (imgInfo[i].Cnt == imgInfo[i].rectPos.Count)
@@ -683,13 +688,14 @@ namespace IMG_Gen2
             string fileName = split[split.Count() - 1];
             bool noiseFlag = Image_RandomNoise!.GetFlag();
 
-            Bitmap bmpNew;
-            Bitmap img3 = new Bitmap(filePath);
-
-            int cnt = 0;
+            
+            Image image = Image.FromFile(filePath);
+            Bitmap img3 = new Bitmap(image);
+            image.Dispose();
 
             for (int j = 0; j < imgInfo[index].rectPos.Count; j++)
             {
+                Bitmap bmpNew;
                 int x = imgInfo[index].rectPos[j].x1;
                 int y = imgInfo[index].rectPos[j].y1;
                 int width = imgInfo[index].rectPos[j].x2 - imgInfo[index].rectPos[j].x1;
@@ -699,7 +705,7 @@ namespace IMG_Gen2
                 bmpNew = img3.Clone(rect, img3.PixelFormat);
 
                 // 画像を保存
-                string newFilePath = path + imgInfo[index].labelName + "/" + fileName + cnt.ToString() + ".jpg";
+                string newFilePath = path + imgInfo[index].labelName + "/" + fileName + (j+1).ToString() + ".jpg";
 
                 Random rnd = new System.Random();
                 int noise = rnd.Next(0, Image_RandomNoise!.GetNoise());
@@ -716,22 +722,21 @@ namespace IMG_Gen2
                         bmpNew = AddNoise(bmpNew, noise, ratio);
                     }
                 }
-
+            
                 Task task = Task.Run(() =>
                 {
-                    SaveThread(bmpNew, newFilePath);
+                    bmpNew.Save(newFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    bmpNew.Dispose();
                 });
-
+                
                 SplitCntDataGridView!.Invoke((MethodInvoker)(() =>
                 {
-                    SplitCntDataGridView!.Rows[index].Cells[2].Value = j + 1;
+                    SplitCntDataGridView!.Rows[index].Cells[2].Value = j+1;
+                    Application.DoEvents();
                 }));
                 if (stopFlag) { break; }
-                cnt++;
-
-
-
             }
+            img3.Dispose();
             return true;
         }
         private void CreateImgInfo(List<IMG_INFO> imgInfo, List<RECTPOS> rectPos, List<LABEL_INFO> labelInfo)
@@ -798,10 +803,6 @@ namespace IMG_Gen2
                     }
                 }
             }
-        }
-        private void SaveThread(Bitmap bmpNew, string newFilePath)
-        {
-            bmpNew.Save(newFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
         }
 
         private Bitmap AddNoise(Bitmap bmp, int noise, int ratio)
