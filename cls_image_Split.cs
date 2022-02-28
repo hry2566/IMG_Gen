@@ -704,7 +704,7 @@ namespace IMG_Gen2
                 Rectangle rect = new Rectangle(x, y, width, height);
                 bmpNew = img3.Clone(rect, img3.PixelFormat);
 
-                // 画像を保存
+                // 保存ファイル名
                 string newFilePath = path + imgInfo[index].labelName + "/" + fileName + (j+1).ToString() + ".jpg";
 
                 Random rnd = new System.Random();
@@ -729,6 +729,7 @@ namespace IMG_Gen2
                     bmpNew.Dispose();
                 });
                 
+                // 進捗表示
                 SplitCntDataGridView!.Invoke((MethodInvoker)(() =>
                 {
                     SplitCntDataGridView!.Rows[index].Cells[2].Value = j+1;
@@ -804,41 +805,5 @@ namespace IMG_Gen2
                 }
             }
         }
-        // private Bitmap AddNoise(Bitmap bmp, int noise, int ratio)
-        // {
-        //     int w = bmp.Width, h = bmp.Height;
-        //     Random rnd = new System.Random();
-        //     int iRnd = 0;
-        //     int rgbPos = 0;
-        //     int flag = 0;
-
-        //     for (int x = 0; x < w; x++)
-        //     {
-        //         for (int y = 0; y < h; y++)
-        //         {
-        //             Color pixel = bmp.GetPixel(x, y);
-        //             iRnd = rnd.Next(-noise, noise);
-        //             flag = rnd.Next(0, ratio);
-        //             rgbPos = rnd.Next(0, 2);
-
-        //             // ARGB
-        //             byte[] RGB = new byte[3];
-        //             RGB[2] = pixel.B;
-        //             RGB[1] = pixel.G;
-        //             RGB[0] = pixel.R;
-
-        //             iRnd = rnd.Next(-noise, noise);
-        //             flag = rnd.Next(0, ratio);
-        //             rgbPos = rnd.Next(0, 2);
-        //             if (flag == 0)
-        //             {
-        //                 RGB[rgbPos] = (byte)(RGB[rgbPos] + iRnd);
-        //                 pixel = Color.FromArgb(RGB[0], RGB[1], RGB[2]);
-        //                 bmp.SetPixel(x, y, pixel);
-        //             }
-        //         }
-        //     }
-        //     return bmp;
-        // }
     }
 }
