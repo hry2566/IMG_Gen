@@ -1,5 +1,3 @@
-
-
 namespace IMG_Gen2;
 
 public partial class cls_posPicBox : PictureBox
@@ -18,7 +16,8 @@ public partial class cls_posPicBox : PictureBox
     private bool maskFlag = false;                      // マスクフラグ
     List<cls_rectangle> lblRect = new();                // ラベル
     List<cls_rectangle> maskRect = new();               // マスク
-
+    
+    // コンストラクタ
     public cls_posPicBox(TabPage PosPage, ToolStripStatusLabel sLabel, ListView LabelLstView, ListView MaskLstView)
     {
         this.PosPage = PosPage;
@@ -31,7 +30,7 @@ public partial class cls_posPicBox : PictureBox
     }
 
     // ***********************************************************************
-    // this
+    // Events(cls_posPicBox)
     // ***********************************************************************
     private void Control_MouseDown(object? sender, MouseEventArgs e)
     {
@@ -63,7 +62,7 @@ public partial class cls_posPicBox : PictureBox
             }
             return;
         }
-        else if (e.Button == System.Windows.Forms.MouseButtons.Right)
+        else if (e.Button == System.Windows.Forms.MouseButtons.Right && Control.ModifierKeys != Keys.Alt)
         {
             ImageReset();
             return;
@@ -74,6 +73,20 @@ public partial class cls_posPicBox : PictureBox
             {
                 maskFlag = true;
                 AllUnSelect();
+            }
+            if (e.Button == System.Windows.Forms.MouseButtons.Right)
+            {
+                for (int i = 0; i < maskRect.Count; i++)
+                {
+                    if (maskRect[i].selectFlag)
+                    {
+                        maskRect[i].Delete();
+                        maskRect.Remove(maskRect[i]);
+                        break;
+                    }
+                }
+                SaveRect("_mask", maskRect);
+                DrawImage();
             }
             return;
         }
@@ -135,7 +148,6 @@ public partial class cls_posPicBox : PictureBox
     private void Control_MouseWheel(object? sender, MouseEventArgs e)
     {
         if (bmp == null) { return; }
-
         mat!.Translate(-e.X, -e.Y, System.Drawing.Drawing2D.MatrixOrder.Append);
 
         if (e.Delta > 0)
@@ -239,11 +251,6 @@ public partial class cls_posPicBox : PictureBox
         Image image = Image.FromFile(filePath);
         bmp = new Bitmap(image);
         image.Dispose();
-        // PictureBox pic1 = new();
-        // pic1.Image = new Bitmap(filePath);
-        // bmp = new Bitmap(pic1.Image);
-        // pic1.Image.Dispose();
-
         mat = new System.Drawing.Drawing2D.Matrix();
         ImageReset();
     }
@@ -361,7 +368,6 @@ public partial class cls_posPicBox : PictureBox
 
         string filename;
         StreamWriter sw;
-        // CheckFolder(rootPath!, folderName);
         Directory.CreateDirectory(rootPath + folderName);
 
         switch (folderName)
@@ -393,10 +399,6 @@ public partial class cls_posPicBox : PictureBox
         }
         return split[split.Count() - 1];
     }
-    // private static void CheckFolder(string rootPath, string param)
-    // {
-    //     Directory.CreateDirectory(rootPath + param);
-    // }
     internal static bool CheckFolder(string file_folder_Path)
     {
         if (System.IO.Directory.Exists(file_folder_Path))
@@ -419,7 +421,6 @@ public partial class cls_posPicBox : PictureBox
             return false;
         }
     }
-
 
     // ***********************************************************************
     // Draw
