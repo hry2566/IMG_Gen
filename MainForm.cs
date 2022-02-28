@@ -1,4 +1,3 @@
-
 namespace IMG_Gen2;
 
 public partial class MainForm : Form
@@ -35,6 +34,25 @@ public partial class MainForm : Form
             FileTreeView.Path = folderBrowserDialog1.SelectedPath + "\\";
             RootPathTxtBox.Text = folderBrowserDialog1.SelectedPath + "\\";
             SaveAppIni("./ini/IMG_Gen.ini", folderBrowserDialog1.SelectedPath + "\\");
+        }
+    }
+
+    // ***********************************************************************
+    // MenuTab
+    // ***********************************************************************
+    private void MenuTab_SelectedIndexChanged(object? sender, EventArgs e)
+    {
+        switch(MenuTab.SelectedIndex)
+        {
+            case 0:
+                FileTreeView!.Focus();
+                break;
+            case 1:
+                LabelLstView.Focus();
+                break;
+            case 2:
+                MaskLstView.Focus();
+                break;
         }
     }
 
@@ -111,13 +129,25 @@ public partial class MainForm : Form
             case 0:
                 break;
             case 1:
-                // Image_BrightContrast!.ResetView();
                 this.SplitContainer1.Panel2.Controls.Add(this.PicBox2);
                 break;
             case 2:
                 this.SplitContainer2.Panel2.Controls.Add(this.PicBox2);
                 break;
         }
+        MenuTab_SelectedIndexChanged(null,null!);
+    }
+
+    // ImageTab
+    private void ImageTab_SelectedIndexChanged(Object? sender, EventArgs? e)
+    {
+        MenuTab_SelectedIndexChanged(null,null!);
+    }
+
+    // SplitTab
+    private void SplitTab_SelectedIndexChanged(Object? sender, EventArgs? e)
+    {
+        MenuTab_SelectedIndexChanged(null,null!);
     }
 
     // ***********************************************************************
