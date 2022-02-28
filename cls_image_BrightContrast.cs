@@ -5,27 +5,29 @@ namespace IMG_Gen2
 {
     public class cls_image_BrightContrast
     {
-        private string? filePath;
-        private CheckBox? BrightChkBox;
-        private RadioButton? BrightMaxRadioBtn;
-        private RadioButton? BrightMinRadioBtn;
-        private HScrollBar? BrightMaxHScrBar;
-        private HScrollBar? BrightMinHScrBar;
-        private TextBox? BrightMaxTxtBox;
-        private TextBox? BrightMinTxtBox;
-        private CheckBox? ContrastChkBox;
-        private RadioButton? ContrastMaxRadioBtn;
-        private RadioButton? ContrastMinRadioBtn;
-        private HScrollBar? ContrastMaxHScrBar;
-        private HScrollBar? ContrastMinHScrBar;
-        private TextBox? ContrastMaxTxtBox;
-        private TextBox? ContrastMinTxtBox;
-        private Button? BrightRndPreviewBtn;
-        private PictureBox? PicBox2;
-        private Boolean readFlag = false;
+        private string? filePath;                           // ファイルパス
+        private CheckBox? BrightChkBox;                     // 明るさ有効／無効
+        private RadioButton? BrightMaxRadioBtn;             // 明かるさMax選択
+        private RadioButton? BrightMinRadioBtn;             // 明かるさMin選択
+        private HScrollBar? BrightMaxHScrBar;               // 明るさMax
+        private HScrollBar? BrightMinHScrBar;               // 明るさMin
+        private TextBox? BrightMaxTxtBox;                   // 明るさMax表示
+        private TextBox? BrightMinTxtBox;                   // 明るさMin表示
+        private CheckBox? ContrastChkBox;                   // コントラスト有効／無効
+        private RadioButton? ContrastMaxRadioBtn;           // コントラストMax選択
+        private RadioButton? ContrastMinRadioBtn;           // コントラストMin選択
+        private HScrollBar? ContrastMaxHScrBar;             // コントラストMax
+        private HScrollBar? ContrastMinHScrBar;             // コントラストMin
+        private TextBox? ContrastMaxTxtBox;                 // コントラストMax表示
+        private TextBox? ContrastMinTxtBox;                 // コントラストMin表示
+        private Button? BrightRndPreviewBtn;                // 明るさ／コントラストランダム表示
+        private PictureBox? PicBox2;                        // 画像表示PictureBox
+        private Boolean readFlag = false;                   // ファイル読込フラグ
         private Bitmap? bmp;                                // 表示するBitmap
         private Graphics? g;                                // 描画用Graphicsオブジェクト
         private System.Drawing.Drawing2D.Matrix? mat;       // アフィン変換行列
+
+        // コンストラクタ
         public cls_image_BrightContrast(List<Control> imgCtrl)
         {
             BrightChkBox = imgCtrl[0] as CheckBox;
@@ -70,7 +72,7 @@ namespace IMG_Gen2
             ReadImageIni("./ini/image_bright_contrast.ini");
         }
         //*************************************************************************
-        // Events
+        // Events(cls_image_BrightContrast)
         //*************************************************************************
         private void ChkBox_Click(Object? sender, EventArgs e)
         {
@@ -138,8 +140,9 @@ namespace IMG_Gen2
             DrawImage();
             ImageReset();
         }
+        
         //*************************************************************************
-        // 関数
+        // 関数(ファイル関連)
         //*************************************************************************
         private void ReadImageIni(string iniFileName)
         {
@@ -270,10 +273,6 @@ namespace IMG_Gen2
             Image image = Image.FromFile(filePath);
             bmp = new Bitmap(image);
             image.Dispose();
-            // PictureBox pic1 = new();
-            // pic1.Image = new Bitmap(filePath);
-            // bmp = new Bitmap(pic1.Image);
-            // pic1.Image.Dispose();
         }
         internal Bitmap GetBrightContrast(Bitmap bmp)
         {
