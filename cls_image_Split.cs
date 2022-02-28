@@ -2,52 +2,53 @@ namespace IMG_Gen2
 {
     public class cls_image_Split
     {
-        private struct RECTPOS          //四角の座標
+        private struct RECTPOS                                      //四角の座標
         {
             public int x1;
             public int y1;
             public int x2;
             public int y2;
         }
-        private struct LABEL_INFO
+        private struct LABEL_INFO                                   // ラベル情報
         {
-            public string labelName = "";
+            public string labelName = "";                           
             public RECTPOS rectPos = new();
         }
-        private struct IMG_INFO
+        private struct IMG_INFO                                     // 画像情報
         {
             public string labelName = "";
             public int Cnt = 0;
-            public List<RECTPOS> rectPos = new();
+            public List<RECTPOS> rectPos = new();                   
         }
-        private struct TREE_INFO
+        private struct TREE_INFO                                    // FileTree情報
         {
             public List<string> fileList;
             public List<TreeNode> node;
         }
-        private string? rootPath;
-        private string? filePath;
-        private TextBox? ImageWidthTxtBox;
-        private TextBox? ImageHeightTxtBox;
-        private TextBox? SplitWidthTxtBox;
-        private TextBox? SplitHeightTxtBox;
-        private TextBox? WrapWidthTxtBox;
-        private TextBox? WrapHeightTxtBox;
-        private TextBox? SplitCntTxtBox1;
-        private CheckBox? RndSplitRadioBtn;
-        private Button? SplitPreviewBtn;
-        private TextBox? SplitCntTxtBox2;
-        private DataGridView? SplitCntDataGridView;
-        private Button? RunSplitBtn;
-        private Button? StopSplitBtn;
-        private PictureBox? PicBox2;
-        private Boolean readFlag = false;
-        private Boolean stopFlag = true;
-        private cls_treeview? FileTreeView;
-        private TREE_INFO treeInfo;
-        private cls_image_BrightContrast? Image_BrightContrast;
-        private cls_image_RandomNoise? Image_RandomNoise;
+        private string? rootPath;                                   // ルートパス
+        private string? filePath;                                   // ファイル名
+        private TextBox? ImageWidthTxtBox;                          // 画像幅表示
+        private TextBox? ImageHeightTxtBox;                         // 画像高さ表示
+        private TextBox? SplitWidthTxtBox;                          // Split幅
+        private TextBox? SplitHeightTxtBox;                         // Split高さ
+        private TextBox? WrapWidthTxtBox;                           // ラップ幅
+        private TextBox? WrapHeightTxtBox;                          // ラップ高さ
+        private TextBox? SplitCntTxtBox1;                           // Split数表示
+        private CheckBox? RndSplitRadioBtn;                         // ランダム選択
+        private Button? SplitPreviewBtn;                            // Split表示ボタン
+        private TextBox? SplitCntTxtBox2;                           // Split数表示
+        private DataGridView? SplitCntDataGridView;                 // Split数設定と状況表示
+        private Button? RunSplitBtn;                                // Split開始ボタン
+        private Button? StopSplitBtn;                               // Split停止ボタン
+        private PictureBox? PicBox2;                                // 画像表示PictureBox
+        private Boolean readFlag = false;                           // ファイル読込フラグ
+        private Boolean stopFlag = true;                            // Split停止フラグ
+        private cls_treeview? FileTreeView;                         // ファイルツリービュー
+        private TREE_INFO treeInfo;                                 // FileTree情報
+        private cls_image_BrightContrast? Image_BrightContrast;     // cls_image_BrightContrast
+        private cls_image_RandomNoise? Image_RandomNoise;           // cls_image_RandomNoise
 
+        // コンストラクタ
         public cls_image_Split(List<Control> splitCtrl)
         {
             ImageWidthTxtBox = splitCtrl[0] as TextBox;
@@ -97,11 +98,9 @@ namespace IMG_Gen2
             CheckLabel();
             ReadIni("./ini/image_split.ini");
         }
-        internal void SetFileView(cls_treeview FileTreeView)
-        {
-            this.FileTreeView = FileTreeView;
-        }
-
+        //*************************************************************************
+        // Events(cls_image_Split)
+        //*************************************************************************
         private void SplitPreviewBtn_Click(object? sender, EventArgs e)
         {
             if (filePath == null) { return; }
@@ -157,6 +156,234 @@ namespace IMG_Gen2
             g.Dispose();
             p.Dispose();
         }
+        private void TxtChanged(object? sender, EventArgs e)
+        {
+            if (readFlag) { return; }
+            StreamWriter sw = new("./ini/image_split.ini");
+            sw.WriteLine("SplitWidth:" + SplitWidthTxtBox!.Text);
+            sw.WriteLine("SplitHeight:" + SplitHeightTxtBox!.Text);
+            sw.WriteLine("WrapWidth:" + WrapWidthTxtBox!.Text);
+            sw.WriteLine("WrapHeight:" + WrapHeightTxtBox!.Text);
+            sw.WriteLine("RandomChkBox:" + RndSplitRadioBtn!.Checked.ToString());
+            sw.Close();
+        }
+        private void SplitCntDataGridView_CellValueChanged(object? sender, DataGridViewCellEventArgs e)
+        {
+            if (readFlag) { return; }
+            if (SplitCntDataGridView!.Rows[e.RowIndex].Cells[0].Value.ToString() == "") { return; }
+            SaveIni("./ini/image_split_label.ini");
+        }
+        private void StopSplitBtn_Click(object? sender, EventArgs e)
+        {
+            stopFlag = true;
+        }
+        private void RunSplitBtn_Click(object? sender, EventArgs e)
+        {
+            treeInfo = new();
+            treeInfo.fileList = new();
+            treeInfo.node = new();
+            foreach (TreeNode n in FileTreeView!.Nodes)
+            {
+                SearchNode(n);
+            }
+
+            for (int l = 0; l < treeInfo.fileList!.Count; l++)
+            {
+                filePath = rootPath + treeInfo.fileList[l];
+                FileTreeView.SelectedNode = treeInfo.node![l];
+                FileTreeView.Focus();
+
+                // IMGファイル有無＆読込
+                if (File.Exists(filePath))
+                {
+                    RunSplitBtn!.Enabled = false;
+                    readFlag = true;
+
+                    List<LABEL_INFO> labelInfo = new();
+                    LABEL_INFO lblInf = new();
+                    List<Point> maskDotPos = new();
+                    List<RECTPOS> rectPos = new();
+                    List<IMG_INFO> imgInfo = new();
+                    IMG_INFO info = new();
+
+                    // Posファイル有無＆読込
+                    string[] split = filePath.Split("\\");
+                    string posFileName = rootPath + "_pos/" + split[split.Count() - 1] + ".txt";
+
+
+                    info.labelName = "OK";
+                    info.Cnt = int.Parse(SplitCntDataGridView!.Rows[0].Cells[1].Value.ToString()!);
+                    imgInfo.Add(info);
+
+                    if (File.Exists(posFileName))
+                    {
+                        StreamReader sr = new(posFileName);
+                        while (!sr.EndOfStream)
+                        {
+                            string line = sr.ReadLine()!;
+                            split = line.Split(",");
+                            lblInf.labelName = split[0];
+                            lblInf.rectPos.x1 = int.Parse(split[3]);
+                            lblInf.rectPos.y1 = int.Parse(split[4]);
+                            lblInf.rectPos.x2 = int.Parse(split[5]);
+                            lblInf.rectPos.y2 = int.Parse(split[6]);
+                            labelInfo.Add(lblInf);
+                        }
+                        sr.Close();
+                    }
+
+                    // splitフォルダー有無＆作成
+                    Directory.CreateDirectory(rootPath + "/_split");
+
+                    // ラベルフォルダー有無＆作成
+                    Directory.CreateDirectory(rootPath + "/_split/OK");
+                    for (int i = 0; i < labelInfo.Count; i++)
+                    {
+                        Directory.CreateDirectory(rootPath + "/_split/" + labelInfo[i].labelName);
+
+                        bool flag = false;
+                        for (int j = 0; j < imgInfo.Count; j++)
+                        {
+                            if (labelInfo[i].labelName == imgInfo[j].labelName)
+                            {
+                                flag = true;
+                                break;
+                            }
+                        }
+                        if (!flag)
+                        {
+                            info = new();
+                            info.labelName = labelInfo[i].labelName;
+                            imgInfo.Add(info);
+                        }
+                    }
+
+                    // ラベル無　作成数-1
+                    for (int i = 1; i < SplitCntDataGridView!.RowCount - 1; i++)
+                    {
+                        SplitCntDataGridView!.Rows[i].Cells[2].Value = -1;
+                        string? labelName = SplitCntDataGridView!.Rows[i].Cells[0].Value.ToString();
+                        for (int j = 0; j < labelInfo.Count; j++)
+                        {
+                            if (labelName == labelInfo[j].labelName)
+                            {
+                                SplitCntDataGridView!.Rows[i].Cells[2].Value = 0;
+                                for (int k = 0; k < imgInfo.Count; k++)
+                                {
+                                    if (imgInfo[k].labelName == labelName)
+                                    {
+                                        info = imgInfo[k];
+                                        info.Cnt = int.Parse(SplitCntDataGridView!.Rows[i].Cells[1].Value.ToString()!);
+                                        imgInfo[k] = info;
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+                    // Maskファイル有無＆読込
+                    maskDotPos = GetMaskDotPos();
+
+                    while (true)
+                    {
+                        int createdCnt = 0;
+                        // 座標作成（マスク部削除）
+                        rectPos =  CreateSplitPos(maskDotPos);
+
+                        // 座標ラベル部仕分け
+                        CreateImgInfo(imgInfo, rectPos, labelInfo);
+                    
+                        for (int i = 0; i < imgInfo.Count; i++)
+                        {
+                            if (imgInfo[i].Cnt == imgInfo[i].rectPos.Count)
+                            {
+                                createdCnt++;
+                            }
+                        }
+                        if (createdCnt == imgInfo.Count) { break; }
+                    }
+
+                    // 画像保存
+                    stopFlag = false;
+                    saveSplit(filePath, imgInfo);
+
+                    if (stopFlag)
+                    {
+                        break;
+                    }
+                }
+            }
+            if (stopFlag)
+            {
+                MessageBox.Show("中断しました");
+            }
+            else
+            {
+                MessageBox.Show("終了");
+            }
+
+            RunSplitBtn!.Enabled = true;
+            readFlag = false;
+        }
+
+        //*************************************************************************
+        // 関数(ファイル関連)
+        //*************************************************************************
+        private void ReadIni(string filePath)
+        {
+            if (!cls_posPicBox.CheckFile(filePath)) { return; }
+            readFlag = true;
+            StreamReader sr = new(filePath);
+            string[] split = sr.ReadLine()!.Split(":");
+            SplitWidthTxtBox!.Text = split[1];
+            split = sr.ReadLine()!.Split(":");
+            SplitHeightTxtBox!.Text = split[1];
+            split = sr.ReadLine()!.Split(":");
+            WrapWidthTxtBox!.Text = split[1];
+            split = sr.ReadLine()!.Split(":");
+            WrapHeightTxtBox!.Text = split[1];
+            split = sr.ReadLine()!.Split(":");
+            RndSplitRadioBtn!.Checked = System.Convert.ToBoolean(split[1]);
+            sr.Close();
+            readFlag = false;
+        }
+        private void SaveIni(string iniFileName)
+        {
+            if (readFlag) { return; }
+            StreamWriter sw = new(iniFileName);
+            for (int i = 0; i < SplitCntDataGridView!.RowCount - 1; i++)
+            {
+                string str = SplitCntDataGridView.Rows[i].Cells[0].Value.ToString() + ",";
+                str += SplitCntDataGridView.Rows[i].Cells[1].Value.ToString() + ",";
+                str += SplitCntDataGridView.Rows[i].Cells[2].Value.ToString();
+                sw.WriteLine(str);
+            }
+            sw.Close();
+        }
+        private void ReadLabelIni(string iniFileName)
+        {
+            if (!cls_posPicBox.CheckFile(iniFileName)) { return; }
+
+            SplitCntDataGridView!.Rows.Clear();
+
+            StreamReader sr = new(iniFileName);
+            while (!sr.EndOfStream)
+            {
+                string[] split = sr.ReadLine()!.Split(",");
+                SplitCntDataGridView!.Rows.Add(split[0], split[1], 0);
+            }
+            sr.Close();
+        }
+        
+        //*************************************************************************
+        // 関数（Image関連）
+        //*************************************************************************
+        internal void SetFileView(cls_treeview FileTreeView)
+        {
+            this.FileTreeView = FileTreeView;
+        }
         private Bitmap Pic2Bmp(string filePath)
         {
             if (PicBox2!.Image != null)
@@ -168,15 +395,6 @@ namespace IMG_Gen2
             Bitmap bmp = new(image);
             image.Dispose();
             PicBox2.Image = bmp;
-
-            // PicBox2.Image = new Bitmap(filePath);
-            // Bitmap bmp = new(PicBox2.Image);
-            // if (PicBox2.Image != null)
-            // {
-            //     PicBox2.Image.Dispose();
-            //     PicBox2.Image = null;
-            // }
-            // PicBox2.Image = bmp;
             return bmp;
         }
         private List<RECTPOS> CreateSplitPos(List<Point>? maskPos = null)
@@ -331,35 +549,6 @@ namespace IMG_Gen2
             sr.Close();
             return maskPos;
         }
-        private void ReadIni(string filePath)
-        {
-            if (!cls_posPicBox.CheckFile(filePath)) { return; }
-            readFlag = true;
-            StreamReader sr = new(filePath);
-            string[] split = sr.ReadLine()!.Split(":");
-            SplitWidthTxtBox!.Text = split[1];
-            split = sr.ReadLine()!.Split(":");
-            SplitHeightTxtBox!.Text = split[1];
-            split = sr.ReadLine()!.Split(":");
-            WrapWidthTxtBox!.Text = split[1];
-            split = sr.ReadLine()!.Split(":");
-            WrapHeightTxtBox!.Text = split[1];
-            split = sr.ReadLine()!.Split(":");
-            RndSplitRadioBtn!.Checked = System.Convert.ToBoolean(split[1]);
-            sr.Close();
-            readFlag = false;
-        }
-        private void TxtChanged(object? sender, EventArgs e)
-        {
-            if (readFlag) { return; }
-            StreamWriter sw = new("./ini/image_split.ini");
-            sw.WriteLine("SplitWidth:" + SplitWidthTxtBox!.Text);
-            sw.WriteLine("SplitHeight:" + SplitHeightTxtBox!.Text);
-            sw.WriteLine("WrapWidth:" + WrapWidthTxtBox!.Text);
-            sw.WriteLine("WrapHeight:" + WrapHeightTxtBox!.Text);
-            sw.WriteLine("RandomChkBox:" + RndSplitRadioBtn!.Checked.ToString());
-            sw.Close();
-        }
         internal void CheckLabel()
         {
             List<string> labelName1 = new();
@@ -432,39 +621,6 @@ namespace IMG_Gen2
 
             ReadLabelIni("./ini/image_split_label.ini");
         }
-        private void SplitCntDataGridView_CellValueChanged(object? sender, DataGridViewCellEventArgs e)
-        {
-            if (readFlag) { return; }
-            if (SplitCntDataGridView!.Rows[e.RowIndex].Cells[0].Value.ToString() == "") { return; }
-            SaveIni("./ini/image_split_label.ini");
-        }
-        private void SaveIni(string iniFileName)
-        {
-            if (readFlag) { return; }
-            StreamWriter sw = new(iniFileName);
-            for (int i = 0; i < SplitCntDataGridView!.RowCount - 1; i++)
-            {
-                string str = SplitCntDataGridView.Rows[i].Cells[0].Value.ToString() + ",";
-                str += SplitCntDataGridView.Rows[i].Cells[1].Value.ToString() + ",";
-                str += SplitCntDataGridView.Rows[i].Cells[2].Value.ToString();
-                sw.WriteLine(str);
-            }
-            sw.Close();
-        }
-        private void ReadLabelIni(string iniFileName)
-        {
-            if (!cls_posPicBox.CheckFile(iniFileName)) { return; }
-
-            SplitCntDataGridView!.Rows.Clear();
-
-            StreamReader sr = new(iniFileName);
-            while (!sr.EndOfStream)
-            {
-                string[] split = sr.ReadLine()!.Split(",");
-                SplitCntDataGridView!.Rows.Add(split[0], split[1], 0);
-            }
-            sr.Close();
-        }
         internal void SetImage(string filePath, string rootPath)
         {
             this.filePath = filePath;
@@ -475,17 +631,11 @@ namespace IMG_Gen2
             ImageWidthTxtBox!.Text = PicBox2!.Image.Width.ToString();
             ImageHeightTxtBox!.Text = PicBox2.Image.Height.ToString();
         }
-
         internal void SetOpt(string rootPath, cls_image_BrightContrast Image_BrightContrast, cls_image_RandomNoise Image_RandomNoise)
         {
             this.rootPath = rootPath;
             this.Image_BrightContrast = Image_BrightContrast;
             this.Image_RandomNoise = Image_RandomNoise;
-        }
-
-        private void StopSplitBtn_Click(object? sender, EventArgs e)
-        {
-            stopFlag = true;
         }
         private void SearchNode(TreeNode treeNode)
         {
@@ -495,156 +645,6 @@ namespace IMG_Gen2
             {
                 SearchNode(tn);
             }
-        }
-        private void RunSplitBtn_Click(object? sender, EventArgs e)
-        {
-            treeInfo = new();
-            treeInfo.fileList = new();
-            treeInfo.node = new();
-            foreach (TreeNode n in FileTreeView!.Nodes)
-            {
-                SearchNode(n);
-            }
-
-            for (int l = 0; l < treeInfo.fileList!.Count; l++)
-            {
-                filePath = rootPath + treeInfo.fileList[l];
-                FileTreeView.SelectedNode = treeInfo.node![l];
-                FileTreeView.Focus();
-
-                // IMGファイル有無＆読込
-                if (File.Exists(filePath))
-                {
-                    RunSplitBtn!.Enabled = false;
-                    readFlag = true;
-
-                    List<LABEL_INFO> labelInfo = new();
-                    LABEL_INFO lblInf = new();
-                    List<Point> maskDotPos = new();
-                    List<RECTPOS> rectPos = new();
-                    List<IMG_INFO> imgInfo = new();
-                    IMG_INFO info = new();
-
-                    // Posファイル有無＆読込
-                    string[] split = filePath.Split("\\");
-                    string posFileName = rootPath + "_pos/" + split[split.Count() - 1] + ".txt";
-
-
-                    info.labelName = "OK";
-                    info.Cnt = int.Parse(SplitCntDataGridView!.Rows[0].Cells[1].Value.ToString()!);
-                    imgInfo.Add(info);
-
-                    if (File.Exists(posFileName))
-                    {
-                        StreamReader sr = new(posFileName);
-                        while (!sr.EndOfStream)
-                        {
-                            string line = sr.ReadLine()!;
-                            split = line.Split(",");
-                            lblInf.labelName = split[0];
-                            lblInf.rectPos.x1 = int.Parse(split[3]);
-                            lblInf.rectPos.y1 = int.Parse(split[4]);
-                            lblInf.rectPos.x2 = int.Parse(split[5]);
-                            lblInf.rectPos.y2 = int.Parse(split[6]);
-                            labelInfo.Add(lblInf);
-                        }
-                        sr.Close();
-                    }
-
-                    // splitフォルダー有無＆作成
-                    Directory.CreateDirectory(rootPath + "/_split");
-
-                    // ラベルフォルダー有無＆作成
-                    Directory.CreateDirectory(rootPath + "/_split/OK");
-                    for (int i = 0; i < labelInfo.Count; i++)
-                    {
-                        Directory.CreateDirectory(rootPath + "/_split/" + labelInfo[i].labelName);
-
-                        bool flag = false;
-                        for (int j = 0; j < imgInfo.Count; j++)
-                        {
-                            if (labelInfo[i].labelName == imgInfo[j].labelName)
-                            {
-                                flag = true;
-                                break;
-                            }
-                        }
-                        if (!flag)
-                        {
-                            info = new();
-                            info.labelName = labelInfo[i].labelName;
-                            imgInfo.Add(info);
-                        }
-                    }
-
-                    // ラベル無　作成数-1
-                    for (int i = 1; i < SplitCntDataGridView!.RowCount - 1; i++)
-                    {
-                        SplitCntDataGridView!.Rows[i].Cells[2].Value = -1;
-                        string? labelName = SplitCntDataGridView!.Rows[i].Cells[0].Value.ToString();
-                        for (int j = 0; j < labelInfo.Count; j++)
-                        {
-                            if (labelName == labelInfo[j].labelName)
-                            {
-                                SplitCntDataGridView!.Rows[i].Cells[2].Value = 0;
-                                for (int k = 0; k < imgInfo.Count; k++)
-                                {
-                                    if (imgInfo[k].labelName == labelName)
-                                    {
-                                        info = imgInfo[k];
-                                        info.Cnt = int.Parse(SplitCntDataGridView!.Rows[i].Cells[1].Value.ToString()!);
-                                        imgInfo[k] = info;
-                                        break;
-                                    }
-                                }
-                                break;
-                            }
-                        }
-                    }
-
-                    // Maskファイル有無＆読込
-                    maskDotPos = GetMaskDotPos();
-
-                    while (true)
-                    {
-                        int createdCnt = 0;
-                        // 座標作成（マスク部削除）
-                        rectPos =  CreateSplitPos(maskDotPos);
-
-                        // 座標ラベル部仕分け
-                        CreateImgInfo(imgInfo, rectPos, labelInfo);
-                    
-                        for (int i = 0; i < imgInfo.Count; i++)
-                        {
-                            if (imgInfo[i].Cnt == imgInfo[i].rectPos.Count)
-                            {
-                                createdCnt++;
-                            }
-                        }
-                        if (createdCnt == imgInfo.Count) { break; }
-                    }
-
-                    // 画像保存
-                    stopFlag = false;
-                    saveSplit(filePath, imgInfo);
-
-                    if (stopFlag)
-                    {
-                        break;
-                    }
-                }
-            }
-            if (stopFlag)
-            {
-                MessageBox.Show("中断しました");
-            }
-            else
-            {
-                MessageBox.Show("終了");
-            }
-
-            RunSplitBtn!.Enabled = true;
-            readFlag = false;
         }
         private bool saveSplit(string filePath, List<IMG_INFO> imgInfo)
         {
@@ -719,7 +719,7 @@ namespace IMG_Gen2
                 {
                     if (noiseFlag)
                     {
-                        bmpNew = AddNoise(bmpNew, noise, ratio);
+                        bmpNew = Image_RandomNoise.AddNoise(bmpNew, noise, ratio);
                     }
                 }
             
@@ -804,42 +804,41 @@ namespace IMG_Gen2
                 }
             }
         }
+        // private Bitmap AddNoise(Bitmap bmp, int noise, int ratio)
+        // {
+        //     int w = bmp.Width, h = bmp.Height;
+        //     Random rnd = new System.Random();
+        //     int iRnd = 0;
+        //     int rgbPos = 0;
+        //     int flag = 0;
 
-        private Bitmap AddNoise(Bitmap bmp, int noise, int ratio)
-        {
-            int w = bmp.Width, h = bmp.Height;
-            Random rnd = new System.Random();
-            int iRnd = 0;
-            int rgbPos = 0;
-            int flag = 0;
+        //     for (int x = 0; x < w; x++)
+        //     {
+        //         for (int y = 0; y < h; y++)
+        //         {
+        //             Color pixel = bmp.GetPixel(x, y);
+        //             iRnd = rnd.Next(-noise, noise);
+        //             flag = rnd.Next(0, ratio);
+        //             rgbPos = rnd.Next(0, 2);
 
-            for (int x = 0; x < w; x++)
-            {
-                for (int y = 0; y < h; y++)
-                {
-                    Color pixel = bmp.GetPixel(x, y);
-                    iRnd = rnd.Next(-noise, noise);
-                    flag = rnd.Next(0, ratio);
-                    rgbPos = rnd.Next(0, 2);
+        //             // ARGB
+        //             byte[] RGB = new byte[3];
+        //             RGB[2] = pixel.B;
+        //             RGB[1] = pixel.G;
+        //             RGB[0] = pixel.R;
 
-                    // ARGB
-                    byte[] RGB = new byte[3];
-                    RGB[2] = pixel.B;
-                    RGB[1] = pixel.G;
-                    RGB[0] = pixel.R;
-
-                    iRnd = rnd.Next(-noise, noise);
-                    flag = rnd.Next(0, ratio);
-                    rgbPos = rnd.Next(0, 2);
-                    if (flag == 0)
-                    {
-                        RGB[rgbPos] = (byte)(RGB[rgbPos] + iRnd);
-                        pixel = Color.FromArgb(RGB[0], RGB[1], RGB[2]);
-                        bmp.SetPixel(x, y, pixel);
-                    }
-                }
-            }
-            return bmp;
-        }
+        //             iRnd = rnd.Next(-noise, noise);
+        //             flag = rnd.Next(0, ratio);
+        //             rgbPos = rnd.Next(0, 2);
+        //             if (flag == 0)
+        //             {
+        //                 RGB[rgbPos] = (byte)(RGB[rgbPos] + iRnd);
+        //                 pixel = Color.FromArgb(RGB[0], RGB[1], RGB[2]);
+        //                 bmp.SetPixel(x, y, pixel);
+        //             }
+        //         }
+        //     }
+        //     return bmp;
+        // }
     }
 }
