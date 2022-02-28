@@ -20,6 +20,7 @@ public partial class MainForm : Form
         ReadIni("./ini/label.ini", LabelLstView);
         ReadIni("./ini/mask.ini", MaskLstView);
         Image_Split!.SetOpt(RootPathTxtBox.Text, Image_BrightContrast!, Image_RandomNoise!);
+        // this.Icon = new System.Drawing.Icon("./Icon2.ico");
     }
     private void RootSelectBtn_Click(Object? sender, EventArgs? e)
     {
