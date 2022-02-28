@@ -236,10 +236,13 @@ public partial class cls_posPicBox : PictureBox
         {
             bmp.Dispose();
         }
-        PictureBox pic1 = new();
-        pic1.Image = new Bitmap(filePath);
-        bmp = new Bitmap(pic1.Image);
-        pic1.Image.Dispose();
+        Image image = Image.FromFile(filePath);
+        bmp = new Bitmap(image);
+        image.Dispose();
+        // PictureBox pic1 = new();
+        // pic1.Image = new Bitmap(filePath);
+        // bmp = new Bitmap(pic1.Image);
+        // pic1.Image.Dispose();
 
         mat = new System.Drawing.Drawing2D.Matrix();
         ImageReset();
