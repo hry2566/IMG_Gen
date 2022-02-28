@@ -171,42 +171,6 @@ namespace IMG_Gen2
             ImageReset();
             runFlag = false;
         }
-        // private void AddNoise(Bitmap bmp, int noise, int ratio)
-        // {
-        //     if (bmp == null) { return; }
-        //     int w = bmp.Width, h = bmp.Height;
-        //     Random rnd = new System.Random();
-        //     int iRnd = 0;
-        //     int rgbPos = 0;
-        //     int flag = 0;
-
-        //     for (int x = 0; x < w; x++)
-        //     {
-        //         for (int y = 0; y < h; y++)
-        //         {
-        //             Color pixel = bmp.GetPixel(x, y);
-        //             iRnd = rnd.Next(-noise, noise);
-        //             flag = rnd.Next(0, ratio);
-        //             rgbPos = rnd.Next(0, 2);
-
-        //             // ARGB
-        //             byte[] RGB = new byte[3];
-        //             RGB[2] = pixel.B;
-        //             RGB[1] = pixel.G;
-        //             RGB[0] = pixel.R;
-
-        //             iRnd = rnd.Next(-noise, noise);
-        //             flag = rnd.Next(0, ratio);
-        //             rgbPos = rnd.Next(0, 2);
-        //             if (flag == 0)
-        //             {
-        //                 RGB[rgbPos] = (byte)(RGB[rgbPos] + iRnd);
-        //                 pixel = Color.FromArgb(RGB[0], RGB[1], RGB[2]);
-        //                 bmp.SetPixel(x, y, pixel);
-        //             }
-        //         }
-        //     }
-        // }
         internal Bitmap AddNoise(Bitmap bmp, int noise, int ratio)
         {
             if (bmp == null) { return null!; }
