@@ -150,7 +150,17 @@ partial class MainForm
         // MaskDelBtn
         MaskDelBtn.Click += new EventHandler(MaskDelBtn_Click);
 
+        // ViewTab
         ViewTab.SelectedIndexChanged += new EventHandler(ViewTab_SelectedIndexChanged);
+
+        // MenuTab
+        MenuTab.SelectedIndexChanged += new EventHandler(MenuTab_SelectedIndexChanged);
+
+        // ImageTab
+        ImageTab.SelectedIndexChanged += new EventHandler(ImageTab_SelectedIndexChanged);
+
+        // SplitTab
+        SplitTab.SelectedIndexChanged += new EventHandler(SplitTab_SelectedIndexChanged);
     }
 
     #endregion
