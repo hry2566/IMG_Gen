@@ -232,7 +232,6 @@ namespace IMG_Gen2
                     string[] split = filePath.Split("\\");
                     string posFileName = rootPath + "_pos/" + split[split.Count() - 1] + ".txt";
 
-
                     info.labelName = "OK";
                     info.Cnt = int.Parse(SplitCntDataGridView!.Rows[0].Cells[1].Value.ToString()!);
                     imgInfo.Add(info);
@@ -647,10 +646,6 @@ namespace IMG_Gen2
         {
             this.filePath = filePath;
             BmpReadFile(filePath);
-            // this.rootPath = rootPath;
-            // PicBox2!.SizeMode = PictureBoxSizeMode.Zoom;
-            // PicBox2.Image.Dispose();
-            // PicBox2.Image = new Bitmap(filePath);
 
             ImageWidthTxtBox!.Text = bmp!.Width.ToString();
             ImageHeightTxtBox!.Text = bmp.Height.ToString();
@@ -872,6 +867,5 @@ namespace IMG_Gen2
             bmp = new Bitmap(image);
             image.Dispose();
         }
-        
     }
 }
