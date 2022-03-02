@@ -68,8 +68,6 @@ namespace IMG_Gen2
         internal void SetImage(string filePath)
         {
             this.filePath = filePath;
-            // PicBox2!.SizeMode = PictureBoxSizeMode.AutoSize;
-            // BmpReadFile(filePath);
             mat = new System.Drawing.Drawing2D.Matrix();
         }
         private void RndNoisePreviewBtn_Click(Object? sender, EventArgs e)
