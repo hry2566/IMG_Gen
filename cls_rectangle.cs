@@ -152,8 +152,9 @@ namespace IMG_Gen2
             this.selectFlag = selectFlag;
             selectBox.SetShow(selectFlag);
         }
-        internal void DrawRectangle(System.Drawing.Drawing2D.Matrix mat)
+        internal void DrawRectangle(System.Drawing.Drawing2D.Matrix mat, Graphics g)
         {
+            this.g = g;
             int width = (int)(size.Width / 5 * mat.Elements[0]);
             int height = (int)(size.Height / 5 * mat.Elements[0]);
             int btnSize;
@@ -179,8 +180,7 @@ namespace IMG_Gen2
             selectBox.SetPos(pos, size, mat);
 
             Pen p = new Pen(cls_posPicBox.String2Color(strColor), penWidth / mat.Elements[0]);
-            try
-            {
+            
                 if (labelName == "Mask")
                 {
                     SolidBrush sBrush = new(Color.FromArgb(128, cls_posPicBox.String2Color(strColor)));
@@ -191,8 +191,7 @@ namespace IMG_Gen2
                 {
                     g!.DrawRectangle(p, pos.X, pos.Y, size.Width, size.Height);
                 }
-            }
-            catch { }
+            
         }
         internal void Delete()
         {
