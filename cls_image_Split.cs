@@ -656,7 +656,7 @@ namespace IMG_Gen2
         }
         internal void SetOpt(string rootPath, cls_image_BrightContrast Image_BrightContrast, cls_image_RandomNoise Image_RandomNoise)
         {
-            Console.WriteLine(rootPath);
+            // Console.WriteLine(rootPath);
             this.rootPath = rootPath;
             this.Image_BrightContrast = Image_BrightContrast;
             this.Image_RandomNoise = Image_RandomNoise;
