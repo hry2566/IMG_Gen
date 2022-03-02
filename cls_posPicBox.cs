@@ -530,11 +530,11 @@ public partial class cls_posPicBox : PictureBox
     {
         for (int i = 0; i < lblRect.Count(); i++)
         {
-            lblRect[i].DrawRectangle(mat!);
+            lblRect[i].DrawRectangle(mat!,g!);
         }
         for (int i = 0; i < maskRect.Count(); i++)
         {
-            maskRect[i].DrawRectangle(mat!);
+            maskRect[i].DrawRectangle(mat!,g!);
         }
     }
     internal void AllUnSelect()
@@ -550,12 +550,14 @@ public partial class cls_posPicBox : PictureBox
     }
     internal static Color String2Color(string strColor)
     {
+        string chk = strColor.Substring(0,1);
+
         Color color;
-        try
+        if(char.IsUpper(chk[0]))
         {
             color = ColorTranslator.FromHtml(strColor);
         }
-        catch
+        else
         {
             strColor = "#" + strColor;
             color = ColorTranslator.FromHtml(strColor);
