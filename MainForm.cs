@@ -34,6 +34,7 @@ public partial class MainForm : Form
             FileTreeView.Path = folderBrowserDialog1.SelectedPath + "\\";
             RootPathTxtBox.Text = folderBrowserDialog1.SelectedPath + "\\";
             SaveAppIni("./ini/IMG_Gen.ini", folderBrowserDialog1.SelectedPath + "\\");
+            Image_Split!.SetImage(null!, RootPathTxtBox.Text);
         }
     }
 
