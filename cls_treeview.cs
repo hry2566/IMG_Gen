@@ -40,6 +40,7 @@ public partial class cls_treeview : TreeView
                 Image_RandomNoise!.SetImage(filePath);
                 break;
             case 2:
+                Image_BrightContrast.SetImage(filePath);
                 Image_Split!.SetImage(filePath, rootPath!);
                 break;
         }
