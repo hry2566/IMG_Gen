@@ -13,12 +13,14 @@ namespace IMG_Gen2
         {
             public string labelName = "";                           
             public RECTPOS rectPos = new();
+            public LABEL_INFO() { }
         }
         private struct IMG_INFO                                     // 画像情報
         {
             public string labelName = "";
             public int Cnt = 0;
-            public List<RECTPOS> rectPos = new();                   
+            public List<RECTPOS> rectPos = new();   
+            public IMG_INFO() { }                
         }
         private struct TREE_INFO                                    // FileTree情報
         {
