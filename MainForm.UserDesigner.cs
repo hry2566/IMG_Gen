@@ -5,24 +5,6 @@ partial class MainForm
     #region 
     private void InitializeUserComponent()
     {
-        //Image_Split
-        List<Control> splitCtrl = new();
-        splitCtrl.Add(ImageWidthTxtBox);
-        splitCtrl.Add(ImageHeightTxtBox);
-        splitCtrl.Add(SplitWidthTxtBox);
-        splitCtrl.Add(SplitHeightTxtBox);
-        splitCtrl.Add(WrapWidthTxtBox);
-        splitCtrl.Add(WrapHeightTxtBox);
-        splitCtrl.Add(SplitCntTxtBox1);
-        splitCtrl.Add(RndSplitRadioBtn);
-        splitCtrl.Add(SplitPreviewBtn);
-        splitCtrl.Add(SplitCntTxtBox2);
-        splitCtrl.Add(SplitCntDataGridView);
-        splitCtrl.Add(RunSplitBtn);
-        splitCtrl.Add(StopSplitBtn);
-        splitCtrl.Add(PicBox2);
-        Image_Split = new(splitCtrl);
-
         // Image_BrightContrast
         List<Control> imgCtrl = new();
         imgCtrl.Add(BrightChkBox);
@@ -53,6 +35,24 @@ partial class MainForm
         imgCtrl.Add(RndNoisePreviewBtn);
         imgCtrl.Add(PicBox2);
         Image_RandomNoise = new(imgCtrl);
+
+        //Image_Split
+        List<Control> splitCtrl = new();
+        splitCtrl.Add(ImageWidthTxtBox);
+        splitCtrl.Add(ImageHeightTxtBox);
+        splitCtrl.Add(SplitWidthTxtBox);
+        splitCtrl.Add(SplitHeightTxtBox);
+        splitCtrl.Add(WrapWidthTxtBox);
+        splitCtrl.Add(WrapHeightTxtBox);
+        splitCtrl.Add(SplitCntTxtBox1);
+        splitCtrl.Add(RndSplitRadioBtn);
+        splitCtrl.Add(SplitPreviewBtn);
+        splitCtrl.Add(SplitCntTxtBox2);
+        splitCtrl.Add(SplitCntDataGridView);
+        splitCtrl.Add(RunSplitBtn);
+        splitCtrl.Add(StopSplitBtn);
+        splitCtrl.Add(PicBox2);
+        Image_Split = new(splitCtrl);
 
         // sLabel1
         this.sLabel1 = new ToolStripStatusLabel();
