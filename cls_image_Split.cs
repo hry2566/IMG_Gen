@@ -49,6 +49,9 @@ namespace IMG_Gen2
         private TREE_INFO treeInfo;                                 // FileTree情報
         private cls_image_BrightContrast? Image_BrightContrast;     // cls_image_BrightContrast
         private cls_image_RandomNoise? Image_RandomNoise;           // cls_image_RandomNoise
+        private Bitmap? bmp;                                // 表示するBitmap
+        private Graphics? g;                                // 描画用Graphicsオブジェクト
+        private System.Drawing.Drawing2D.Matrix? mat;       // アフィン変換行列
 
         // コンストラクタ
         public cls_image_Split(List<Control> splitCtrl)
@@ -96,6 +99,7 @@ namespace IMG_Gen2
             SplitPreviewBtn!.Click += new EventHandler(SplitPreviewBtn_Click);
             RunSplitBtn!.Click += new EventHandler(RunSplitBtn_Click);
             StopSplitBtn!.Click += new EventHandler(StopSplitBtn_Click);
+            PicBox2!.Resize += new EventHandler(PicBox2_Resize);
 
             CheckLabel();
             ReadIni("./ini/image_split.ini");
@@ -103,6 +107,24 @@ namespace IMG_Gen2
         //*************************************************************************
         // Events(cls_image_Split)
         //*************************************************************************
+        private void PicBox2_Resize(object? sender, EventArgs? e)
+        {
+            if (g != null)
+            {
+                mat = g.Transform;
+                g.Dispose();
+                g = null;
+            }
+            g = Graphics.FromImage(PicBox2!.Image);
+
+            if (mat != null)
+            {
+                g.Transform = mat;
+            }
+
+            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+            // g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+        }
         private void SplitPreviewBtn_Click(object? sender, EventArgs e)
         {
             if (filePath == null) { return; }
@@ -111,13 +133,12 @@ namespace IMG_Gen2
             List<Point> maskDotPos = new List<Point>();
 
             maskDotPos = GetMaskDotPos();
-
-            Graphics g = Graphics.FromImage(Pic2Bmp(filePath));
+            ImageReset();
 
             // // マスク点座標表示
             for (int i = 0; i < maskDotPos.Count - 1; i++)
             {
-                g.FillEllipse(Brushes.White, maskDotPos[i].X, maskDotPos[i].Y, 10, 10);
+                g!.FillEllipse(Brushes.White, maskDotPos[i].X, maskDotPos[i].Y, 10, 10);
             }
 
             rectPos = CreateSplitPos(maskDotPos);
@@ -152,10 +173,9 @@ namespace IMG_Gen2
                         break;
                 }
                 colorNo++;
-                g.DrawRectangle(p, rectPos[i].x1, rectPos[i].y1, rectPos[i].x2 - rectPos[i].x1, rectPos[i].y2 - rectPos[i].y1);
+                g!.DrawRectangle(p, rectPos[i].x1, rectPos[i].y1, rectPos[i].x2 - rectPos[i].x1, rectPos[i].y2 - rectPos[i].y1);
             }
             PicBox2!.Refresh();
-            g.Dispose();
             p.Dispose();
         }
         private void TxtChanged(object? sender, EventArgs e)
@@ -626,12 +646,15 @@ namespace IMG_Gen2
         internal void SetImage(string filePath, string rootPath)
         {
             this.filePath = filePath;
-            this.rootPath = rootPath;
-            PicBox2!.SizeMode = PictureBoxSizeMode.Zoom;
-            PicBox2.Image.Dispose();
-            PicBox2.Image = new Bitmap(filePath);
-            ImageWidthTxtBox!.Text = PicBox2!.Image.Width.ToString();
-            ImageHeightTxtBox!.Text = PicBox2.Image.Height.ToString();
+            BmpReadFile(filePath);
+            // this.rootPath = rootPath;
+            // PicBox2!.SizeMode = PictureBoxSizeMode.Zoom;
+            // PicBox2.Image.Dispose();
+            // PicBox2.Image = new Bitmap(filePath);
+
+            ImageWidthTxtBox!.Text = bmp!.Width.ToString();
+            ImageHeightTxtBox!.Text = bmp.Height.ToString();
+            mat = new System.Drawing.Drawing2D.Matrix();
         }
         internal void SetOpt(string rootPath, cls_image_BrightContrast Image_BrightContrast, cls_image_RandomNoise Image_RandomNoise)
         {
@@ -807,5 +830,48 @@ namespace IMG_Gen2
                 }
             }
         }
+        private void ImageReset()
+        {
+            if (bmp == null) { return; }
+
+            float scaleX = (float)PicBox2!.Width / (float)bmp!.Width;
+            float scaleY = (float)(PicBox2.Height - 22) / (float)bmp.Height;
+            float baseScale = 0;
+            if (scaleX < scaleY)
+            {
+                baseScale = scaleX;
+            }
+            else
+            {
+                baseScale = scaleY;
+            }
+            mat!.Reset();
+            mat.Scale(baseScale, baseScale, System.Drawing.Drawing2D.MatrixOrder.Prepend);
+            DrawImage();
+        }
+        internal void DrawImage()
+        {
+            if (bmp == null) return;
+            
+            if (mat != null)
+            {
+                g!.Transform = mat;
+            }
+            g!.Clear(Color.White);
+            g.DrawImage(bmp, 0, 0);
+            PicBox2!.Refresh();
+        }
+        private void BmpReadFile(string filePath)
+        {
+            if (filePath == null) { return; }
+            if (bmp != null)
+            {
+                bmp.Dispose();
+            }
+            Image image = Image.FromFile(filePath);
+            bmp = new Bitmap(image);
+            image.Dispose();
+        }
+        
     }
 }
