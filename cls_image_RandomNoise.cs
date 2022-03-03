@@ -17,10 +17,18 @@ namespace IMG_Gen2
         private Bitmap? bmp;                                // 表示するBitmap
         private Graphics? g;                                // 描画用Graphicsオブジェクト
         private System.Drawing.Drawing2D.Matrix? mat;       // アフィン変換行列
+        private float baseScale;                            // 画面読み込み時の表示倍率
+        private TabControl ImageTab;
+        private TabControl ViewTab;
+        private int memNoise = 0;
+        private int memRatio = 0;
 
         // コンストラクタ
-        public cls_image_RandomNoise(List<Control> imgCtrl)
+        public cls_image_RandomNoise(List<Control> imgCtrl, TabControl ImageTab, TabControl ViewTab)
         {
+            this.ImageTab = ImageTab;
+            this.ViewTab = ViewTab;
+
             RndNoiseChkBox = imgCtrl[0] as CheckBox;
             RndNoiseScrBar = imgCtrl[1] as HScrollBar;
             RndNoiseRatioScrBar = imgCtrl[2] as HScrollBar;
@@ -37,6 +45,7 @@ namespace IMG_Gen2
             RndNoiseChkBox!.Click += new EventHandler(RndNoiseChkBox_Click);
             RndNoisePreviewBtn!.Click += new EventHandler(RndNoisePreviewBtn_Click);
             PicBox2!.Resize += new EventHandler(PicBox2_Resize);
+            PicBox2.MouseWheel += new System.Windows.Forms.MouseEventHandler(Control_MouseWheel);
 
             ReadImageIni("./ini/image_random_noise.ini");
         }
@@ -44,6 +53,41 @@ namespace IMG_Gen2
         //*************************************************************************
         // Events(cls_image_RandomNoise)
         //*************************************************************************
+        private void Control_MouseWheel(object? sender, MouseEventArgs e)
+        {
+            if (bmp == null) { return; }
+            if(ImageTab.SelectedIndex!=1 || ViewTab.SelectedIndex !=1){return;}
+            
+            mat!.Translate(-e.X, -e.Y, System.Drawing.Drawing2D.MatrixOrder.Append);
+
+            if (e.Delta > 0)
+            {
+                if (mat.Elements[0] < 100)
+                {
+                    mat.Scale(1.5f, 1.5f, System.Drawing.Drawing2D.MatrixOrder.Append);
+                }
+            }
+            else
+            {
+                if (mat.Elements[0] > baseScale)
+                {
+                    mat.Scale(1.0f / 1.5f, 1.0f / 1.5f, System.Drawing.Drawing2D.MatrixOrder.Append);
+                }
+            }
+
+            if (mat.Elements[0] > baseScale)
+            {
+                mat.Translate(e.X, e.Y, System.Drawing.Drawing2D.MatrixOrder.Append);
+                DrawImage();
+                CreateNoise(memNoise, memRatio);
+            }
+            else
+            {
+                ImageReset();
+            }
+
+            
+        }
         private void  RndNoiseChkBox_Click(object? sender, EventArgs e)
         {
             SaveImageIni("./ini/image_random_noise.ini");
@@ -69,7 +113,9 @@ namespace IMG_Gen2
         internal void SetImage(string filePath)
         {
             this.filePath = filePath;
+            BmpReadFile(filePath);
             mat = new System.Drawing.Drawing2D.Matrix();
+            ImageReset();
         }
         private void RndNoisePreviewBtn_Click(Object? sender, EventArgs e)
         {
@@ -157,6 +203,8 @@ namespace IMG_Gen2
         {
             BmpReadFile(filePath!);
             AddNoise(bmp!, noise, ratio);
+            memNoise = noise;
+            memRatio = ratio;
         }
         private void RandomNoise_View()
         {
@@ -259,7 +307,7 @@ namespace IMG_Gen2
 
             float scaleX = (float)PicBox2!.Width / (float)bmp!.Width;
             float scaleY = (float)(PicBox2.Height - 22) / (float)bmp.Height;
-            float baseScale = 0;
+            // float baseScale = 0;
             if (scaleX < scaleY)
             {
                 baseScale = scaleX;
