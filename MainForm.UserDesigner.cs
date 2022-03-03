@@ -23,7 +23,7 @@ partial class MainForm
         imgCtrl.Add(ContrastMinTxtBox);
         imgCtrl.Add(BrightRndPreviewBtn);
         imgCtrl.Add(PicBox2);
-        Image_BrightContrast = new(imgCtrl);
+        Image_BrightContrast = new(imgCtrl, ImageTab, ViewTab);
 
         // Image_RandomNoise
         imgCtrl = new();
@@ -34,7 +34,7 @@ partial class MainForm
         imgCtrl.Add(RndNoiseRatioTxtBox);
         imgCtrl.Add(RndNoisePreviewBtn);
         imgCtrl.Add(PicBox2);
-        Image_RandomNoise = new(imgCtrl);
+        Image_RandomNoise = new(imgCtrl, ImageTab, ViewTab);
 
         //Image_Split
         List<Control> splitCtrl = new();
