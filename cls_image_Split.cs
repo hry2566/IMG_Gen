@@ -11,7 +11,7 @@ namespace IMG_Gen2
         }
         private struct LABEL_INFO                                   // ラベル情報
         {
-            public string labelName = "";                           
+            public string labelName = "";
             public RECTPOS rectPos = new();
             public LABEL_INFO() { }
         }
@@ -19,8 +19,8 @@ namespace IMG_Gen2
         {
             public string labelName = "";
             public int Cnt = 0;
-            public List<RECTPOS> rectPos = new();   
-            public IMG_INFO() { }                
+            public List<RECTPOS> rectPos = new();
+            public IMG_INFO() { }
         }
         private struct TREE_INFO                                    // FileTree情報
         {
@@ -279,6 +279,9 @@ namespace IMG_Gen2
                         }
                     }
 
+                    // OK作成済み初期化
+                    SplitCntDataGridView!.Rows[0].Cells[2].Value = 0;
+
                     // ラベル無　作成数-1
                     for (int i = 1; i < SplitCntDataGridView!.RowCount - 1; i++)
                     {
@@ -307,15 +310,16 @@ namespace IMG_Gen2
                     // Maskファイル有無＆読込
                     maskDotPos = GetMaskDotPos();
 
+                    stopFlag = false;
                     while (true)
                     {
                         int createdCnt = 0;
                         // 座標作成（マスク部削除）
-                        rectPos =  CreateSplitPos(maskDotPos);
+                        rectPos = CreateSplitPos(maskDotPos);
 
                         // 座標ラベル部仕分け
                         CreateImgInfo(imgInfo, rectPos, labelInfo);
-                    
+
                         for (int i = 0; i < imgInfo.Count; i++)
                         {
                             if (imgInfo[i].Cnt == imgInfo[i].rectPos.Count)
@@ -324,10 +328,16 @@ namespace IMG_Gen2
                             }
                         }
                         if (createdCnt == imgInfo.Count) { break; }
+
+                        Application.DoEvents();
+                        if (stopFlag)
+                        {
+                            break;
+                        }
                     }
 
                     // 画像保存
-                    stopFlag = false;
+                    // stopFlag = false;
                     saveSplit(filePath, imgInfo);
 
                     if (stopFlag)
@@ -397,7 +407,7 @@ namespace IMG_Gen2
             }
             sr.Close();
         }
-        
+
         //*************************************************************************
         // 関数（Image関連）
         //*************************************************************************
@@ -645,9 +655,9 @@ namespace IMG_Gen2
         internal void SetImage(string filePath, string rootPath)
         {
             this.rootPath = rootPath;
-            if(filePath==null){return;}
+            if (filePath == null) { return; }
             this.filePath = filePath;
-            
+
             BmpReadFile(filePath);
 
             ImageWidthTxtBox!.Text = bmp!.Width.ToString();
@@ -712,7 +722,7 @@ namespace IMG_Gen2
             string fileName = split[split.Count() - 1];
             bool noiseFlag = Image_RandomNoise!.GetFlag();
 
-            
+
             Image image = Image.FromFile(filePath);
             Bitmap img3 = new Bitmap(image);
             image.Dispose();
@@ -729,7 +739,7 @@ namespace IMG_Gen2
                 bmpNew = img3.Clone(rect, img3.PixelFormat);
 
                 // 保存ファイル名
-                string newFilePath = path + imgInfo[index].labelName + "/" + fileName + (j+1).ToString() + ".jpg";
+                string newFilePath = path + imgInfo[index].labelName + "/" + fileName + (j + 1).ToString() + ".jpg";
 
                 Random rnd = new System.Random();
                 int noise = rnd.Next(0, Image_RandomNoise!.GetNoise());
@@ -746,17 +756,17 @@ namespace IMG_Gen2
                         bmpNew = Image_RandomNoise.AddNoise(bmpNew, noise, ratio);
                     }
                 }
-            
+
                 Task task = Task.Run(() =>
                 {
                     bmpNew.Save(newFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
                     bmpNew.Dispose();
                 });
-                
+
                 // 進捗表示
                 SplitCntDataGridView!.Invoke((MethodInvoker)(() =>
                 {
-                    SplitCntDataGridView!.Rows[index].Cells[2].Value = j+1;
+                    SplitCntDataGridView!.Rows[index].Cells[2].Value = j + 1;
                     Application.DoEvents();
                 }));
                 if (stopFlag) { break; }
@@ -851,7 +861,7 @@ namespace IMG_Gen2
         internal void DrawImage()
         {
             if (bmp == null) return;
-            
+
             if (mat != null)
             {
                 g!.Transform = mat;
