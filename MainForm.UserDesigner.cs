@@ -72,7 +72,7 @@ partial class MainForm
         this.PosPicBox.BackColor = System.Drawing.Color.Silver;
         this.PosPicBox.Name = "PicBox1";
         this.PosPicBox.Dock = System.Windows.Forms.DockStyle.Fill;
-        this.PosPage.Controls.Add(this.PosPicBox);
+        this.SplitContainer3.Panel2.Controls.Add(this.PosPicBox);
 
         // FileTreeView
         this.FileTreeView = new cls_treeview(PosPicBox!, ViewTab, Image_BrightContrast!, Image_RandomNoise, Image_Split!);
