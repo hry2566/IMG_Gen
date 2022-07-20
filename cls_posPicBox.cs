@@ -16,7 +16,9 @@ public partial class cls_posPicBox : PictureBox
     private bool maskFlag = false;                      // マスクフラグ
     List<cls_rectangle> lblRect = new();                // ラベル
     List<cls_rectangle> maskRect = new();               // マスク
-    
+    private bool markerFlag = false;                    // ピクセルマーカー
+    private int markerSize = 10;                        // ピクセルマーカーサイズ
+
     // コンストラクタ
     public cls_posPicBox(TabPage PosPage, ToolStripStatusLabel sLabel, ListView LabelLstView, ListView MaskLstView)
     {
@@ -90,6 +92,19 @@ public partial class cls_posPicBox : PictureBox
             }
             return;
         }
+        else if (Control.ModifierKeys == Keys.Shift)
+        {
+            if (markerFlag == false)
+            {
+                markerFlag = true;
+            }
+            else
+            {
+                markerFlag = false;
+            }
+            return;
+        }
+
         scaleFlag = true;
     }
     private void Control_MouseUp(object? sender, MouseEventArgs e)
@@ -143,6 +158,10 @@ public partial class cls_posPicBox : PictureBox
         else if (maskFlag && MaskLstView.SelectedItems.Count > 0)
         {
             DrawRubberBand(e, MaskLstView);
+        }
+        else if (markerFlag)
+        {
+            DrawSizeCheck(e, LabelLstView);
         }
     }
     private void Control_MouseWheel(object? sender, MouseEventArgs e)
@@ -199,6 +218,7 @@ public partial class cls_posPicBox : PictureBox
         DrawImage();
         ImageReset();
     }
+
     internal void Control_KeyDown(object? sender, KeyEventArgs e)
     {
         if (e.Control && e.KeyCode == Keys.Delete)
@@ -232,6 +252,18 @@ public partial class cls_posPicBox : PictureBox
         else if (e.KeyCode == Keys.Escape)
         {
             AllUnSelect();
+        }
+        else if (e.Shift && e.KeyCode == Keys.A)
+        {
+            markerSize = 10;
+        }
+        else if (e.Shift && e.KeyCode == Keys.S)
+        {
+            markerSize = 15;
+        }
+        else if (e.Shift && e.KeyCode == Keys.D)
+        {
+            markerSize = 20;
         }
     }
 
@@ -424,6 +456,27 @@ public partial class cls_posPicBox : PictureBox
 
     // ***********************************************************************
     // Draw
+    private void DrawSizeCheck(MouseEventArgs e, ListView listView)
+    {
+        int x1, y1, w1, h1;
+
+        x1 = (int)((e.X - mat!.Elements[4]) / mat!.Elements[0]);
+        y1 = (int)((e.Y - mat.Elements[5]) / mat!.Elements[0]);
+        w1 = markerSize;
+        h1 = markerSize;
+
+        Color color = String2Color("Red");
+        int penWidth = 1;
+        Pen p = new Pen(color, penWidth / mat!.Elements[0]);
+
+        g!.DrawRectangle(p, x1, y1, w1, h1);
+
+        p.Dispose();
+        this.Refresh();
+        g.DrawImage(bmp!, 0, 0);
+        // DrawImage();
+    }
+
     private void DrawRubberBand(MouseEventArgs e, ListView listView)
     {
         int movX = e.X - startPos.X;
@@ -530,11 +583,11 @@ public partial class cls_posPicBox : PictureBox
     {
         for (int i = 0; i < lblRect.Count(); i++)
         {
-            lblRect[i].DrawRectangle(mat!,g!);
+            lblRect[i].DrawRectangle(mat!, g!);
         }
         for (int i = 0; i < maskRect.Count(); i++)
         {
-            maskRect[i].DrawRectangle(mat!,g!);
+            maskRect[i].DrawRectangle(mat!, g!);
         }
     }
     internal void AllUnSelect()
@@ -550,10 +603,10 @@ public partial class cls_posPicBox : PictureBox
     }
     internal static Color String2Color(string strColor)
     {
-        string chk = strColor.Substring(0,1);
+        string chk = strColor.Substring(0, 1);
 
         Color color;
-        if(char.IsUpper(chk[0]))
+        if (char.IsUpper(chk[0]))
         {
             color = ColorTranslator.FromHtml(strColor);
         }
