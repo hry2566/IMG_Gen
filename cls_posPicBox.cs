@@ -92,18 +92,6 @@ public partial class cls_posPicBox : PictureBox
             }
             return;
         }
-        else if (Control.ModifierKeys == Keys.Shift)
-        {
-            if (markerFlag == false)
-            {
-                markerFlag = true;
-            }
-            else
-            {
-                markerFlag = false;
-            }
-            return;
-        }
 
         scaleFlag = true;
     }
@@ -253,18 +241,58 @@ public partial class cls_posPicBox : PictureBox
         {
             AllUnSelect();
         }
-        else if (e.Shift && e.KeyCode == Keys.A)
+
+        if (e.KeyCode == Keys.A && markerFlag)
         {
+            if (markerSize == 10)
+            {
+                markerFlag = false;
+            }
             markerSize = 10;
         }
-        else if (e.Shift && e.KeyCode == Keys.S)
+        else if (e.KeyCode == Keys.A && markerFlag == false)
         {
+            markerFlag = true;
+            markerSize = 10;
+        }
+        if (e.KeyCode == Keys.S && markerFlag)
+        {
+            if (markerSize == 15)
+            {
+                markerFlag = false;
+            }
             markerSize = 15;
         }
-        else if (e.Shift && e.KeyCode == Keys.D)
+        else if (e.KeyCode == Keys.S && markerFlag == false)
         {
+            markerFlag = true;
+            markerSize = 15;
+        }
+        if (e.KeyCode == Keys.D && markerFlag)
+        {
+            if (markerSize == 20)
+            {
+                markerFlag = false;
+            }
             markerSize = 20;
         }
+        else if (e.KeyCode == Keys.D && markerFlag == false)
+        {
+            markerFlag = true;
+            markerSize = 20;
+        }
+        DrawImage();
+        SetCurPos();
+    }
+
+    private void SetCurPos()
+    {
+        int x = System.Windows.Forms.Cursor.Position.X;
+        //Y座標を取得する
+        int y = System.Windows.Forms.Cursor.Position.Y;
+
+        //マウスポインタの位置を画面左上（座標 (0, 0)）にする
+        System.Windows.Forms.Cursor.Position = new System.Drawing.Point(x, y);
     }
 
     // ***********************************************************************
