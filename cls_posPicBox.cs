@@ -16,8 +16,14 @@ public partial class cls_posPicBox : PictureBox
     private bool maskFlag = false;                      // マスクフラグ
     List<cls_rectangle> lblRect = new();                // ラベル
     List<cls_rectangle> maskRect = new();               // マスク
-    private bool markerFlag = false;                    // ピクセルマーカー
+    private bool markerFlag = false;                    // ピクセルマーカーフラグ
     private int markerSize = 10;                        // ピクセルマーカーサイズ
+    private string markerColor = "Red";                // ピクセルマーカーカラー
+    private Rectangle pix_marker;                       // ピクセルマーカー
+    private int[] ini_markerSize = new int[3];          // iniファイル読込
+    private string[] ini_markerColor = new string[3];   // iniファイル読込
+    private System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();   // 重複イベント発生対策
+
 
     // コンストラクタ
     public cls_posPicBox(TabPage PosPage, ToolStripStatusLabel sLabel, ListView LabelLstView, ListView MaskLstView)
@@ -130,7 +136,8 @@ public partial class cls_posPicBox : PictureBox
         pos.Y = (int)((e.Y - mat.Elements[5]) / mat!.Elements[0]);
         sLabel!.Text = "Scale = " + mat!.Elements[0].ToString() +
                        " Pos.X = " + pos.X.ToString() +
-                       " Pos.Y = " + pos.Y.ToString();
+                       " Pos.Y = " + pos.Y.ToString() +
+                       "  ピクセルマーカー = " + markerFlag.ToString();
 
         if (scaleFlag)
         {
@@ -209,6 +216,15 @@ public partial class cls_posPicBox : PictureBox
 
     internal void Control_KeyDown(object? sender, KeyEventArgs e)
     {
+        // 重複イベント発生対策
+        sw.Stop();
+        if (sw.ElapsedMilliseconds < 100 && sw.ElapsedMilliseconds != 0)
+        {
+            sw.Restart();
+            return;
+        }
+        sw.Restart();
+
         if (e.Control && e.KeyCode == Keys.Delete)
         {
             for (int i = 0; i < lblRect.Count; i++)
@@ -241,48 +257,63 @@ public partial class cls_posPicBox : PictureBox
         {
             AllUnSelect();
         }
-
-        if (e.KeyCode == Keys.A && markerFlag)
+        else if (e.KeyCode == Keys.A && markerFlag)
         {
-            if (markerSize == 10)
+            if (markerSize == ini_markerSize[0])
             {
                 markerFlag = false;
             }
-            markerSize = 10;
+            markerSize = ini_markerSize[0];
+            markerColor = ini_markerColor[0];
+            DrawImage();
+            SetCurPos();
         }
         else if (e.KeyCode == Keys.A && markerFlag == false)
         {
             markerFlag = true;
-            markerSize = 10;
+            markerSize = ini_markerSize[0];
+            markerColor = ini_markerColor[0];
+            DrawImage();
+            SetCurPos();
         }
-        if (e.KeyCode == Keys.S && markerFlag)
+        else if (e.KeyCode == Keys.S && markerFlag)
         {
-            if (markerSize == 15)
+            if (markerSize == ini_markerSize[1])
             {
                 markerFlag = false;
             }
-            markerSize = 15;
+            markerSize = ini_markerSize[1];
+            markerColor = ini_markerColor[1];
+            DrawImage();
+            SetCurPos();
         }
         else if (e.KeyCode == Keys.S && markerFlag == false)
         {
             markerFlag = true;
-            markerSize = 15;
+            markerSize = ini_markerSize[1];
+            markerColor = ini_markerColor[1];
+            DrawImage();
+            SetCurPos();
         }
-        if (e.KeyCode == Keys.D && markerFlag)
+        else if (e.KeyCode == Keys.D && markerFlag)
         {
-            if (markerSize == 20)
+            if (markerSize == ini_markerSize[2])
             {
                 markerFlag = false;
             }
-            markerSize = 20;
+            markerSize = ini_markerSize[2];
+            markerColor = ini_markerColor[2];
+            DrawImage();
+            SetCurPos();
         }
         else if (e.KeyCode == Keys.D && markerFlag == false)
         {
             markerFlag = true;
-            markerSize = 20;
+            markerSize = ini_markerSize[2];
+            markerColor = ini_markerColor[2];
+            DrawImage();
+            SetCurPos();
         }
-        DrawImage();
-        SetCurPos();
     }
 
     private void SetCurPos()
@@ -298,6 +329,12 @@ public partial class cls_posPicBox : PictureBox
     // ***********************************************************************
     // 関数
     // ***********************************************************************
+    internal void Set_Marker(int index, int markerSize, string markerColor)
+    {
+        ini_markerSize[index] = markerSize;
+        ini_markerColor[index] = markerColor;
+    }
+
     // Image
     internal void SetImage(string filePath, String rootPath)
     {
@@ -497,12 +534,17 @@ public partial class cls_posPicBox : PictureBox
         int penWidth = 1;
         Pen p = new Pen(color, penWidth / mat!.Elements[0]);
 
-        g!.DrawRectangle(p, x1, y1, w1, h1);
+        pix_marker.X = x1;
+        pix_marker.Y = y1;
+        pix_marker.Width = w1;
+        pix_marker.Height = h1;
 
-        p.Dispose();
-        this.Refresh();
-        g.DrawImage(bmp!, 0, 0);
-        // DrawImage();
+        // g!.DrawRectangle(p, x1, y1, w1, h1);
+
+        // p.Dispose();
+        // this.Refresh();
+        // g.DrawImage(bmp!, 0, 0);
+        DrawImage();
     }
 
     private void DrawRubberBand(MouseEventArgs e, ListView listView)
@@ -558,7 +600,7 @@ public partial class cls_posPicBox : PictureBox
         DrawRect();
         this.Refresh();
 
-        sLabel!.Text = "Scale = " + mat!.Elements[0].ToString() + " Pos.X = " + pos.X.ToString() + " Pos.Y = " + pos.Y.ToString();
+        // sLabel!.Text = "Scale = " + mat!.Elements[0].ToString() + " Pos.X = " + pos.X.ToString() + " Pos.Y = " + pos.Y.ToString();
     }
     private List<cls_rectangle> CreateRectangle(string folderName)
     {
@@ -616,6 +658,13 @@ public partial class cls_posPicBox : PictureBox
         for (int i = 0; i < maskRect.Count(); i++)
         {
             maskRect[i].DrawRectangle(mat!, g!);
+        }
+        if (markerFlag)
+        {
+            Color color = String2Color(markerColor);
+            int penWidth = 1;
+            Pen p = new Pen(color, penWidth / mat!.Elements[0]);
+            g!.DrawRectangle(p, pix_marker.X, pix_marker.Y, pix_marker.Width, pix_marker.Height);
         }
     }
     internal void AllUnSelect()
