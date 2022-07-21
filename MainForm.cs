@@ -19,6 +19,7 @@ public partial class MainForm : Form
         ReadIni("./ini/label.ini", LabelLstView);
         ReadIni("./ini/mask.ini", MaskLstView);
         Image_Split!.SetOpt(RootPathTxtBox.Text, Image_BrightContrast!, Image_RandomNoise!);
+        Read_Marker_Ini("./ini/marker.ini");
         // this.Icon = new System.Drawing.Icon("./Icon2.ico");
     }
     private void RootSelectBtn_Click(Object? sender, EventArgs? e)
@@ -43,7 +44,7 @@ public partial class MainForm : Form
     // ***********************************************************************
     private void MenuTab_SelectedIndexChanged(object? sender, EventArgs e)
     {
-        switch(MenuTab.SelectedIndex)
+        switch (MenuTab.SelectedIndex)
         {
             case 0:
                 FileTreeView!.Focus();
@@ -136,19 +137,19 @@ public partial class MainForm : Form
                 this.SplitContainer2.Panel2.Controls.Add(this.PicBox2);
                 break;
         }
-        MenuTab_SelectedIndexChanged(null,null!);
+        MenuTab_SelectedIndexChanged(null, null!);
     }
 
     // ImageTab
     private void ImageTab_SelectedIndexChanged(Object? sender, EventArgs? e)
     {
-        MenuTab_SelectedIndexChanged(null,null!);
+        MenuTab_SelectedIndexChanged(null, null!);
     }
 
     // SplitTab
     private void SplitTab_SelectedIndexChanged(Object? sender, EventArgs? e)
     {
-        MenuTab_SelectedIndexChanged(null,null!);
+        MenuTab_SelectedIndexChanged(null, null!);
     }
 
     // ***********************************************************************
@@ -177,6 +178,31 @@ public partial class MainForm : Form
         StreamWriter sw = new StreamWriter(iniFileName, false);
         sw.WriteLine("rootpath:::" + RootPathTxtBox.Text);
         sw.Close();
+    }
+    private void Read_Marker_Ini(string iniFileName)
+    {
+        try
+        {
+            StreamReader sr = new StreamReader(iniFileName);
+            for (int i = 0; i < 3; i++)
+            {
+                string? line = sr.ReadLine();
+                string[] values = line!.Split(',');
+                PosPicBox!.Set_Marker(i, int.Parse(values[0]), values[1]);
+            }
+            sr.Close();
+        }
+        catch
+        {
+            StreamWriter sw = new StreamWriter(iniFileName);
+            sw.WriteLine("10,Red");
+            PosPicBox!.Set_Marker(0, 10, "Red");
+            sw.WriteLine("15,Red");
+            PosPicBox!.Set_Marker(1, 15, "Red");
+            sw.WriteLine("20,Red");
+            PosPicBox!.Set_Marker(2, 20, "Red");
+            sw.Close();
+        }
     }
     private void ReadIni(string iniFileName, ListView listview)
     {
