@@ -327,6 +327,7 @@ namespace IMG_Gen2
                                 createdCnt++;
                             }
                         }
+
                         if (createdCnt == imgInfo.Count) { break; }
 
                         Application.DoEvents();
@@ -764,9 +765,18 @@ namespace IMG_Gen2
                 });
 
                 // 進捗表示
+                int rowIndex = 0;
+                for (rowIndex = 0; rowIndex < SplitCntDataGridView!.RowCount; rowIndex++)
+                {
+                    if (SplitCntDataGridView.Rows[rowIndex].Cells[0].Value.ToString() == imgInfo[index].labelName)
+                    {
+                        break;
+                    }
+                }
+
                 SplitCntDataGridView!.Invoke((MethodInvoker)(() =>
                 {
-                    SplitCntDataGridView!.Rows[index].Cells[2].Value = j + 1;
+                    SplitCntDataGridView!.Rows[rowIndex].Cells[2].Value = j + 1;
                     Application.DoEvents();
                 }));
                 if (stopFlag) { break; }
@@ -825,10 +835,11 @@ namespace IMG_Gen2
                             grayFlag = true;
                         }
                     }
-                    if (!okFlag)
-                    {
-                        break;
-                    }
+                    // 高速化の為入れると、近い座標情報が消え、画像が生成されず、無限ループとなる
+                    // if (!okFlag)
+                    // {
+                    //     break;
+                    // }
                 }
                 if (okFlag && !grayFlag)
                 {
