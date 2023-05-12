@@ -807,8 +807,8 @@ namespace IMG_Gen2
                             if (imgInfo[k].labelName == labelInfo[j].labelName)
                             {
                                 // 分割画像サイズの半分以内にラベル座標がある場合のみ保存
-                                width = (rectPos[i].x2 - rectPos[i].x1) / 4;
-                                height = (rectPos[i].y2 - rectPos[i].y1) / 4;
+                                width = (rectPos[i].x2 - rectPos[i].x1) / 3;
+                                height = (rectPos[i].y2 - rectPos[i].y1) / 3;
                                 if (rectPos[i].x1 + width < labelInfo[j].rectPos.x1 && rectPos[i].x2 - width > labelInfo[j].rectPos.x2 &&
                                     rectPos[i].y1 + height < labelInfo[j].rectPos.y1 && rectPos[i].y2 - height > labelInfo[j].rectPos.y2)
                                 {
