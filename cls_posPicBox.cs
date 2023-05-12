@@ -56,17 +56,18 @@ public partial class cls_posPicBox : PictureBox
             }
             if (e.Button == System.Windows.Forms.MouseButtons.Right)
             {
-                for (int i = 0; i < lblRect.Count; i++)
-                {
-                    if (lblRect[i].selectFlag)
-                    {
-                        lblRect[i].Delete();
-                        lblRect.Remove(lblRect[i]);
-                        break;
-                    }
-                }
-                SaveRect("_pos", lblRect);
-                DrawImage();
+                Selection_Delete();
+                // for (int i = 0; i < lblRect.Count; i++)
+                // {
+                //     if (lblRect[i].selectFlag)
+                //     {
+                //         lblRect[i].Delete();
+                //         lblRect.Remove(lblRect[i]);
+                //         break;
+                //     }
+                // }
+                // SaveRect("_pos", lblRect);
+                // DrawImage();
             }
             return;
         }
@@ -98,7 +99,8 @@ public partial class cls_posPicBox : PictureBox
             }
             return;
         }
-        else if (Control.ModifierKeys == Keys.Shift && markerFlag && e.Button == System.Windows.Forms.MouseButtons.Left)
+        else if (Control.ModifierKeys == Keys.Shift && markerFlag &&
+                e.Button == System.Windows.Forms.MouseButtons.Left)
         {
             if (LabelLstView.SelectedItems.Count == 0)
             {
@@ -233,6 +235,21 @@ public partial class cls_posPicBox : PictureBox
         ImageReset();
     }
 
+    internal void Selection_Delete()
+    {
+        for (int i = 0; i < lblRect.Count; i++)
+        {
+            if (lblRect[i].selectFlag)
+            {
+                lblRect[i].Delete();
+                lblRect.Remove(lblRect[i]);
+                break;
+            }
+        }
+        SaveRect("_pos", lblRect);
+        DrawImage();
+    }
+
     internal void Control_KeyDown(object? sender, KeyEventArgs e)
     {
         // 重複イベント発生対策
@@ -246,17 +263,18 @@ public partial class cls_posPicBox : PictureBox
 
         if (e.Control && e.KeyCode == Keys.Delete)
         {
-            for (int i = 0; i < lblRect.Count; i++)
-            {
-                if (lblRect[i].selectFlag)
-                {
-                    lblRect[i].Delete();
-                    lblRect.Remove(lblRect[i]);
-                    break;
-                }
-            }
-            SaveRect("_pos", lblRect);
-            DrawImage();
+            Selection_Delete();
+            // for (int i = 0; i < lblRect.Count; i++)
+            // {
+            //     if (lblRect[i].selectFlag)
+            //     {
+            //         lblRect[i].Delete();
+            //         lblRect.Remove(lblRect[i]);
+            //         break;
+            //     }
+            // }
+            // SaveRect("_pos", lblRect);
+            // DrawImage();
         }
         else if (e.Alt && e.KeyCode == Keys.Delete)
         {
