@@ -53,6 +53,12 @@ namespace IMG_Gen2
         }
         private void Btn_MouseDown(object? sender, MouseEventArgs e)
         {
+            if (Control.ModifierKeys == Keys.Control && e.Button == MouseButtons.Right)
+            {
+                Change_SelectFlag();
+                posPicBox.Selection_Delete();
+            }
+
             if (e.Button == MouseButtons.Left && selectFlag)
             {
                 memPos.X = e.X;
@@ -70,6 +76,11 @@ namespace IMG_Gen2
             }
         }
         private void Btn_Click(Object? sender, EventArgs e)
+        {
+            Change_SelectFlag();
+        }
+
+        private void Change_SelectFlag()
         {
             if (selectFlag && !changeFlag)
             {
@@ -180,18 +191,18 @@ namespace IMG_Gen2
             selectBox.SetPos(pos, size, mat);
 
             Pen p = new Pen(cls_posPicBox.String2Color(strColor), penWidth / mat.Elements[0]);
-            
-                if (labelName == "Mask")
-                {
-                    SolidBrush sBrush = new(Color.FromArgb(128, cls_posPicBox.String2Color(strColor)));
-                    g!.FillRectangle(sBrush, pos.X, pos.Y, size.Width, size.Height);
-                    g!.DrawRectangle(p, pos.X, pos.Y, size.Width, size.Height);
-                }
-                else
-                {
-                    g!.DrawRectangle(p, pos.X, pos.Y, size.Width, size.Height);
-                }
-            
+
+            if (labelName == "Mask")
+            {
+                SolidBrush sBrush = new(Color.FromArgb(128, cls_posPicBox.String2Color(strColor)));
+                g!.FillRectangle(sBrush, pos.X, pos.Y, size.Width, size.Height);
+                g!.DrawRectangle(p, pos.X, pos.Y, size.Width, size.Height);
+            }
+            else
+            {
+                g!.DrawRectangle(p, pos.X, pos.Y, size.Width, size.Height);
+            }
+
         }
         internal void Delete()
         {
