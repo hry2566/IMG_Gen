@@ -57,17 +57,6 @@ public partial class cls_posPicBox : PictureBox
             if (e.Button == System.Windows.Forms.MouseButtons.Right)
             {
                 Selection_Delete();
-                // for (int i = 0; i < lblRect.Count; i++)
-                // {
-                //     if (lblRect[i].selectFlag)
-                //     {
-                //         lblRect[i].Delete();
-                //         lblRect.Remove(lblRect[i]);
-                //         break;
-                //     }
-                // }
-                // SaveRect("_pos", lblRect);
-                // DrawImage();
             }
             return;
         }
@@ -136,7 +125,6 @@ public partial class cls_posPicBox : PictureBox
                 lblRect[lblRect.Count - 1].SetSelect(true);
                 DrawImage();
             }
-
         }
         else if (maskFlag)
         {
@@ -264,17 +252,6 @@ public partial class cls_posPicBox : PictureBox
         if (e.Control && e.KeyCode == Keys.Delete)
         {
             Selection_Delete();
-            // for (int i = 0; i < lblRect.Count; i++)
-            // {
-            //     if (lblRect[i].selectFlag)
-            //     {
-            //         lblRect[i].Delete();
-            //         lblRect.Remove(lblRect[i]);
-            //         break;
-            //     }
-            // }
-            // SaveRect("_pos", lblRect);
-            // DrawImage();
         }
         else if (e.Alt && e.KeyCode == Keys.Delete)
         {
