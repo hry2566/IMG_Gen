@@ -88,22 +88,6 @@ public partial class cls_posPicBox : PictureBox
             }
             return;
         }
-        else if (Control.ModifierKeys == Keys.Shift && markerFlag &&
-                e.Button == System.Windows.Forms.MouseButtons.Left)
-        {
-            if (LabelLstView.SelectedItems.Count == 0)
-            {
-                return;
-            }
-
-            endPos.X = startPos.X + (int)(markerSize * mat.Elements[0]);
-            endPos.Y = startPos.Y + (int)(markerSize * mat.Elements[0]);
-            AddPosFile(LabelLstView, "_pos");
-            lblRect = CreateRectangle("_pos");
-            lblRect[lblRect.Count - 1].SetSelect(true);
-            DrawImage();
-            return;
-        }
 
         scaleFlag = true;
     }
@@ -118,13 +102,27 @@ public partial class cls_posPicBox : PictureBox
             labelFlag = false;
             endPos.X = e.X;
             endPos.Y = e.Y;
-            if (startPos.X != e.X && startPos.Y != e.Y)
+
+            if (LabelLstView.SelectedItems.Count == 0)
             {
-                AddPosFile(LabelLstView, "_pos");
-                lblRect = CreateRectangle("_pos");
-                lblRect[lblRect.Count - 1].SetSelect(true);
-                DrawImage();
+                return;
             }
+
+            if (startPos.X == e.X && startPos.Y == e.Y)
+            {
+                if (!markerFlag)
+                {
+                    return;
+                }
+                endPos.X = startPos.X + (int)(markerSize * mat!.Elements[0]);
+                endPos.Y = startPos.Y + (int)(markerSize * mat.Elements[0]);
+            }
+
+            AddPosFile(LabelLstView, "_pos");
+            lblRect = CreateRectangle("_pos");
+            lblRect[lblRect.Count - 1].SetSelect(true);
+            DrawImage();
+
         }
         else if (maskFlag)
         {
